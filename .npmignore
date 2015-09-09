@@ -1,0 +1,6 @@
+*.log
+*.yml
+.gitignore
+bin
+coverage
+node_modules
