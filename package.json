@@ -1,0 +1,67 @@
+{
+  "name": "account-client",
+  "description": "An all things client API for the browser",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "rimraf dist && mkdirp dist",
+    "build": "browserify index.js > dist/account-client.js",
+    "postbuild": "uglifyjs dist/account-client.js -mc > dist/account-client.min.js",
+    "predeploydocs": "./bin/authorize-push.js",
+    "deploydocs": "gh-pages-deploy",
+    "predocs": "rimraf docs/build",
+    "docs": "doxx --source ./ --target docs/build --template docs/template.jade --ignore coverage,bin,dist,helpers,node_modules,tests,utils,index.js",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "pretest": "standard",
+    "test": "standard && npm run -s test:node | tap-spec",
+    "pretest:browser:cloud": "npm run build",
+    "test:browser:cloud": "zuul -- tests",
+    "pretest:browser:local": "npm run build",
+    "test:browser:local": "zuul --local 8080 -- tests",
+    "test:coverage": "istanbul cover tests",
+    "test:coverage:upload": "istanbul-coveralls",
+    "test:node": "node tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hoodiehq/account-client.git"
+  },
+  "keywords": [
+    "account",
+    "client",
+    "browser"
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/hoodiehq/account-client/issues"
+  },
+  "homepage": "https://github.com/hoodiehq/account-client#readme",
+  "devDependencies": {
+    "browserify": "^11.0.1",
+    "doxx": "1.5.0",
+    "gh-pages-deploy": "^0.3.0",
+    "istanbul": "^0.3.19",
+    "istanbul-coveralls": "^1.0.3",
+    "mkdirp": "^0.5.1",
+    "nock": "^2.10.0",
+    "rimraf": "^2.4.3",
+    "semantic-release": "^4.3.4",
+    "standard": "^5.2.2",
+    "tap-spec": "^4.1.0",
+    "tape": "^4.2.0",
+    "uglify-js": "^2.4.24",
+    "zuul": "^3.4.0"
+  },
+  "dependencies": {
+    "humble-localstorage": "^1.4.2",
+    "lie": "^3.0.1",
+    "lodash.get": "^3.7.0",
+    "lodash.merge": "^3.3.2",
+    "lodash.set": "^3.7.4",
+    "nets": "^3.1.0"
+  },
+  "standard": {
+    "ignore": [
+      "dist/**"
+    ]
+  }
+}
