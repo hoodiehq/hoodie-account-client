@@ -1,0 +1,6 @@
+require('./specs/constructor-test')
+require('./specs/profile-test')
+require('./specs/signedin-test')
+require('./specs/signin-test')
+require('./specs/signout-test')
+require('./specs/signup-test')
