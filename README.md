@@ -9,7 +9,7 @@
 
 `account-client` is a JavaScript front-end client for
 the [Account REST API](http://docs.accountrestapi.apiary.io).
-It presists session information in localStorage and provides
+It persists session information in localStorage and provides
 front-end friendly APIs for things like creating a user account,
 confirming, resetting a password, changing profile information,
 or closing the account.
@@ -61,7 +61,7 @@ See more examples, options, etc at http://hoodiehq.github.io/account-client
 
 In Node.js
 
-Run all tests and validates JavaScript Code Style using [standard](https://www.npmjs.com/package/standard)
+Run all tests and validate JavaScript Code Style using [standard](https://www.npmjs.com/package/standard)
 
 ```
 npm test
