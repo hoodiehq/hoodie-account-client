@@ -1,11 +1,11 @@
 {
-  "name": "account-client",
+  "name": "hoodie-client-account",
   "description": "An all things client API for the browser",
   "main": "index.js",
   "scripts": {
     "prebuild": "rimraf dist && mkdirp dist",
-    "build": "browserify index.js > dist/account-client.js",
-    "postbuild": "uglifyjs dist/account-client.js -mc > dist/account-client.min.js",
+    "build": "browserify index.js > dist/hoodie-client-account.js",
+    "postbuild": "uglifyjs dist/hoodie-client-account.js -mc > dist/hoodie-client-account.min.js",
     "predeploydocs": "./bin/authorize-push.js",
     "deploydocs": "gh-pages-deploy",
     "predocs": "rimraf docs/build",
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hoodiehq/account-client.git"
+    "url": "https://github.com/hoodiehq/hoodie-client-account.git"
   },
   "keywords": [
     "account",
@@ -32,9 +32,9 @@
   ],
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/hoodiehq/account-client/issues"
+    "url": "https://github.com/hoodiehq/hoodie-client-account/issues"
   },
-  "homepage": "https://github.com/hoodiehq/account-client#readme",
+  "homepage": "https://github.com/hoodiehq/hoodie-client-account#readme",
   "devDependencies": {
     "browserify": "^11.0.1",
     "doxx": "1.5.0",

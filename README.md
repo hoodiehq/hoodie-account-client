@@ -1,13 +1,13 @@
-# account-client
+# hoodie-client-account
 
 > An all things client API for the browser
 
-[![Build Status](https://travis-ci.org/hoodiehq/account-client.svg?branch=master)](https://travis-ci.org/hoodiehq/account-client)
-[![Coverage Status](https://coveralls.io/repos/hoodiehq/account-client/badge.svg?branch=master)](https://coveralls.io/r/hoodiehq/account-client?branch=master)
-[![Dependency Status](https://david-dm.org/hoodiehq/account-client.svg)](https://david-dm.org/hoodiehq/account-client)
-[![devDependency Status](https://david-dm.org/hoodiehq/account-client/dev-status.svg)](https://david-dm.org/hoodiehq/account-client#info=devDependencies)
+[![Build Status](https://travis-ci.org/hoodiehq/hoodie-client-account.svg?branch=master)](https://travis-ci.org/hoodiehq/hoodie-client-account)
+[![Coverage Status](https://coveralls.io/repos/hoodiehq/hoodie-client-account/badge.svg?branch=master)](https://coveralls.io/r/hoodiehq/hoodie-client-account?branch=master)
+[![Dependency Status](https://david-dm.org/hoodiehq/hoodie-client-account.svg)](https://david-dm.org/hoodiehq/hoodie-client-account)
+[![devDependency Status](https://david-dm.org/hoodiehq/hoodie-client-account/dev-status.svg)](https://david-dm.org/hoodiehq/hoodie-client-account#info=devDependencies)
 
-`account-client` is a JavaScript front-end client for
+`hoodie-client-account` is a JavaScript front-end client for
 the [Account REST API](http://docs.accountrestapi.apiary.io).
 It persists session information in localStorage and provides
 front-end friendly APIs for things like creating a user account,
@@ -55,7 +55,7 @@ account.one('signin', handleOnce)
 account.off('signin', handler)
 ```
 
-See more examples, options, etc at http://hoodiehq.github.io/account-client
+See more examples, options, etc at http://hoodiehq.github.io/hoodie-client-account
 
 ## Testing
 
