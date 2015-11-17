@@ -73,14 +73,6 @@ To run only the tests
 npm run test:node
 ```
 
-Run tests in browser
-
-```
-test:browser:local
-```
-
-This will start a local server. All tests and coverage will be run at [http://localhost:8080/__zuul](http://localhost:8080/__zuul)
-
 ## Contributing
 
 Have a look at the Hoodie project's [contribution guidelines](https://github.com/hoodiehq/hoodie/blob/master/CONTRIBUTING.md).
