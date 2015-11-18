@@ -5,9 +5,15 @@ var merge = require('lodash.merge')
 var Account = require('../../index')
 
 var baseURL = 'http://localhost:3000'
+var signUpResponse = require('../fixtures/signup.json')
 var options = {
-  username: 'joe@example.com',
+  username: signUpResponse.data.attributes.username,
   password: 'secret'
+}
+var profileData = {
+  profile: {
+    fullName: 'Docs Chicken'
+  }
 }
 
 test('has "signUp" method', function (t) {
@@ -67,7 +73,7 @@ test('signUp w/o required password', function (t) {
 })
 
 test('successful account.signUp(options)', function (t) {
-  t.plan(1)
+  t.plan(2)
 
   var account = new Account({
     url: baseURL
@@ -75,36 +81,27 @@ test('successful account.signUp(options)', function (t) {
 
   nock(baseURL)
     .put('/session/account')
-    .reply(200, JSON.stringify(options))
+    .reply(201, JSON.stringify(signUpResponse))
 
   account.signUp(options)
 
-  .then(function (returnedUsername) {
-    t.is(returnedUsername, options.username, 'returns correct username')
+  .then(function (returnedObject) {
+    t.is(returnedObject.username, options.username, 'returns correct username')
+    t.ok(returnedObject.id, 'returns account id')
+  })
+  .catch(function (error) {
+    t.fail(error)
   })
 })
 
-test('successful account.signUp() w/ profile options', function (t) {
+test('account.signUp w/ profile options', function (t) {
   t.plan(1)
 
   var account = new Account({
     url: baseURL
   })
 
-  var optionsWithProfile = merge(options, {
-    name: 'Joe Doe',
-    birthday: '1984-05-09'
-  })
-
-  nock(baseURL)
-    .put('/session/account')
-    .reply(200, JSON.stringify(options))
-
-  account.signUp(optionsWithProfile)
-
-  .then(function (returnedUsername) {
-    t.is(returnedUsername, options.username, 'returns correct username')
-  })
+  t.throws(account.signUp.bind(null, merge({}, options, profileData)), 'throws profile options error')
 })
 
 test('account.signUp w/ invalid options', function (t) {

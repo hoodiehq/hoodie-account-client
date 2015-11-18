@@ -5,8 +5,10 @@ var Account = require('../../index')
 var localStorageWrapper = require('humble-localstorage')
 
 var baseURL = 'http://localhost:3000'
+var signUpResponse = require('../fixtures/signup.json')
+var signInResponse = require('../fixtures/signin.json')
 var options = {
-  username: 'jane@example.com',
+  username: signUpResponse.data.attributes.username,
   password: 'secret'
 }
 
@@ -27,18 +29,11 @@ test('successful signOut()', function (t) {
     url: baseURL
   })
 
-  var returnedAccount = {
-    username: options.username,
-    session: {
-      id: 'sessionid123'
-    }
-  }
-
   nock(baseURL)
     .put('/session/account')
-    .reply(200, JSON.stringify(returnedAccount))
+    .reply(200, JSON.stringify(signUpResponse))
     .put('/session')
-    .reply(201, JSON.stringify(returnedAccount.session))
+    .reply(201, JSON.stringify(signInResponse))
     .delete('/session')
     .reply(204)
 
@@ -52,12 +47,14 @@ test('successful signOut()', function (t) {
     return account.signOut()
   })
 
-  .then(function (returnedUsername) {
+  .then(function (returnedObject) {
     var sessionData = localStorageWrapper.getObject('_session')
 
-    t.is(returnedUsername, options.username, 'returns correct username')
+    t.is(returnedObject.username, options.username, 'returns correct username')
     t.is(sessionData, null, 'nulls stored session object')
   })
+
+  .catch(t.fail)
 })
 
 test('catch errors from signOut()', function (t) {
@@ -68,10 +65,22 @@ test('catch errors from signOut()', function (t) {
   })
 
   nock(baseURL)
+    .put('/session/account')
+    .reply(200, JSON.stringify(signUpResponse))
+    .put('/session')
+    .reply(201, JSON.stringify(signInResponse))
     .delete('/session')
     .replyWithError({ 'message': 'no server connection' })
 
-  account.signOut()
+  account.signUp(options)
+
+  .then(function () {
+    return account.signIn(options)
+  })
+
+  .then(function () {
+    return account.signOut()
+  })
 
   .then(function () {
     t.fail('error was not caught')

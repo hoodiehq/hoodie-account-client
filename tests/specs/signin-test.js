@@ -5,8 +5,10 @@ var Account = require('../../index')
 var localStorageWrapper = require('humble-localstorage')
 
 var baseURL = 'http://localhost:3000'
+var signUpResponse = require('../fixtures/signup.json')
+var signInResponse = require('../fixtures/signin.json')
 var options = {
-  username: 'jane@example.com',
+  username: signUpResponse.data.attributes.username,
   password: 'secret'
 }
 
@@ -27,11 +29,7 @@ test('signIn w/o required options', function (t) {
     url: baseURL
   })
 
-  account.signIn()
-
-  .catch(function (error) {
-    t.is(typeof error, 'object', 'rejects with error object')
-  })
+  t.throws(account.signIn.bind(null), 'throws error')
 })
 
 test('signIn w/o required username', function (t) {
@@ -73,18 +71,11 @@ test('successful account.signIn(options)', function (t) {
     url: baseURL
   })
 
-  var returnedAccount = {
-    username: options.username,
-    session: {
-      id: 'sessionid123'
-    }
-  }
-
   nock(baseURL)
     .put('/session/account')
-    .reply(200, JSON.stringify(returnedAccount))
+    .reply(200, JSON.stringify(signUpResponse))
     .put('/session')
-    .reply(201, JSON.stringify(returnedAccount.session))
+    .reply(201, JSON.stringify(signInResponse))
 
   account.signUp(options)
 
@@ -92,12 +83,14 @@ test('successful account.signIn(options)', function (t) {
     return account.signIn(options)
   })
 
-  .then(function (returnedUsername) {
+  .then(function (returnedObject) {
     var sessionData = localStorageWrapper.getObject('_session')
-    t.is(returnedUsername, options.username, 'returns correct username')
-    t.is(sessionData.account.username, returnedUsername, 'stored correct username in session')
-    t.is(sessionData.id, returnedAccount.session.id, 'stored correct session id')
+    t.is(returnedObject.username, options.username, 'returns correct username')
+    t.is(sessionData.account.username, returnedObject.username, 'stored correct username in session')
+    t.is(sessionData.id, signInResponse.data.id, 'stored correct session id')
   })
+
+  .catch(t.fail)
 })
 
 test('catch error from account.signIn', function (t) {

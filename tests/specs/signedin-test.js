@@ -2,22 +2,13 @@ var test = require('tape')
 var nock = require('nock')
 
 var Account = require('../../index')
-var merge = require('lodash.merge')
 
 var baseURL = 'http://localhost:3000'
+var signUpResponse = require('../fixtures/signup.json')
+var signInResponse = require('../fixtures/signin.json')
 var options = {
-  username: 'jane@example.com',
+  username: signUpResponse.data.attributes.username,
   password: 'secret'
-}
-var profile = {
-  firstName: 'Jane',
-  lastName: 'Doe',
-  nickName: 'JD',
-  address: {
-    city: 'New York',
-    state: 'NY',
-    country: 'United States'
-  }
 }
 
 test('has "isSignedIn" method', function (t) {
@@ -37,24 +28,15 @@ test('returns correct signedIn state', function (t) {
     url: baseURL
   })
 
-  var accountWithProfile = merge(options, {profile: profile})
-  var returnedAccount = {
-    username: options.username,
-    session: {
-      id: 'sessionid123'
-    },
-    profile: profile
-  }
-
   nock(baseURL)
     .put('/session/account')
-    .reply(200, JSON.stringify(returnedAccount))
+    .reply(200, JSON.stringify(signUpResponse))
     .put('/session')
-    .reply(201, JSON.stringify(returnedAccount.session))
+    .reply(201, JSON.stringify(signInResponse))
     .delete('/session')
     .reply(204)
 
-  account.signUp(accountWithProfile)
+  account.signUp(options)
 
   .then(function () {
     return account.signIn(options)
@@ -69,4 +51,6 @@ test('returns correct signedIn state', function (t) {
   .then(function () {
     t.is(account.isSignedIn(), false, 'returns false after signOut()')
   })
+
+  .catch(t.fail)
 })

@@ -1,0 +1,24 @@
+{
+  "links": {
+    "self": "https://example.com/session/account"
+  },
+  "data": {
+    "id": "abc4567",
+    "type": "account",
+    "attributes": {
+      "username": "chicken@docs.com",
+      "password": "secret"
+    },
+    "relationships": {
+      "profile": {
+        "links": {
+          "related": "https://example.com/session/account/profile"
+        },
+        "data": {
+          "id": "abc4567-profile",
+          "type": "accountProfile"
+        }
+      }
+    }
+  }
+}
