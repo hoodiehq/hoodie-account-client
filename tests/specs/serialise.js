@@ -1,20 +1,20 @@
 var test = require('tape')
 
-var serialize = require('../../helpers/serialize')
+var serialise = require('../../helpers/serialise')
 
 test('throws error when no type is passed', function (t) {
   t.plan(1)
 
-  t.throws(serialize.bind(null), 'throws error')
+  t.throws(serialise.bind(null), 'throws error')
 })
 
 test('throws error when no attribute is passed', function (t) {
   t.plan(1)
 
-  t.throws(serialize.bind(null, 'account'), 'throws error')
+  t.throws(serialise.bind(null, 'account'), 'throws error')
 })
 
-test('returns JSON API serialized object', function (t) {
+test('returns JSON API serialised object', function (t) {
   t.plan(3)
 
   var type = 'account'
@@ -23,7 +23,7 @@ test('returns JSON API serialized object', function (t) {
   }
   var id = 'account1234'
 
-  var body = serialize(type, attributes, id)
+  var body = serialise(type, attributes, id)
 
   t.is(body.data.id, id, 'sets correct id')
   t.equal(body.data.attributes, attributes, 'sets correct attributes')

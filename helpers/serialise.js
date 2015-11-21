@@ -1,6 +1,6 @@
-module.exports = serialize
+module.exports = serialise
 
-function serialize (type, attributes, id) {
+function serialise (type, attributes, id) {
   if (!type || !attributes) {
     throw new Error('Serialization must include a type and some attributes.')
   }

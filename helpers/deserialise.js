@@ -1,8 +1,8 @@
-module.exports = deserialize
+module.exports = deserialise
 
-function deserialize (response, options) {
+function deserialise (response, options) {
   if (!response || !response.data) {
-    throw new Error('Please include a JSON API response to deserialize.')
+    throw new Error('Please include a JSON API response to deserialise.')
   }
 
   var data = resourceParser(response.data, options || {})
@@ -23,7 +23,7 @@ function resourceParser (resource, options) {
 
   if (options.relationships) {
     options.relationships.forEach(function (relationship) {
-      data[relationship] = deserialize(resource.relationships[relationship])
+      data[relationship] = deserialise(resource.relationships[relationship])
     })
   }
 
