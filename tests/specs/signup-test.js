@@ -40,7 +40,7 @@ test('signUp w/o required options', function (t) {
   })
 })
 
-test('signUp w/o required username', function (t) {
+test('signUp w/o required password', function (t) {
   t.plan(1)
 
   var account = new Account({
@@ -56,7 +56,7 @@ test('signUp w/o required username', function (t) {
   })
 })
 
-test('signUp w/o required password', function (t) {
+test('signUp w/o required username', function (t) {
   t.plan(1)
 
   var account = new Account({

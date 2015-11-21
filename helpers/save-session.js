@@ -2,27 +2,40 @@ module.exports = saveSession
 
 var localStorageWrapper = require('humble-localstorage')
 var merge = require('lodash.merge')
-var get = require('lodash.get')
 var getSession = require('./get-session')
 
-function saveSession (state, data) {
-  var storedSession = getSession(state)
-  var normalizedData = {
-    id: get(data, 'session.id') || get(data, 'id'),
-    account: {
-      username: get(data, 'username'),
-      profile: get(data, 'profile')
-    }
+/**
+ * state.session = {
+ *   id: 'session123',
+ *   account: {
+ *     id: 'account456',
+ *     username: 'docsChicken',
+ *     profile: {
+ *       fullName: 'Docs Chicken'
+ *     }
+ *   }
+ * }
+ */
+
+function saveSession (state, data, type) {
+  var storedSession = getSession(state) || {}
+
+  switch (type) {
+    case 'account':
+      data = merge(storedSession, { account: data })
+      break
+    case 'profile':
+      data = merge(storedSession, {account: {profile: data}})
+      break
+    default:
+      data = merge(storedSession, data)
+      break
   }
 
-  if (storedSession) {
-    normalizedData = merge(storedSession, normalizedData)
-  }
-
-  localStorageWrapper.setObject('_session', normalizedData)
+  localStorageWrapper.setObject('_session', data)
 
   var obj = {
-    session: normalizedData
+    session: data
   }
 
   merge(state, obj)

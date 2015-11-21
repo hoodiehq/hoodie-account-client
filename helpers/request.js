@@ -3,7 +3,7 @@ module.exports = request
 var Promise = require('./promise')
 var nets = require('nets')
 
-function request (options, callback) {
+function request (options) {
   options.encoding = undefined
 
   return new Promise(function (resolve, reject) {
