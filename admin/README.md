@@ -1,7 +1,7 @@
 # account admin client
 
 The account admin client is a front-end API that wraps all
-admin-specific RESTful API following the [account REST API](http://docs.accountjsonapi.apiary.io/)
+admin-specific RESTful API following the [account JSON API](http://docs.accountjsonapi.apiary.io/)
 specifications.
 
 - all methods return promises
