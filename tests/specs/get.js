@@ -33,7 +33,7 @@ test('get account details', function (t) {
   t.equal(accountInfo, state.session.account, 'contains correct object')
 })
 
-test('get account when user not logged in', function (t) {
+test('get account returns undefined when user not logged in', function (t) {
   t.plan(1)
 
   var accountInfo = get({}, 'account')
