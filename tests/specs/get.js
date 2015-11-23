@@ -33,6 +33,14 @@ test('get account details', function (t) {
   t.equal(accountInfo, state.session.account, 'contains correct object')
 })
 
+test('get account when user not logged in', function (t) {
+  t.plan(1)
+
+  var accountInfo = get({}, 'account')
+
+  t.is(typeof accountInfo, 'undefined', 'returns undefined')
+})
+
 test('get account username from string', function (t) {
   t.plan(2)
 

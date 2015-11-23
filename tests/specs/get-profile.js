@@ -36,6 +36,14 @@ test('get profile details', function (t) {
   t.equal(profileInfo, state.session.account.profile, 'contains correct object')
 })
 
+test('get profile when user not logged in', function (t) {
+  t.plan(1)
+
+  var profileInfo = get({}, 'account.profile')
+
+  t.is(typeof profileInfo, 'undefined', 'returns undefined')
+})
+
 test('get profile fullName from string', function (t) {
   t.plan(2)
 
