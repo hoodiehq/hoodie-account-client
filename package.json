@@ -1,5 +1,6 @@
 {
   "name": "hoodie-client-account",
+  "version": "0.0.0-semantically-released",
   "description": "An all things client API for the browser",
   "main": "index.js",
   "scripts": {
