@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prebuild": "rimraf dist && mkdirp dist",
-    "build": "browserify index.js > dist/hoodie-client-account.js",
+    "build": "browserify -s Account index.js > dist/hoodie-client-account.js",
     "postbuild": "uglifyjs dist/hoodie-client-account.js -mc > dist/hoodie-client-account.min.js",
     "predeploydocs": "./bin/authorize-push.js",
     "deploydocs": "gh-pages-deploy",
