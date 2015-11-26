@@ -68,7 +68,10 @@ admin.accounts.on('change', renderAccounts)
 ```js
 new AccountAdmin({
   // required. Path or full URL to root location of the account JSON API
-  url: '/api'
+  url: '/api',
+  // name of localStorage key where to persist the session state.
+  // Defaults to "_session_admin"
+  cacheKey: 'myapp.admin.session'
 })
 ```
 
