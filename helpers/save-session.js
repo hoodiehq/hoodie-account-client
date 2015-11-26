@@ -32,7 +32,7 @@ function saveSession (state, data, type) {
       break
   }
 
-  localStorageWrapper.setObject('_session', data)
+  localStorageWrapper.setObject(state.cacheKey, data)
 
   var obj = {
     session: data

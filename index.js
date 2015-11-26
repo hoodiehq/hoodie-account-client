@@ -12,6 +12,7 @@ function Account (options) {
   }
 
   var state = {
+    cacheKey: options.cacheKey || '_session',
     url: options.url,
     validate: options.validate || function () {}
   }
