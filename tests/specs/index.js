@@ -10,3 +10,5 @@ require('./get-profile')
 require('./update-profile')
 require('./deserialise')
 require('./serialise')
+
+require('./admin/constructor-test')
