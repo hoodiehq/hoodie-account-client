@@ -1,1 +1,2 @@
+require('./integration')
 require('./specs')
