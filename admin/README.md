@@ -1,108 +1,255 @@
-# account admin client
+[back to hoodie-client-account](../README.md)
+
+# hoodie-client-account/admin
+
+`hoodie-client-account/admin` is a JavaScript front-end client for
+the admin routes of the [Account JSON API](http://docs.accountjsonapi.apiary.io).
+
+It persists the admin’s session information in localStorage and provides
+front-end friendly APIs for things like managing users, sessions, profiles
+and requests.
 
 The account admin client is a front-end API that wraps all
-admin-specific RESTful API following the [account JSON API](http://docs.accountjsonapi.apiary.io/)
+admin-specific RESTful APIs following the [account JSON API](http://docs.accountjsonapi.apiary.io/)
 specifications.
 
-- all methods return promises
-- where applicable methods support JSON API options:
-  - `include`: string of comma-separated resources to include in response, or
-    array of strings, see [JSON API: Inclusion of Related Resources](http://jsonapi.org/format/#fetching-includes)
-  - `fields`: map of fields to include in response by type, see [JSON API: Sparse Fieldset](http://jsonapi.org/format/#fetching-sparse-fieldsets)
-  - `sort`: string of comma-separated list of attributes to sort by, or array of strings, see [JSON API: Sorting](http://jsonapi.org/format/#fetching-sorting)
-  - `page.offset` & `page.limit`: integer, see [JSON API: Pagination](http://jsonapi.org/format/#fetching-pagination)
-- where applicable, methods support `options.auth` for per-request authentication,
-  - `options.auth.username` & `options.auth.password`: credentials of user
-    the request shall be authenticated with
-  - `options.bearer`: bearer token of session the request shall be authenticated
-    with
-
+## Example
 
 ```js
-var accountAdmin = new AccountAdmin('https://example.com/api')
+// Account loaded via <script> or require('hoodie-client-account/admin')
+var admin = new AccountAdmin('https://example.com/account/api')
 
-accountAdmin.username
-accountAdmin.isSignedIn()
-accountAdmin.signIn(options)
-accountAdmin.update(change)
-accountAdmin.signOut()
+if (!account.isSignedIn()) {
+  renderLogin()
+} else {
+  admin.accounts.findAll().then(renderAccounts)
+}
 
-accountAdmin.sessions.add(options)
-accountAdmin.sessions.find(idOrObject, options)
-accountAdmin.sessions.remove(idOrObject, options)
-
-accountAdmin.accounts.add(object, options)
-accountAdmin.accounts.find(idOrObject, options)
-accountAdmin.accounts.findAll(options)
-accountAdmin.accounts.update(idOrObject, change, options)
-accountAdmin.accounts.remove(idOrObject, change, options)
-
-accountAdmin.requests.add(object, options)
-accountAdmin.requests.find(idOrObject, ptions)
-accountAdmin.requests.findAll(options)
-accountAdmin.requests.remove(idOrObject, change, options)
-
-var account = accountAdmin.account(idOrObject)
-
-account.profile.find(options)
-account.profile.update(change, options)
-
-account.tokens.add(object, options)
-account.tokens.find(idOrObject, ptions)
-account.tokens.findAll(options)
-account.tokens.remove(idOrObject, change, options)
-
-// to be discussed / not yet implemented
-accountAdmin.sessions.findAll()
-account.sessions.findAll()
-
-accountAdmin.sessions.on('change', handler)
-accountAdmin.sessions.on('add', handler)
-accountAdmin.sessions.on('remove', handler)
-
-accountAdmin.accounts.on('change', handler)
-accountAdmin.accounts.on('add', handler)
-accountAdmin.accounts.on('update', handler)
-accountAdmin.accounts.on('remove', handler)
-
-accountAdmin.requests.on('change', handler)
-accountAdmin.requests.on('add', handler)
-accountAdmin.requests.on('update', handler)
-accountAdmin.requests.on('remove', handler)
+admin.accounts.on('change', renderAccounts)
 ```
 
-## Constructor
+## API
+
+- [Constructor](#constructor)
+- [admin.username](#adminusername)
+- [admin.signIn()](#adminsignin)
+- [admin.signOut()](#adminsignout)
+- [admin.sessions.add()](#adminsessions.add)
+- [admin.sessions.find()](#adminsessionsfind)
+- [admin.sessions.findAll()](#adminsessionsfindAll)
+- [admin.sessions.remove()](#adminsessionsremove)
+- [admin.sessions.removeAll()](#adminsessionsremoveAll)
+- [admin.accounts.add()](#adminaccounts.add)
+- [admin.accounts.find()](#adminaccountsfind)
+- [admin.accounts.findAll()](#adminaccountsfindAll)
+- [admin.accounts.update()](#adminaccountsupdate)
+- [admin.accounts.updateAll()](#adminaccountsupdateAll)
+- [admin.accounts.remove()](#adminaccountsremove)
+- [admin.accounts.removeAll()](#adminaccountsremoveAll)
+- [admin.requests.add()](#adminrequests.add)
+- [admin.requests.find()](#adminrequestsfind)
+- [admin.requests.findAll()](#adminrequestsfindAll)
+- [admin.requests.remove()](#adminrequestsremove)
+- [admin.requests.removeAll()](#adminrequestsremoveAll)
+- [admin.account()](#adminaccount)
+- [admin.account().profile.find()](#adminaccountprofilefind)
+- [admin.account().profile.update()](#adminaccountprofileupdate)
+- [admin.account().tokens.add()](#adminaccounttokensadd)
+- [admin.account().tokens.find()](#adminaccounttokensfind)
+- [admin.account().tokens.findAll()](#adminaccounttokensfindall)
+- [admin.account().tokens.remove()](#adminaccounttokensremove)
+- [admin.account().roles.add()](#adminaccountrolesadd)
+- [admin.account().roles.findAll()](#adminaccountrolesfindall)
+- [admin.account().roles.remove()](#adminaccountrolesremove)
+- [Events](#events)
+
+### Constructor
 
 ```js
-new AccountAdmin('https://example.com/api')
-```
-
-## admin session state
-
-An admin can sign in using `accountAdmin.signIn(options)`. If successful, the
-bearer token will be stored and used as default to authenticate all further
-requests. In the browser, the bearer token and admin username is persisted in
-localStorage. Where localStorage is not supported, it's stored in memory.
-
-```js
-// returns promise
-accountAdmin.signIn({
-  username: 'admin',
-  password: 'secret'
+new AccountAdmin({
+  // required. Path or full URL to root location of the account JSON API
+  url: '/api'
 })
-// returns username of admin or undefined
-accountAdmin.username
-// returns true or false
-accountAdmin.isSignedIn()
-// username or password can be changed
-accountAdmin.update(change)
-// returns promise
-accountAdmin.signOut()
 ```
 
-## sessions
+### admin.username
 
-Example session Object:
+_Read-only_. Returns the username if signed in, otherwise `undefined`.
+
+
+### admin.isSignedIn()
+
+Returns `true` if user is currently signed in, otherwise `false`.
+
+```js
+admin.isSignedIn()
+```
+
+### admin.signIn
+
+Creates a user session. If successful, the session bearer token will be stored
+and used as default to authenticate all further requests. In the browser, the
+bearer token and admin username is persisted in localStorage. Where localStorage
+is not supported, it’s stored in memory.
+
+```js
+admin.signIn(options)
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>options.username</code></th>
+    <td>String</td>
+    <td>-</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.password</code></th>
+    <td>String</td>
+    <td>-</td>
+    <td>Yes</td>
+  </tr>
+</table>
+
+Resolves with `sessionProperties`:
+
+```json
+{
+  "id": "session123",
+  "account": {
+    "id": "account123",
+    "username": "pat",
+    "createdAt": "2016-01-01T00:00.000Z",
+    "updatedAt": "2016-01-02T00:00.000Z",
+    "profile": {
+      "fullname": "Dr. Pat Hook"
+    }
+  }
+}
+```
+
+Rejects with:
+
+<table>
+  <tr>
+    <th align="left"><code>UnauthenticatedError</code></th>
+    <td>Session is invalid</td>
+  </tr>
+  <tr>
+    <th align="left"><code>UnconfirmedError</code></th>
+    <td>Account has not been confirmed yet</td>
+  </tr>
+  <tr>
+    <th align="left"><code>NotFoundError</code></th>
+    <td>Account could not be found</td>
+  </tr>
+  <tr>
+    <th align="left"><code>Error</code></th>
+    <td><em>A custom error set on the account object, e.g. the account could be blocked due to missing payments</em></td>
+  </tr>
+  <tr>
+    <th align="left"><code>ConnectionError</code></th>
+    <td>Could not connect to server</td>
+  </tr>
+</table>
+
+Example
+
+```js
+admin.signIn({
+  username: 'pat',
+  password: 'secret'
+}).then(function (sessionProperties) {
+  alert('Ohaj, ' + sessionProperties.account.username)
+}).catch(function (error) {
+  alert(error)
+})
+```
+
+### admin.signOut
+
+Deletes the user’s session
+
+```js
+admin.signOut()
+```
+
+Resolves with `sessionProperties` like [admin.signin](#accountsignin),
+but without the session id:
+
+```json
+{
+  "account": {
+    "id": "account123",
+    "username": "pat",
+    "createdAt": "2016-01-01T00:00.000Z",
+    "updatedAt": "2016-01-02T00:00.000Z",
+    "profile": {
+      "fullname": "Dr. Pat Hook"
+    }
+  }
+}
+```
+
+Rejects with:
+
+<table>
+  <tr>
+    <th align="left"><code>Error</code></th>
+    <td><em>A custom error thrown in a <code>before:signout</code> hook</em></td>
+  </tr>
+</table>
+
+Example
+
+```js
+admin.signOut().then(function (sessionProperties) {
+  alert('Bye, ' + sessionProperties.account.username)
+}).catch(function (error) {
+  alert(error)
+})
+```
+
+### admin.sessions.add()
+
+---
+
+🐕 **TO BE DONE**: [#19](https://github.com/hoodiehq/hoodie-client-account/issues/19)
+
+---
+
+Admins can create a session for any user.
+
+```js
+admin.sessions.add(options)
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>options.username</code></th>
+    <td>String</td>
+    <td>-</td>
+    <td>Yes</td>
+  </tr>
+</table>
+
+Resolves with `sessionProperties`
 
 ```js
 {
@@ -110,149 +257,1003 @@ Example session Object:
   // account is always included
   account: {
     id: 'account456',
-    username: 'pat@example.com',
-    // with include: 'account.profile'
-    profile: {
-      id: 'account456-profile',
-      fullname: 'Pat Hook'
-    }
+    username: 'pat@example.com'
+    // admin accounts have no profile
   }
 }
 ```
 
-### add([options])
+Rejects with:
 
-Admins can create a session for any user. Alternatively pass `auth.username`
-and `auth.password` to start a new session for the given credentials.
+<table>
+  <tr>
+    <th align="left"><code>UnauthenticatedError</code></th>
+    <td>Session is invalid</td>
+  </tr>
+  <tr>
+    <th align="left"><code>UnconfirmedError</code></th>
+    <td>Account has not been confirmed yet</td>
+  </tr>
+  <tr>
+    <th align="left"><code>NotFoundError</code></th>
+    <td>Account could not be found</td>
+  </tr>
+  <tr>
+    <th align="left"><code>Error</code></th>
+    <td><em>A custom error set on the account object, e.g. the account could be blocked due to missing payments</em></td>
+  </tr>
+  <tr>
+    <th align="left"><code>ConnectionError</code></th>
+    <td>Could not connect to server</td>
+  </tr>
+</table>
+
+Example
 
 ```js
-accountAdmin.sessions.add({
-  username: 'pat@example.com'
+admin.sessions.add({
+  username: 'pat'
+}).then(function (sessionProperties) {
+  var bearer = sessionProperties.id
+  var username = sessionProperties.account.username
+}).catch(function (error) {
+  console.error(error)
 })
 ```
 
-Info: Here’s how CouchDB calculates the `AuthSession` id:
-https://github.com/apache/couchdb-couch/blob/master/src/couch_httpd_auth.erl#L266-L271.
-It should be possible to mimic that with Node.js
+### admin.sessions.find()
 
-### find(idOrObject[, options])
+---
 
-Check if a session is valid, and get its related account.
-`idOrObject` is either a string or an object with an `id` property.
+🐕 **TO BE DONE**: [#19](https://github.com/hoodiehq/hoodie-client-account/issues/19)
 
-```js
-accountAdmin.sessions.find('session123')
-accountAdmin.sessions.find({
-  id: 'session123'
-})
-```
-
-### remove(idOrObject[, options])
-
-`idOrObject` is either a string or an object with an `id` property.
+---
 
 ```js
-accountAdmin.sessions.remove('session123')
-accountAdmin.sessions.remove({
-  id: 'session123'
-})
+admin.sessions.find(sessionId)
 ```
 
-Info: CouchDB does not store session states, so a `DELETE /_session` request
-has no effect, the sessionID remains valid. But applications may add session
-states, so using the `session.remove` API is recommended.
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>sessionId</code></th>
+    <td>String</td>
+    <td>-</td>
+    <td>Yes</td>
+  </tr>
+</table>
 
-## accounts
-
-Example account Object:
+Resolves with `sessionProperties`
 
 ```js
 {
-  id: 'account456',
-  username: 'pat@example.com',
-  // with include: 'profile'
-  profile: {
-    fullname: 'Pat Hook'
+  id: 'session123',
+  // account is always included
+  account: {
+    id: 'account456',
+    username: 'pat@example.com'
+    // admin accounts have no profile
   }
 }
 ```
 
-### add(object[, options])
+Rejects with:
+
+<table>
+  <tr>
+    <th align="left"><code>UnauthenticatedError</code></th>
+    <td>Session is invalid</td>
+  </tr>
+  <tr>
+    <th align="left"><code>NotFoundError</code></th>
+    <td>Session could not be found</td>
+  </tr>
+  <tr>
+    <th align="left"><code>ConnectionError</code></th>
+    <td>Could not connect to server</td>
+  </tr>
+</table>
+
+Example
 
 ```js
-accountAdmin.accounts.add({
-  username: 'pat@example.com',
-  password: 'secret'
+admin.sessions.find('abc4567').then(function (sessionProperties) {
+  alert('Session is valid.')
+}).catch(function (error) {
+  if (error.name === 'NotFoundError') {
+    alert('Session is invalid')
+    return
+  }
+
+  console.error(error)
 })
 ```
 
-### find(idOrObject[, options])
 
-If `idOrObject` is a string, the account will be looked up by accountId. If it's
-an object:
+### admin.sessions.findAll()
 
-- If a `username` property is present, it will be looked up by username
-- If an `id` property is present, it will be looked up by accountId
-- If an `token` property is present, it will be looked up by token
+---
+
+🐕 **TO BE DONE**: [#19](https://github.com/hoodiehq/hoodie-client-account/issues/19)
+
+---
 
 ```js
-accountAdmin.accounts.find('account123')
-accountAdmin.accounts.find({username: 'pat@example.com'})
-accountAdmin.accounts.find({token: 'token123'})
+admin.sessions.findAll(options)
 ```
 
-### findAll([options])
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>options.include</code></th>
+    <td>String</td>
+    <td>
+      If set to <code>"account.profile"</code>, the <code>profile: {...}</code>
+      property will be added to the response.
+    </td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.sort</code></th>
+    <td>String or String[]</td>
+    <td>
+      string of comma-separated list of attributes to sort by, or array of strings, see
+      <a href="http://jsonapi.org/format/#fetching-sorting">JSON API: Sorting</a>
+    </td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.fields</code></th>
+    <td>Object</td>
+    <td>
+      Map of fields to include in response by type, see
+      <a href="http://jsonapi.org/format/#fetching-sparse-fieldsets">JSON API: Sparse Fieldset</a>
+    </td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.page.offset</code></th>
+    <td>Number</td>
+    <td>
+      see <a href="http://jsonapi.org/format/#fetching-pagination">JSON API: Pagination</a>
+    </td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.page.limit</code></th>
+    <td>Number</td>
+    <td>
+      see <a href="http://jsonapi.org/format/#fetching-pagination">JSON API: Pagination</a>
+    </td>
+    <td>No</td>
+  </tr>
+</table>
+
+Resolves with Array of `sessionProperties`
 
 ```js
-accountAdmin.accounts.findAll()
-```
-
-### update(idOrObject, change[, options])
-
-If `idOrObject` is a string, the account will be looked up by accountId. If it's
-an object:
-
-- If a `username` property is present, it will be looked up by username
-- If an `id` property is present, it will be looked up by accountId
-- If an `token` property is present, it will be looked up by token
-
-`change` can be an object of properties that you want to change, or a function
-that receives the current account as argument and can manipulate it directly
-
-```js
-accountAdmin.accounts.update({token: 'token123'}, {password: 'newsecret'})
-accountAdmin.accounts.update('account123', function (account) {
-  account.invites--
-})
-```
-
-### remove(idOrObject[, change, options])
-
-If `idOrObject` is a string, the account will be looked up by accountId. If it's
-an object:
-
-- If a `username` property is present, it will be looked up by username
-- If an `id` property is present, it will be looked up by accountId
-- If an `token` property is present, it will be looked up by token
-
-Before deletion, the account can optionally be updated, e.g. to add a reason
-for the deletion. `change` can be an object of properties that you want to
-change, or a function that receives the current account as argument and can
-manipulate it directly
-
-```js
-accountAdmin.accounts.remove('account123')
-accountAdmin.accounts.remove({
-  username: 'pat@example.com'
+[{
+  id: 'session123',
+  account: {
+    id: 'account456',
+    username: 'pat@example.com'
+  }
 }, {
-  reason: 'support request #123'
+  id: 'session456',
+  account: {
+    id: 'account789',
+    username: 'sam@example.com'
+  }
+}]
+```
+
+Rejects with:
+
+<table>
+  <tr>
+    <th align="left"><code>UnauthenticatedError</code></th>
+    <td>Session is invalid</td>
+  </tr>
+  <tr>
+    <th align="left"><code>ConnectionError</code></th>
+    <td>Could not connect to server</td>
+  </tr>
+</table>
+
+Example
+
+```js
+admin.sessions.findAll()
+  .then(renderSessions)
+  .catch(function (error) {
+    console.error(error)
+  })
+```
+
+### admin.sessions.remove()
+
+---
+
+🐕 **TO BE DONE**: [#19](https://github.com/hoodiehq/hoodie-client-account/issues/19)
+
+---
+
+```js
+admin.sessions.remove(sessionId)
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>sessionId</code></th>
+    <td>String</td>
+    <td>-</td>
+    <td>Yes</td>
+  </tr>
+</table>
+
+Resolves with `sessionProperties`
+
+```js
+{
+  id: 'session123',
+  account: {
+    id: 'account456',
+    username: 'pat@example.com'
+  }
+}
+```
+
+Rejects with:
+
+<table>
+  <tr>
+    <th align="left"><code>UnauthenticatedError</code></th>
+    <td>Session is invalid</td>
+  </tr>
+  <tr>
+    <th align="left"><code>NotFoundError</code></th>
+    <td>Session could not be found</td>
+  </tr>
+  <tr>
+    <th align="left"><code>ConnectionError</code></th>
+    <td>Could not connect to server</td>
+  </tr>
+</table>
+
+Example
+
+```js
+admin.sessions.remove('abc4567').then(function (sessionProperties) {
+  alert('Session invalidated')
+}).catch(function (error) {
+  console.error(error)
 })
 ```
 
-## requests
+### admin.sessions.removeAll()
+
+---
+
+🐕 **TO BE DONE**: [#19](https://github.com/hoodiehq/hoodie-client-account/issues/19)
+
+---
+
+```js
+admin.sessions.removeAll(options)
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>options.sort</code></th>
+    <td>String or String[]</td>
+    <td>
+      string of comma-separated list of attributes to sort by, or array of strings, see
+      <a href="http://jsonapi.org/format/#fetching-sorting">JSON API: Sorting</a>
+    </td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.fields</code></th>
+    <td>Object</td>
+    <td>
+      Map of fields to include in response by type, see
+      <a href="http://jsonapi.org/format/#fetching-sparse-fieldsets">JSON API: Sparse Fieldset</a>
+    </td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.page.offset</code></th>
+    <td>Number</td>
+    <td>
+      see <a href="http://jsonapi.org/format/#fetching-pagination">JSON API: Pagination</a>
+    </td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.page.limit</code></th>
+    <td>Number</td>
+    <td>
+      see <a href="http://jsonapi.org/format/#fetching-pagination">JSON API: Pagination</a>
+    </td>
+    <td>No</td>
+  </tr>
+</table>
+
+Resolves with Array of `sessionProperties`
+
+```js
+[{
+  id: 'session123',
+  account: {
+    id: 'account456',
+    username: 'pat@example.com'
+  }
+}, {
+  id: 'session456',
+  account: {
+    id: 'account789',
+    username: 'sam@example.com'
+  }
+}]
+```
+
+Rejects with:
+
+<table>
+  <tr>
+    <th align="left"><code>UnauthenticatedError</code></th>
+    <td>Session is invalid</td>
+  </tr>
+  <tr>
+    <th align="left"><code>ConnectionError</code></th>
+    <td>Could not connect to server</td>
+  </tr>
+</table>
+
+Example
+
+```js
+admin.sessions.removeAll().then(function (sessionProperties) {
+  alert('All Sessions invalidated.')
+}).catch(function (error) {
+  if (error.name === 'NotFoundError') {
+    alert('Session is invalid')
+    return
+  }
+
+  console.error(error)
+})
+```
+
+### admin.accounts.add()
+
+---
+
+🐕 **TO BE DONE**: [#7](https://github.com/hoodiehq/hoodie-client-account/issues/7)
+
+---
+
+```js
+admin.accounts.add(object)
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Type</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>accountProperties.username</code></th>
+    <td>String</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <th align="left"><code>accountProperties.password</code></th>
+    <td>String</td>
+    <td>Yes</td>
+  </tr>
+</table>
+
+Resolves with `accountProperties`:
+
+```json
+{
+  "id": "account123",
+  "username": "pat",
+  "createdAt": "2016-01-01T00:00.000Z",
+  "updatedAt": "2016-01-01T00:00.000Z",
+  "profile": {
+    "fullname": "Dr. Pat Hook"
+  }
+}
+```
+
+Rejects with:
+
+<table>
+  <tr>
+    <th align="left"><code>UnauthenticatedError</code></th>
+    <td>Session is invalid</td>
+  </tr>
+  <tr>
+    <th align="left"><code>InvalidError</code></th>
+    <td>Username must be set</td>
+  </tr>
+  <tr>
+    <th align="left"><code>ConflictError</code></th>
+    <td>Username <strong>&lt;username&gt;</strong> already exists</td>
+  </tr>
+  <tr>
+    <th align="left"><code>ConnectionError</code></th>
+    <td>Could not connect to server</td>
+  </tr>
+</table>
+
+Example
+
+```js
+admin.accounts.add({
+  username: 'pat',
+  password: 'secret',
+  profile: {
+    fullname: 'Dr Pat Hook'
+  }
+}).then(function (accountProperties) {
+  alert('Account created for ' + accountProperties.username)
+}).catch(function (error) {
+  alert(error)
+})
+```
 
 
-Example request Object:
+### admin.accounts.find()
+
+---
+
+🐕 **TO BE DONE**: [#7](https://github.com/hoodiehq/hoodie-client-account/issues/7)
+
+---
+
+An account can be looked up by account.id, username or token.
+
+- If a `username` property is present, it will be looked up by username
+- If an `id` property is present, it will be looked up by accountId
+- If an `token` property is present, it will be looked up by token
+
+```js
+admin.accounts.find(idOrObject, options)
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>idOrObject</code></th>
+    <td>String</td>
+    <td>account ID. Same as <code>{id: accountId}</code></td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>idOrObject.id</code></th>
+    <td>String</td>
+    <td>account ID. Same as passing <code>accountId</code> as string</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>idOrObject.username</code></th>
+    <td>String</td>
+    <td>Lookup account by username</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>idOrObject.token</code></th>
+    <td>String</td>
+    <td>Lookup account by one-time token</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.include</code></th>
+    <td>String</td>
+    <td>
+      If set to <code>"profile"</code>, the <code>profile: {...}</code>
+      property will be added to the response
+    </td>
+    <td>No</td>
+  </tr>
+</table>
+
+Resolves with `accountProperties`:
+
+```js
+{
+  "id": "account123",
+  "username": "pat",
+  "createdAt": "2016-01-01T00:00.000Z",
+  "updatedAt": "2016-01-01T00:00.000Z",
+  // if options.include === 'profile'
+  "profile": {
+    "fullname": "Dr. Pat Hook"
+  }
+}
+```
+
+Rejects with:
+
+<table>
+  <tr>
+    <th align="left"><code>UnauthenticatedError</code></th>
+    <td>Session is invalid</td>
+  </tr>
+  <tr>
+    <th align="left"><code>NotFoundError</code></th>
+    <td>Account not found</td>
+  </tr>
+  <tr>
+    <th align="left"><code>ConnectionError</code></th>
+    <td>Could not connect to server</td>
+  </tr>
+</table>
+
+Example
+
+```js
+admin.accounts.find({ username: 'pat' })
+  .then(renderAccount)
+  .catch(function (error) {
+    alert(error)
+  })
+```
+
+
+
+### admin.accounts.findAll()
+
+---
+
+🐕 **TO BE DONE**: [#7](https://github.com/hoodiehq/hoodie-client-account/issues/7)
+
+---
+
+```js
+admin.accounts.findAll(options)
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>options.include</code></th>
+    <td>String</td>
+    <td>
+      If set to <code>"profile"</code>, the <code>profile: {...}</code>
+      property will be added to the response.
+    </td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.sort</code></th>
+    <td>String or String[]</td>
+    <td>
+      string of comma-separated list of attributes to sort by, or array of strings, see
+      <a href="http://jsonapi.org/format/#fetching-sorting">JSON API: Sorting</a>
+    </td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.fields</code></th>
+    <td>Object</td>
+    <td>
+      Map of fields to include in response by type, see
+      <a href="http://jsonapi.org/format/#fetching-sparse-fieldsets">JSON API: Sparse Fieldset</a>
+    </td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.page.offset</code></th>
+    <td>Number</td>
+    <td>
+      see <a href="http://jsonapi.org/format/#fetching-pagination">JSON API: Pagination</a>
+    </td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.page.limit</code></th>
+    <td>Number</td>
+    <td>
+      see <a href="http://jsonapi.org/format/#fetching-pagination">JSON API: Pagination</a>
+    </td>
+    <td>No</td>
+  </tr>
+</table>
+
+Resolves with Array of `accountProperties`
+
+```js
+[{
+  "id": "account123",
+  "username": "pat",
+  "createdAt": "2016-01-01T00:00.000Z",
+  "updatedAt": "2016-01-01T00:00.000Z",
+  // if options.include === 'profile'
+  "profile": {
+    "fullname": "Dr. Pat Hook"
+  }
+}, {
+  "id": "account456",
+  "username": "sam",
+  "createdAt": "2016-01-01T00:00.000Z",
+  "updatedAt": "2016-01-01T00:00.000Z",
+  // if options.include === 'profile'
+  "profile": {
+    "fullname": "Lady Samident"
+  }
+}]
+```
+
+Rejects with:
+
+<table>
+  <tr>
+    <th align="left"><code>UnauthenticatedError</code></th>
+    <td>Session is invalid</td>
+  </tr>
+  <tr>
+    <th align="left"><code>ConnectionError</code></th>
+    <td>Could not connect to server</td>
+  </tr>
+</table>
+
+Example
+
+```js
+admin.accounts.findAll()
+  .then(renderAccounts)
+  .catch(function (error) {
+    console.error(error)
+  })
+```
+
+### admin.accounts.update()
+
+---
+
+🐕 **TO BE DONE**: [#7](https://github.com/hoodiehq/hoodie-client-account/issues/7)
+
+---
+
+An account can be looked up by account.id, username or token.
+
+- If a `username` property is present, it will be looked up by username
+- If an `id` property is present, it will be looked up by accountId
+- If an `token` property is present, it will be looked up by token
+
+```js
+admin.accounts.update(idOrObject, changedProperties, options)
+// or
+admin.accounts.update(accountProperties, options)
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>idOrObject</code></th>
+    <td>String</td>
+    <td>account ID. Same as <code>{id: accountId}</code></td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>idOrObject.id</code></th>
+    <td>String</td>
+    <td>account ID. Same as passing <code>accountId</code> as string</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>idOrObject.username</code></th>
+    <td>String</td>
+    <td>Lookup account by username</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>idOrObject.token</code></th>
+    <td>String</td>
+    <td>Lookup account by one-time token</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>changedProperties</code></th>
+    <td>Object</td>
+    <td>
+      Object of properties & values that changed.
+      Other properties remain unchanged.
+    </td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <th align="left"><code>accountProperties</code></th>
+    <td>Object</td>
+    <td>
+      Must have an <code>id</code> or a <code>username</code> property.
+      The user’s account will be updated with the passed properties. Existing
+      properties not passed remain unchanged.
+    </td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.include</code></th>
+    <td>String</td>
+    <td>
+      If set to <code>"profile"</code>, the <code>profile: {...}</code>
+      property will be added to the response. Defaults to <code>"profile"</code>
+      if <code>accountProperties.profile</code> or <code>changedProperties.profile</code>
+      is set.
+    </td>
+    <td>No</td>
+  </tr>
+</table>
+
+Resolves with `accountProperties`:
+
+```js
+{
+  "id": "account123",
+  "username": "pat",
+  "createdAt": "2016-01-01T00:00.000Z",
+  "updatedAt": "2016-01-01T00:00.000Z",
+  // if options.include === 'profile'
+  "profile": {
+    "fullname": "Dr. Pat Hook"
+  }
+}
+```
+
+Rejects with:
+
+<table>
+  <tr>
+    <th align="left"><code>UnauthenticatedError</code></th>
+    <td>Session is invalid</td>
+  </tr>
+  <tr>
+    <th align="left"><code>NotFoundError</code></th>
+    <td>Account not found</td>
+  </tr>
+  <tr>
+    <th align="left"><code>ConnectionError</code></th>
+    <td>Could not connect to server</td>
+  </tr>
+</table>
+
+Examples
+
+```js
+admin.accounts.update({ username: 'pat' }, { foo: 'bar' })
+  .then(renderAccount)
+  .catch(function (error) {
+    alert(error)
+  })
+// same as
+admin.accounts.update({ username: 'pat', foo: 'bar' })
+  .then(renderAccount)
+  .catch(function (error) {
+    alert(error)
+  })
+```
+
+### admin.accounts.updateAll()
+
+---
+
+🐕 **TO BE DONE**: [#7](https://github.com/hoodiehq/hoodie-client-account/issues/7)
+
+---
+
+### admin.accounts.remove()
+
+An account can be looked up by account.id, username or token.
+
+- If a `username` property is present, it will be looked up by username
+- If an `id` property is present, it will be looked up by accountId
+- If an `token` property is present, it will be looked up by token
+
+```js
+admin.accounts.remove(idOrObject, changedProperties, options)
+// or
+admin.accounts.remove(accountProperties, options)
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>idOrObject</code></th>
+    <td>String</td>
+    <td>account ID. Same as <code>{id: accountId}</code></td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>idOrObject.id</code></th>
+    <td>String</td>
+    <td>account ID. Same as passing <code>accountId</code> as string</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>idOrObject.username</code></th>
+    <td>String</td>
+    <td>Lookup account by username</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>idOrObject.token</code></th>
+    <td>String</td>
+    <td>Lookup account by one-time token</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>changedProperties</code></th>
+    <td>Object</td>
+    <td>
+      Object of properties & values that changed.
+      Other properties remain unchanged.
+    </td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <th align="left"><code>accountProperties</code></th>
+    <td>Object</td>
+    <td>
+      Must have an <code>id</code> or a <code>username</code> property.
+      The user’s account will be updated with the passed properties. Existing
+      properties not passed remain unchanged. Note that
+      <code>accountProperties.token</code> is not allowed, as it’s not a valid
+      account property, but an option to look up an account. An account can
+      have multiple tokens at once.
+    </td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.include</code></th>
+    <td>String</td>
+    <td>
+      If set to <code>"profile"</code>, the <code>profile: {...}</code>
+      property will be added to the response. Defaults to <code>"profile"</code>
+      if <code>accountProperties.profile</code> or <code>changedProperties.profile</code>
+      is set.
+    </td>
+    <td>No</td>
+  </tr>
+</table>
+
+Resolves with `accountProperties`:
+
+```js
+{
+  "id": "account123",
+  "username": "pat",
+  "createdAt": "2016-01-01T00:00.000Z",
+  "updatedAt": "2016-02-01T00:00.000Z",
+  "deletedAt": "2016-03-01T00:00.000Z",
+  // if options.include === 'profile'
+  "profile": {
+    "fullname": "Dr. Pat Hook"
+  }
+}
+```
+
+Rejects with:
+
+<table>
+  <tr>
+    <th align="left"><code>UnauthenticatedError</code></th>
+    <td>Session is invalid</td>
+  </tr>
+  <tr>
+    <th align="left"><code>NotFoundError</code></th>
+    <td>Account not found</td>
+  </tr>
+  <tr>
+    <th align="left"><code>ConnectionError</code></th>
+    <td>Could not connect to server</td>
+  </tr>
+</table>
+
+Examples
+
+```js
+admin.accounts.remove({ username: 'pat' }, { reason: 'foo bar' })
+  .then(redirectToHome)
+  .catch(function (error) {
+    alert(error)
+  })
+// same as
+admin.accounts.remove({ username: 'pat', reason: 'foo bar' })
+  .then(redirectToHome)
+  .catch(function (error) {
+    alert(error)
+  })
+```
+
+### admin.accounts.removeAll()
+
+---
+
+🐕 **TO BE DONE**: [#7](https://github.com/hoodiehq/hoodie-client-account/issues/7)
+
+---
+
+### admin.requests.add()
+
+---
+
+🐕 **TO BE DONE**: [#8](https://github.com/hoodiehq/hoodie-client-account/issues/8)
+
+---
+
+```js
+admin.requests.add({
+  type: 'passwordreset',
+  contact: 'pat@example.com'
+})
+```
+
+Resolves with
 
 ```js
 {
@@ -262,88 +1263,398 @@ Example request Object:
 }
 ```
 
-### add(object[, options])
+### admin.requests.find()
+
+---
+
+🐕 **TO BE DONE**: [#8](https://github.com/hoodiehq/hoodie-client-account/issues/8)
+
+---
 
 ```js
-accountAdmin.requests.add({
+admin.requests.find('token123')
+admin.requests.find({id: 'token123'})
+```
+
+### admin.requests.findAll()
+
+---
+
+🐕 **TO BE DONE**: [#8](https://github.com/hoodiehq/hoodie-client-account/issues/8)
+
+---
+
+```js
+admin.requests.findAll()
+```
+
+### admin.requests.remove()
+
+---
+
+🐕 **TO BE DONE**: [#8](https://github.com/hoodiehq/hoodie-client-account/issues/8)
+
+---
+
+```js
+admin.requests.remove('token123')
+admin.requests.find({id: 'token123'})
+```
+
+### admin.requests.removeAll()
+
+---
+
+🐕 **TO BE DONE**: [#8](https://github.com/hoodiehq/hoodie-client-account/issues/8)
+
+---
+
+
+
+### admin.account()
+
+The `admin.account` method returns a scoped API for one account
+
+```js
+var account = admin.account(idOrObject)
+```
+
+Examples
+
+```js
+admin.account('account123')
+admin.account({id: 'account123'})
+admin.account({username: 'pat@example.com'})
+admin.account({token: 'pat@example.com'})
+```
+
+### admin.account().profile.find()
+
+---
+
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+
+---
+
+```js
+admin.account(idOrObject).profile.find()
+```
+
+resolves with `profileProperties`
+
+```json
+{
+  "id": "account123-profile",
+  "fullname": "Dr Pat Hook",
+  "address": {
+    "city": "Berlin",
+    "street": "Adalberststraße 4a"
+  }
+}
+```
+
+
+### admin.account().profile.update()
+
+---
+
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+
+---
+
+```js
+admin.account(idOrObject).profile.update(changedProperties)
+```
+
+resolves with `profileProperties`
+
+```json
+{
+  "id": "account123-profile",
+  "fullname": "Dr Pat Hook",
+  "address": {
+    "city": "Berlin",
+    "street": "Adalberststraße 4a"
+  }
+}
+```
+
+
+### admin.account().tokens.add()
+
+---
+
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+
+---
+
+```js
+admin.account(idOrObject).tokens.add(properties)
+```
+
+resolves with `tokenProperties`
+
+```json
+{
+  "id": "token123",
+  "type": "passwordreset",
+  "accountId": "account123",
+  "contact": "pat@example.com",
+  "createdAt": "2016-01-01T00:00.000Z"
+}
+```
+
+Example
+
+```js
+admin.account('token123').account.tokens.add({
   type: 'passwordreset',
   contact: 'pat@example.com'
 })
 ```
 
-### find(idOrObject[, options])
+### admin.account().tokens.find()
+
+---
+
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+
+---
 
 ```js
-accountAdmin.requests.find('token123')
-accountAdmin.requests.find({id: 'token123'})
+admin.account(idOrObject).tokens.find(idOrObject)
 ```
 
-### findAll([options])
+resolves with `tokenProperties`
+
+```json
+{
+  "id": "token123",
+  "type": "passwordreset",
+  "accountId": "account123",
+  "contact": "pat@example.com",
+  "createdAt": "2016-01-01T00:00.000Z"
+}
+```
+
+Example
 
 ```js
-accountAdmin.requests.findAll()
+admin.account({username: 'pat'}).tokens.find('token123')
 ```
 
 
-### remove(idOrObject[, options])
+### admin.account().tokens.findAll()
+
+---
+
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+
+---
 
 ```js
-accountAdmin.requests.remove('token123')
-accountAdmin.requests.find({id: 'token123'})
+admin.account(idOrObject).tokens.findAll(options)
 ```
 
-## account(idOrObject)
+resolves with array of `tokenProperties`
 
-The `.account` method returns a scoped API for one account
-
-```js
-accountAdmin.account('account123')
-accountAdmin.account({id: 'account123'})
-accountAdmin.account({username: 'pat@example.com'})
+```json
+[{
+  "id": "token123",
+  "type": "passwordreset",
+  "accountId": "account123",
+  "contact": "pat@example.com",
+  "createdAt": "2016-01-01T00:00.000Z"
+}, {
+  "id": "token456",
+  "type": "session",
+  "accountId": "account123",
+  "createdAt": "2016-01-02T00:00.000Z"
+}]
 ```
 
-### account.profile
-
-#### profile.find([options])
+Example
 
 ```js
-account.profile.find()
+admin.account({username: 'pat'}).tokens.findAll()
+  .then(renderTokens)
+  .catch(function (error) {
+    alert(error)
+  })
 ```
 
-#### profile.update(change[, options])
+
+### admin.account().tokens.remove()
+
+---
+
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+
+---
 
 ```js
-account.profile.update({
-  fullname: 'Dr. Pat Hook'
-})
+admin.account(idOrObject).tokens.remove(idOrObject)
 ```
 
-### account.tokens
+resolves with `tokenProperties`
 
-#### tokens.add(object[, options])
-
-```js
-account.tokens.add({
-  type: 'passwordreset',
-  contact: 'pat@example.com'
-})
+```json
+{
+  "id": "token123",
+  "type": "passwordreset",
+  "accountId": "account123",
+  "contact": "pat@example.com",
+  "createdAt": "2016-01-01T00:00.000Z"
+}
 ```
 
-### account.tokens.find(idOrObject[, options])
+Example
 
 ```js
-account.tokens.find('token123')
-account.tokens.find({id: 'token123'})
+admin.account({username: 'pat'}).tokens.removes('token123')
 ```
 
-### account.tokens.findAll([options])
+
+### admin.account().roles.add()
+
+---
+
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+
+---
 
 ```js
-account.tokens.findAll()
+admin.account(idOrObject).roles.add(name)
 ```
-### account.tokens.remove(idOrObject[, options])
+
+resolves with `roleName`
+
+```json
+"mycustomrole"
+```
+
+Example
 
 ```js
-account.tokens.remove('token123')
-account.tokens.remove({id: 'token123'})
+admin.account({username: 'pat'}).roles.add('mycustomrole')
+```
+
+
+### admin.account().roles.findAll()
+
+---
+
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+
+---
+
+```js
+admin.account(idOrObject).roles.add(name)
+```
+
+resolves with array of `roleName`s
+
+```json
+["mycustomrole", "myothercustomrole"]
+```
+
+Example
+
+```js
+admin.account({username: 'pat'}).roles.findAll()
+  .then(renderRoles)
+  .catch(function (error) {
+    alert(error)
+  })
+```
+
+
+### admin.account().roles.remove()
+
+---
+
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+
+---
+
+```js
+admin.account(idOrObject).roles.remove(name)
+```
+
+resolves with `roleName`
+
+```json
+"mycustomrole"
+```
+
+Example
+
+```js
+admin.account({username: 'pat'}).roles.remove('mycustomrole')
+```
+
+### Events
+
+---
+
+🐕 **TO BE DONE**: [#21](https://github.com/hoodiehq/hoodie-client-account/issues/21)
+
+---
+
+Events emitted on `admin`
+
+<table>
+  <tr>
+    <th align="left"><code>signin</code></th>
+    <td>Successfully signed in to an account</td>
+  </tr>
+  <tr>
+    <th align="left"><code>signout</code></th>
+    <td>Successfully signed out</td>
+  </tr>
+  <tr>
+    <th align="left"><code>unauthenticate</code></th>
+    <td>Server responded with "unauthenticated" when checking session</td>
+  </tr>
+  <tr>
+    <th align="left"><code>reauthenticate</code></th>
+    <td>Successfully signed in after "unauthenticated" state</td>
+  </tr>
+</table>
+
+Example
+
+```js
+admin.on('signin', showApp)
+admin.on('signout', showLogin)
+```
+
+Events emitted on
+
+- `admin.sessions`
+- `admin.accounts`
+- `admin.requests`
+
+<table>
+  <tr>
+    <th align="left"><code>change</code></th>
+    <td>
+      triggered for any <code>add</code>, <code>update</code> and <code>remove</code> event
+    </td>
+  </tr>
+  <tr>
+    <th align="left" colspan="2"><code>add</code></th>
+  </tr>
+  <tr>
+    <th align="left" colspan="2"><code>update</code></th>
+  </tr>
+  <tr>
+    <th align="left" colspan="2"><code>remove</code></th>
+  </tr>
+</table>
+
+```js
+admin.sessions.on('change', function (eventName, session) {})
+admin.accounts.on('update', function (account) {})
+admin.requests.on('remove', handler)
 ```
