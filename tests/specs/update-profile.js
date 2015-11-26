@@ -28,10 +28,12 @@ test('profile has "update" methods', function (t) {
   t.is(typeof account.profile.update, 'function', 'has "update()"')
 })
 
-test('throws when no options', function (t) {
+test('updateProfile w/o options', function (t) {
   t.plan(1)
 
-  t.throws(updateProfile.bind(null, state), 'throws error')
+  updateProfile()
+    .then(t.fail.bind(t, 'must reject'))
+    .catch(t.pass.bind(t, 'rejects with error'))
 })
 
 test('update profile property', function (t) {

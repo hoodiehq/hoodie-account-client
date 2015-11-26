@@ -29,7 +29,9 @@ test('signIn w/o required options', function (t) {
     url: baseURL
   })
 
-  t.throws(account.signIn.bind(null), 'throws error')
+  account.signIn()
+    .then(t.fail.bind(t, 'must reject'))
+    .catch(t.pass.bind(t, 'rejects with error'))
 })
 
 test('signIn w/o required username', function (t) {
