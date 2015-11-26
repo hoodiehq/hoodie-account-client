@@ -19,6 +19,7 @@ There is also an [admin-specific account client](admin)
 ## Example
 
 ```js
+// Account loaded via <script> or require('hoodie-client-account')
 var account = new Account('https://example.com/account/api')
 
 if (account.isSignedIn()) {
@@ -471,7 +472,7 @@ Resolves with `profileProperties`:
 
 ```json
 {
-  "id": "account123",
+  "id": "account123-profile",
   "fullname": "Dr Pat Hook",
   "address": {
     "city": "Berlin",
@@ -539,7 +540,7 @@ Resolves with `profileProperties`:
 
 ```json
 {
-  "id": "account123",
+  "id": "account123-profile",
   "fullname": "Dr Pat Hook",
   "address": {
     "city": "Berlin",
