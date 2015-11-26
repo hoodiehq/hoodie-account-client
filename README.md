@@ -52,6 +52,9 @@ account.on('signout', redirectToHome)
 new Account({
   // required. Path or full URL to root location of the account JSON API
   url: '/api',
+  // name of localStorage key where to persist the session state.
+  // Defaults to "_session"
+  cacheKey: 'myapp.session'
 })
 ```
 
