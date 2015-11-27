@@ -1,31 +1,63 @@
 module.exports = deserialise
 
+var merge = require('lodash.merge')
+var where = require('lodash.where')
+
 function deserialise (response, options) {
   if (!response || !response.data) {
     throw new Error('Please include a JSON API response to deserialise.')
   }
 
-  var data = resourceParser(response.data, options || {})
-
-  return data
+  return Array.isArray(response.data)
+    ? deserialiseMany(options || {}, response)
+    : deserialiseOne(options || {}, response)
 }
 
-function resourceParser (resource, options) {
-  var data = {
-    id: resource.id
+function deserialiseOne (options, response) {
+  var resource = response.data
+  var properties = {}
+  options = merge({}, options)
+
+  if (!options.skipId) {
+    properties.id = resource.id
+  }
+
+  if (options.include) {
+    var tmp = options.include.indexOf('.')
+    var currentInclude = options.include.substr(0, tmp)
+    var nextInclude = options.include.substr(tmp + 1)
+    if (tmp === -1) {
+      currentInclude = nextInclude
+      nextInclude = ''
+    }
+
+    var relationship = resource.relationships[currentInclude].data
+    var includedResource = where(response.included, {
+      type: relationship.type,
+      id: relationship.id
+    })[0]
+    options.include = nextInclude
+    options.skipId = true
+    properties[currentInclude] = deserialiseOne(options, {
+      included: response.included,
+      data: includedResource
+    })
   }
 
   if (resource.attributes) {
     Object.keys(resource.attributes).forEach(function (attribute) {
-      data[attribute] = resource.attributes[attribute]
+      properties[attribute] = resource.attributes[attribute]
     })
   }
 
-  if (options.relationships) {
-    options.relationships.forEach(function (relationship) {
-      data[relationship] = deserialise(resource.relationships[relationship])
-    })
-  }
+  return properties
+}
 
-  return data
+function deserialiseMany (options, response) {
+  return response.data.map(function (resource) {
+    return deserialiseOne(options, {
+      included: response.included,
+      data: resource
+    })
+  })
 }

@@ -5,6 +5,8 @@ var signIn = require('../lib/signin')
 var signOut = require('../lib/signout')
 var isSignedIn = require('../lib/is-signedin')
 
+var accountsFindAll = require('./lib/accounts/find-all')
+
 function AccountAdmin (options) {
   if (!(this instanceof AccountAdmin)) {
     return new AccountAdmin(options)
@@ -33,6 +35,10 @@ function AccountAdmin (options) {
       })
     },
     signOut: signOut.bind(this, state),
-    isSignedIn: isSignedIn.bind(this, state)
+    isSignedIn: isSignedIn.bind(this, state),
+
+    accounts: {
+      findAll: accountsFindAll.bind(this, state)
+    }
   }
 }
