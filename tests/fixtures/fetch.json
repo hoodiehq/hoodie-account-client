@@ -15,7 +15,7 @@
         },
         "data": {
           "id": "abc4567-profile",
-          "type": "accountProfile"
+          "type": "profile"
         }
       }
     }

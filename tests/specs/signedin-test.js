@@ -52,5 +52,5 @@ test('returns correct signedIn state', function (t) {
     t.is(account.isSignedIn(), false, 'returns false after signOut()')
   })
 
-  .catch(t.fail)
+  .catch(t.error)
 })

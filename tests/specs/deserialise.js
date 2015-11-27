@@ -3,7 +3,7 @@ var test = require('tape')
 var deserialise = require('../../helpers/deserialise')
 
 var options = {
-  relationships: ['profile']
+  include: 'profile'
 }
 var response = require('../fixtures/signup.json')
 
@@ -20,6 +20,21 @@ test('returns data from JSON API response', function (t) {
 
   t.is(data.id, response.data.id, 'returns correct id')
   t.is(data.username, response.data.attributes.username, 'returns correct attribute')
-  t.is(data.profile.id, response.data.relationships.profile.data.id, 'returns correct relationship')
+  t.deepEqual(data.profile, {
+    email: 'chicken@docs.com',
+    fullName: 'Docs Chicken'
+  }, 'returns correct relationship')
 })
 
+test('accounts with profile response', function (t) {
+  var accountsWithProfileResponse = require('../fixtures/accounts-with-profile.json')
+  var accountsWithProfileReturn = require('../fixtures/accounts-with-profile-return.json')
+
+  var data = deserialise(accountsWithProfileResponse, {
+    include: 'profile'
+  })
+
+  t.deepEqual(data, accountsWithProfileReturn, 'returns right data')
+
+  t.end()
+})

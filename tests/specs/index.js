@@ -12,3 +12,5 @@ require('./deserialise')
 require('./serialise')
 
 require('./admin/constructor-test')
+require('./admin/accounts-find')
+require('./admin/accounts-find-all')

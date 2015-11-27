@@ -1,0 +1,16 @@
+[
+    {
+        "id": "abc4567",
+        "username": "pat",
+        "profile": {
+            "fullname": "Dr Pat Hook"
+        }
+    },
+    {
+        "id": "def678",
+        "username": "sam",
+        "profile": {
+            "fullname": "Mrs. Saminent"
+        }
+    }
+]

@@ -16,9 +16,19 @@
         },
         "data": {
           "id": "abc4567-profile",
-          "type": "accountProfile"
+          "type": "profile"
         }
       }
     }
-  }
+  },
+  "included": [
+    {
+      "id": "abc4567-profile",
+      "type": "profile",
+      "attributes": {
+        "fullName": "Docs Chicken",
+        "email": "chicken@docs.com"
+      }
+    }
+  ]
 }
