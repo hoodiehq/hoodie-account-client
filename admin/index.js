@@ -8,6 +8,7 @@ var isSignedIn = require('../lib/is-signedin')
 var accountsAdd = require('./lib/accounts/add')
 var accountsFind = require('./lib/accounts/find')
 var accountsFindAll = require('./lib/accounts/find-all')
+var accountsUpdate = require('./lib/accounts/update')
 
 function AccountAdmin (options) {
   if (!(this instanceof AccountAdmin)) {
@@ -42,7 +43,8 @@ function AccountAdmin (options) {
     accounts: {
       add: accountsAdd.bind(this, state),
       find: accountsFind.bind(this, state),
-      findAll: accountsFindAll.bind(this, state)
+      findAll: accountsFindAll.bind(this, state),
+      update: accountsUpdate.bind(this, state)
     }
   }
 }
