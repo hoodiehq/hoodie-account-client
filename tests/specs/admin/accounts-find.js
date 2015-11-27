@@ -1,13 +1,11 @@
 var test = require('tape')
 var nock = require('nock')
 
-var findAll = require('../../../admin/lib/accounts/find-all')
+var find = require('../../../admin/lib/accounts/find')
 
 var baseURL = 'http://localhost:3000'
-var accountsResponse = require('../../fixtures/accounts.json')
-var accountsReturn = require('../../fixtures/accounts-return.json')
-var accountsWithProfileResponse = require('../../fixtures/accounts-with-profile.json')
-var accountsWithProfileReturn = require('../../fixtures/accounts-with-profile-return.json')
+var accountResponse = require('../../fixtures/admin-account.json')
+var accountReturn = require('../../fixtures/admin-account-return.json')
 
 var state = {
   url: baseURL,
@@ -16,33 +14,17 @@ var state = {
   }
 }
 
-test('fetch all accounts', function (t) {
+test('fetch one account', function (t) {
   t.plan(1)
 
   nock(baseURL)
-    .get('/accounts')
-    .reply(200, accountsResponse)
+    .get('/accounts/abc1234')
+    .reply(200, accountResponse)
 
-  findAll(state)
-
-  .then(function (accounts) {
-    t.deepEqual(accounts, accountsReturn, 'resolves with accounts')
-  })
-
-  .catch(t.fail)
-})
-
-test('fetch all accounts with {include: "profile"}', function (t) {
-  t.plan(1)
-
-  nock(baseURL)
-    .get('/accounts?include=profile')
-    .reply(200, accountsWithProfileResponse)
-
-  findAll(state, {include: 'profile'})
+  find(state, 'abc1234')
 
   .then(function (accounts) {
-    t.deepEqual(accounts, accountsWithProfileReturn, 'resolves with accounts')
+    t.deepEqual(accounts, accountReturn, 'resolves with account')
   })
 
   .catch(t.fail)
