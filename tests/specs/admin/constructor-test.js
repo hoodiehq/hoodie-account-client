@@ -13,6 +13,7 @@ test('new AccountAdmin(options)', function (t) {
   t.is(typeof accountAdmin.signIn, 'function', 'accountAdmin.signIn is a function')
   t.is(typeof accountAdmin.signOut, 'function', 'accountAdmin.signOut is a function')
 
+  t.is(typeof accountAdmin.accounts.add, 'function', 'accountAdmin.accounts.add is a function')
   t.is(typeof accountAdmin.accounts.find, 'function', 'accountAdmin.accounts.find is a function')
   t.is(typeof accountAdmin.accounts.findAll, 'function', 'accountAdmin.accounts.findAll is a function')
 
