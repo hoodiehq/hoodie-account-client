@@ -5,6 +5,7 @@ var signIn = require('../lib/signin')
 var signOut = require('../lib/signout')
 var isSignedIn = require('../lib/is-signedin')
 
+var accountsAdd = require('./lib/accounts/add')
 var accountsFind = require('./lib/accounts/find')
 var accountsFindAll = require('./lib/accounts/find-all')
 
@@ -39,6 +40,7 @@ function AccountAdmin (options) {
     isSignedIn: isSignedIn.bind(this, state),
 
     accounts: {
+      add: accountsAdd.bind(this, state),
       find: accountsFind.bind(this, state),
       findAll: accountsFindAll.bind(this, state)
     }
