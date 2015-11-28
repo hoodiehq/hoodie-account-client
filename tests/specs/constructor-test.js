@@ -8,6 +8,8 @@ test('new Account(options)', function (t) {
   })
 
   t.is(typeof account, 'object', 'Account is a constructor')
+  t.ok(account.hasOwnProperty('id'), 'account.id exists')
+  t.is(account.id, 'undefined', 'account.id is undefined')
 
   t.end()
 })
