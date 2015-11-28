@@ -9,6 +9,7 @@ var accountsAdd = require('./lib/accounts/add')
 var accountsFind = require('./lib/accounts/find')
 var accountsFindAll = require('./lib/accounts/find-all')
 var accountsUpdate = require('./lib/accounts/update')
+var accountsRemove = require('./lib/accounts/remove')
 
 function AccountAdmin (options) {
   if (!(this instanceof AccountAdmin)) {
@@ -44,7 +45,8 @@ function AccountAdmin (options) {
       add: accountsAdd.bind(this, state),
       find: accountsFind.bind(this, state),
       findAll: accountsFindAll.bind(this, state),
-      update: accountsUpdate.bind(this, state)
+      update: accountsUpdate.bind(this, state),
+      remove: accountsRemove.bind(this, state)
     }
   }
 }
