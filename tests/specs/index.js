@@ -1,4 +1,5 @@
 require('./constructor-test')
+require('./username-test')
 require('./signedin-test')
 require('./signin-test')
 require('./signout-test')

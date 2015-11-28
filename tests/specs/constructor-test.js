@@ -2,14 +2,17 @@ var test = require('tape')
 
 var Account = require('../../index')
 
+var store = require('humble-localstorage')
+
 test('new Account(options)', function (t) {
+  store.clear()
   var account = new Account({
     url: 'http://localhost:3000/session/account'
   })
 
   t.is(typeof account, 'object', 'Account is a constructor')
-  t.ok(account.hasOwnProperty('id'), 'account.id exists')
-  t.is(account.id, 'undefined', 'account.id is undefined')
+  t.ok(account.hasOwnProperty('username'), 'account.username exists')
+  t.is(account.username, undefined, 'account.username is undefined')
 
   t.end()
 })
