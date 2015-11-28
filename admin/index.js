@@ -1,6 +1,8 @@
 module.exports = AccountAdmin
 
 var getSession = require('../helpers/get-session')
+
+var getUsername = require('../lib/username')
 var signIn = require('../lib/signin')
 var signOut = require('../lib/signout')
 var isSignedIn = require('../lib/is-signedin')
@@ -29,6 +31,9 @@ function AccountAdmin (options) {
   getSession(state)
 
   return {
+    get username () {
+      return getUsername(state)
+    },
     signIn: function (options) {
       return signIn(state, options)
 
