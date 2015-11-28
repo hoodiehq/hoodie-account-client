@@ -17,6 +17,7 @@ test('new AccountAdmin(options)', function (t) {
   t.is(typeof accountAdmin.accounts.find, 'function', 'accountAdmin.accounts.find is a function')
   t.is(typeof accountAdmin.accounts.findAll, 'function', 'accountAdmin.accounts.findAll is a function')
   t.is(typeof accountAdmin.accounts.update, 'function', 'accountAdmin.accounts.update is a function')
+  t.is(typeof accountAdmin.accounts.remove, 'function', 'accountAdmin.accounts.remove is a function')
 
   t.end()
 })
