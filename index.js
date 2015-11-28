@@ -1,5 +1,7 @@
 module.exports = Account
 
+var getUsername = require('./lib/username')
+
 var getSession = require('./helpers/get-session')
 
 function Account (options) {
@@ -20,6 +22,9 @@ function Account (options) {
   getSession(state)
 
   return {
+    get username () {
+      return getUsername(state)
+    },
     signUp: require('./lib/signup').bind(this, state),
     signIn: require('./lib/signin').bind(this, state),
     signOut: require('./lib/signout').bind(this, state),
