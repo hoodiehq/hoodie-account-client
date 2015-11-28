@@ -744,12 +744,6 @@ admin.accounts.add({
 
 ### admin.accounts.find()
 
----
-
-🐕 **TO BE DONE**: [#7](https://github.com/hoodiehq/hoodie-client-account/issues/7)
-
----
-
 An account can be looked up by account.id, username or token.
 
 - If a `username` property is present, it will be looked up by username
@@ -849,12 +843,6 @@ admin.accounts.find({ username: 'pat' })
 
 
 ### admin.accounts.findAll()
-
----
-
-🐕 **TO BE DONE**: [#7](https://github.com/hoodiehq/hoodie-client-account/issues/7)
-
----
 
 ```js
 admin.accounts.findAll(options)
@@ -962,12 +950,6 @@ admin.accounts.findAll()
 ```
 
 ### admin.accounts.update()
-
----
-
-🐕 **TO BE DONE**: [#7](https://github.com/hoodiehq/hoodie-client-account/issues/7)
-
----
 
 An account can be looked up by account.id, username or token.
 
@@ -1098,7 +1080,7 @@ admin.accounts.update({ username: 'pat', foo: 'bar' })
 
 ---
 
-🐕 **TO BE DONE**: [#7](https://github.com/hoodiehq/hoodie-client-account/issues/7)
+🐕 **TO BE DONE**: [#30](https://github.com/hoodiehq/hoodie-client-account/issues/30)
 
 ---
 
@@ -1237,7 +1219,7 @@ admin.accounts.remove({ username: 'pat', reason: 'foo bar' })
 
 ---
 
-🐕 **TO BE DONE**: [#7](https://github.com/hoodiehq/hoodie-client-account/issues/7)
+🐕 **TO BE DONE**: [#31](https://github.com/hoodiehq/hoodie-client-account/issues/31)
 
 ---
 
