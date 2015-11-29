@@ -7,7 +7,7 @@ var store = require('humble-localstorage')
 test('new Account(options)', function (t) {
   store.clear()
   var account = new Account({
-    url: 'http://localhost:3000/session/account'
+    url: 'http://localhost:3000'
   })
 
   t.is(typeof account, 'object', 'Account is a constructor')
