@@ -1,35 +1,45 @@
+var simple = require('simple-mock')
 var test = require('tape')
-var nock = require('nock')
 
 var remove = require('../../admin/lib/accounts/remove')
 
-var baseURL = 'http://localhost:3000'
-var accountResponse = require('../fixtures/admin-account.json')
-var accountReturn = require('../fixtures/admin-account-return.json')
-
-var state = {
-  url: baseURL,
-  session: {
-    id: 'sessionId123'
-  },
-  accountsEmitter: {
-    emit: function () {}
-  }
-}
-
 test('acconuntsRemove', function (t) {
-  t.plan(1)
+  t.plan(3)
 
-  nock(baseURL)
-    .get('/accounts/abc1234')
-    .reply(200, accountResponse)
-    .delete('/accounts/abc1234')
-    .reply(204)
+  var state = {
+    url: 'http://localhost:3000',
+    session: {
+      id: 'sessionId123'
+    },
+    accountsEmitter: {
+      emit: simple.stub()
+    }
+  }
+  var options = {
+    foo: 'bar'
+  }
 
-  remove(state, 'abc1234')
+  simple.mock(remove.internals, 'find').resolveWith('find account')
+  simple.mock(remove.internals, 'request').resolveWith()
+  simple.mock(remove.internals, 'serialise').returnWith('deserialise accounts')
+
+  remove(state, 'abc1234', options)
 
   .then(function (account) {
-    t.deepEqual(account, accountReturn, 'resolves with account')
+    t.deepEqual(remove.internals.find.lastCall.args, [
+      state,
+      'abc1234',
+      options
+    ])
+    t.deepEqual(remove.internals.request.lastCall.arg, {
+      method: 'DELETE',
+      url: 'http://localhost:3000/accounts/abc1234',
+      headers: {
+        authorization: 'Bearer sessionId123'
+      }
+    })
+
+    t.deepEqual(account, 'find account', 'resolves with account')
   })
 
   .catch(t.error)

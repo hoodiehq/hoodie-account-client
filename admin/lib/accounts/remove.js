@@ -1,19 +1,20 @@
 module.exports = remove
 
-var request = require('../../../utils/request')
-var find = require('./find')
+var internals = module.exports.internals = {}
+internals.request = require('../../../utils/request')
+internals.find = require('./find')
 
 function remove (state, id, options) {
   var account
 
-  return find(state, id, options)
+  return internals.find(state, id, options)
 
   .then(function (_account) {
     account = _account
   })
 
   .then(function () {
-    return request({
+    return internals.request({
       url: state.url + '/accounts/' + id,
       method: 'DELETE',
       headers: {

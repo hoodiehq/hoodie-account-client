@@ -1,36 +1,50 @@
+var simple = require('simple-mock')
 var test = require('tape')
-var nock = require('nock')
 
 var add = require('../../admin/lib/accounts/add')
 
-var baseURL = 'http://localhost:3000'
-var accountResponse = require('../fixtures/admin-account.json')
-var accountReturn = require('../fixtures/admin-account-return.json')
-
-var state = {
-  url: baseURL,
-  session: {
-    id: 'sessionId123'
-  },
-  accountsEmitter: {
-    emit: function () {}
-  }
-}
-
 test('acconuntsAdd', function (t) {
-  t.plan(1)
+  t.plan(5)
 
-  nock(baseURL)
-    .post('/accounts')
-    .reply(200, accountResponse)
+  var state = {
+    url: 'http://localhost:3000',
+    session: {
+      id: 'sessionId123'
+    },
+    accountsEmitter: {
+      emit: simple.stub()
+    }
+  }
 
-  add(state, {
-    username: accountReturn.username,
-    password: 'secret'
+  simple.mock(add.internals, 'request').resolveWith({
+    body: 'response body'
   })
+  simple.mock(add.internals, 'serialise').returnWith('serialise account')
+  simple.mock(add.internals, 'deserialise').returnWith('deserialise account')
 
-  .then(function (account) {
-    t.deepEqual(account, accountReturn, 'resolves with account')
+  var accountProperties = {
+    username: 'pat',
+    password: 'secret'
+  }
+  var options = {
+    foo: 'bar'
+  }
+  add(state, accountProperties, options)
+
+  .then(function (result) {
+    t.deepEqual(add.internals.serialise.lastCall.args, [
+      'account',
+      accountProperties
+    ])
+    t.deepEqual(add.internals.deserialise.lastCall.args, [
+      'response body',
+      options
+    ])
+    t.deepEqual(result, 'deserialise account', 'resolves with account')
+    t.is(state.accountsEmitter.emit.calls[0].arg, 'add', '"add event triggered"')
+    t.is(state.accountsEmitter.emit.calls[1].arg, 'change', '"change event triggered"')
+
+    simple.restore()
   })
 
   .catch(t.error)

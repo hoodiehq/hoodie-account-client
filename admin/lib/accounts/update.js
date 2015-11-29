@@ -2,26 +2,26 @@ module.exports = update
 
 var merge = require('lodash.merge')
 
-var find = require('./find')
-
-var request = require('../../../utils/request')
-var serialise = require('../../../utils/serialise')
+var internals = module.exports.internals = {}
+internals.find = require('./find')
+internals.request = require('../../../utils/request')
+internals.serialise = require('../../../utils/serialise')
 
 function update (state, id, change, options) {
   var account
 
-  return find(state, id)
+  return internals.find(state, id, options)
 
   .then(function (_account) {
     account = _account
 
-    return request({
+    return internals.request({
       url: state.url + '/accounts/' + id + query(options),
       method: 'PATCH',
       headers: {
         authorization: 'Bearer ' + state.session.id
       },
-      body: serialise('account', change)
+      body: internals.serialise('account', change)
     })
   })
 
@@ -37,7 +37,7 @@ function update (state, id, change, options) {
 }
 
 function query (options) {
-  if (!options || !options.include === 'profile') {
+  if (!options || options.include !== 'profile') {
     return ''
   }
 

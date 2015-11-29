@@ -1,21 +1,22 @@
 module.exports = add
 
-var request = require('../../../utils/request')
-var deserialise = require('../../../utils/deserialise')
-var serialise = require('../../../utils/serialise')
+var internals = module.exports.internals = {}
+internals.request = require('../../../utils/request')
+internals.deserialise = require('../../../utils/deserialise')
+internals.serialise = require('../../../utils/serialise')
 
 function add (state, account, options) {
-  return request({
+  return internals.request({
     url: state.url + '/accounts' + query(options),
     method: 'POST',
     headers: {
       authorization: 'Bearer ' + state.session.id
     },
-    body: serialise('account', account)
+    body: internals.serialise('account', account)
   })
 
   .then(function (response) {
-    var account = deserialise(response.body, options)
+    var account = internals.deserialise(response.body, options)
 
     state.accountsEmitter.emit('add', account)
     state.accountsEmitter.emit('change', 'add', account)

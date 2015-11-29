@@ -1,10 +1,11 @@
 module.exports = find
 
-var request = require('../../../utils/request')
-var deserialise = require('../../../utils/deserialise')
+var internals = module.exports.internals = {}
+internals.request = require('../../../utils/request')
+internals.deserialise = require('../../../utils/deserialise')
 
 function find (state, id, options) {
-  return request({
+  return internals.request({
     url: state.url + '/accounts/' + id + query(options),
     method: 'GET',
     headers: {
@@ -13,12 +14,12 @@ function find (state, id, options) {
   })
 
   .then(function (response) {
-    return deserialise(response.body, options)
+    return internals.deserialise(response.body, options)
   })
 }
 
 function query (options) {
-  if (!options || !options.include === 'profile') {
+  if (!options || options.include !== 'profile') {
     return ''
   }
 

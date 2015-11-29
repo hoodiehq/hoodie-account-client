@@ -1,48 +1,82 @@
+var simple = require('simple-mock')
 var test = require('tape')
-var nock = require('nock')
 
 var findAll = require('../../admin/lib/accounts/find-all')
 
-var baseURL = 'http://localhost:3000'
-var accountsResponse = require('../fixtures/accounts.json')
-var accountsReturn = require('../fixtures/accounts-return.json')
-var accountsWithProfileResponse = require('../fixtures/accounts-with-profile.json')
-var accountsWithProfileReturn = require('../fixtures/accounts-with-profile-return.json')
+test('acconuntsFindAll', function (t) {
+  t.plan(3)
 
-var state = {
-  url: baseURL,
-  session: {
-    id: 'sessionId123'
+  var state = {
+    url: 'http://localhost:3000',
+    session: {
+      id: 'sessionId123'
+    }
   }
-}
+  var options = {
+    foo: 'bar'
+  }
 
-test('fetch all accounts', function (t) {
-  t.plan(1)
+  simple.mock(findAll.internals, 'request').resolveWith({
+    body: 'response body'
+  })
+  simple.mock(findAll.internals, 'deserialise').returnWith('deserialise accounts')
 
-  nock(baseURL)
-    .get('/accounts')
-    .reply(200, accountsResponse)
-
-  findAll(state)
+  findAll(state, options)
 
   .then(function (accounts) {
-    t.deepEqual(accounts, accountsReturn, 'resolves with accounts')
+    t.deepEqual(findAll.internals.request.lastCall.arg, {
+      method: 'GET',
+      url: 'http://localhost:3000/accounts',
+      headers: {
+        authorization: 'Bearer sessionId123'
+      }
+    })
+    t.deepEqual(findAll.internals.deserialise.lastCall.args, [
+      'response body',
+      options
+    ])
+
+    t.is(accounts, 'deserialise accounts', 'resolves with accounts')
   })
 
   .catch(t.error)
 })
 
-test('fetch all accounts with {include: "profile"}', function (t) {
-  t.plan(1)
+test('acconuntsFindAll with {include: "profile"}', function (t) {
+  t.plan(3)
 
-  nock(baseURL)
-    .get('/accounts?include=profile')
-    .reply(200, accountsWithProfileResponse)
+  var state = {
+    url: 'http://localhost:3000',
+    session: {
+      id: 'sessionId123'
+    }
+  }
 
-  findAll(state, {include: 'profile'})
+  var options = {
+    include: 'profile'
+  }
+
+  simple.mock(findAll.internals, 'request').resolveWith({
+    body: 'response body'
+  })
+  simple.mock(findAll.internals, 'deserialise').returnWith('deserialise accounts')
+
+  findAll(state, options)
 
   .then(function (accounts) {
-    t.deepEqual(accounts, accountsWithProfileReturn, 'resolves with accounts')
+    t.deepEqual(findAll.internals.request.lastCall.arg, {
+      method: 'GET',
+      url: 'http://localhost:3000/accounts?include=profile',
+      headers: {
+        authorization: 'Bearer sessionId123'
+      }
+    })
+    t.deepEqual(findAll.internals.deserialise.lastCall.args, [
+      'response body',
+      options
+    ])
+
+    t.is(accounts, 'deserialise accounts', 'resolves with accounts')
   })
 
   .catch(t.error)
