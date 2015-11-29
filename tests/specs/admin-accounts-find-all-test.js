@@ -29,7 +29,7 @@ test('fetch all accounts', function (t) {
     t.deepEqual(accounts, accountsReturn, 'resolves with accounts')
   })
 
-  .catch(t.fail)
+  .catch(t.error)
 })
 
 test('fetch all accounts with {include: "profile"}', function (t) {
@@ -45,5 +45,5 @@ test('fetch all accounts with {include: "profile"}', function (t) {
     t.deepEqual(accounts, accountsWithProfileReturn, 'resolves with accounts')
   })
 
-  .catch(t.fail)
+  .catch(t.error)
 })

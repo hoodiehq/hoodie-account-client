@@ -5,15 +5,20 @@ var fetch = require('../../lib/profile-fetch')
 var internals = fetch.internals
 
 test('profileFetch', function (t) {
-  simple.mock(internals, 'fetchProperties').returnWith('foo')
-  var result = fetch('state', 'path')
+  simple.mock(internals, 'fetchProperties').resolveWith({})
 
-  t.deepEqual(internals.fetchProperties.lastCall.args, [
-    'state',
-    'account.profile',
-    'path'
-  ], 'calls utils.fetchProperties with "account.profile" basepath')
-  t.is(result, 'foo', 'returns result of fetchProperties')
+  fetch({
+    baseUrl: 'http://example.com',
+    session: {
+      id: 'abc4567'
+    }
+  }, 'path')
+
+  t.deepEqual(internals.fetchProperties.lastCall.arg, {
+    url: 'http://example.com/session/account/profile',
+    bearerToken: 'abc4567',
+    path: 'path'
+  }, 'calls fetchProperties with profile url')
 
   simple.restore()
   t.end()

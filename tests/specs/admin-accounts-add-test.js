@@ -30,5 +30,5 @@ test('fetch one account', function (t) {
     t.deepEqual(account, accountReturn, 'resolves with account')
   })
 
-  .catch(t.fail)
+  .catch(t.error)
 })

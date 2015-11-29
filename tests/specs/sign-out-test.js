@@ -44,7 +44,7 @@ test('successful signOut()', function (t) {
     t.is(sessionData, null, 'nulls stored session object')
   })
 
-  .catch(t.fail)
+  .catch(t.error)
 })
 
 test('catch errors from signOut()', function (t) {

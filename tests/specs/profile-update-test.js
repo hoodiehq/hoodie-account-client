@@ -43,5 +43,5 @@ test('update profile property', function (t) {
     t.equal(newPropObject, options, 'returns correct object')
   })
 
-  .catch(t.fail)
+  .catch(t.error)
 })

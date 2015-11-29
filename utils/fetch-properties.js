@@ -1,17 +1,16 @@
 module.exports = fetchProperties
 
-var request = require('./request')
-var saveSession = require('./save-session')
-var get = require('./get-properties')
 var deserialise = require('./deserialise')
+var getProperties = require('./get-properties')
+var request = require('./request')
 
-function fetchProperties (state, basePath, path) {
+function fetchProperties (options) {
   return request({
-    url: state.url + '/session/' + basePath.replace(/\./, '/'), // replace '.' in path with '/'
+    url: options.url,
     method: 'GET',
     headers: {
       'Accept': 'application/vnd.api+json',
-      'Authorization': 'Bearer ' + state.session.id
+      'Authorization': 'Bearer ' + options.bearerToken
     }
   })
 
@@ -19,12 +18,6 @@ function fetchProperties (state, basePath, path) {
     var data = JSON.parse(response.body)
     data = deserialise(data)
 
-    // split the basePath into an array and grab the last item
-    var type = basePath.split('.')
-    type = type[type.length - 1]
-
-    saveSession(state, data, type)
-
-    return get(state, basePath, path)
+    return getProperties(data, options.path)
   })
 }

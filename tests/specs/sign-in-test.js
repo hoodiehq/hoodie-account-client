@@ -82,7 +82,7 @@ test('successful account.signIn(options)', function (t) {
     t.is(sessionData.id, signInResponse.data.id, 'stored correct session id')
   })
 
-  .catch(t.fail)
+  .catch(t.error)
 })
 
 test('catch error from account.signIn', function (t) {

@@ -13,13 +13,13 @@ function Account (options) {
     throw new Error('options.url is required')
   }
 
+  var cacheKey = options.cacheKey || '_session'
   var state = {
-    cacheKey: options.cacheKey || '_session',
+    cacheKey: cacheKey,
     url: options.url,
-    validate: options.validate || function () {}
+    validate: options.validate || function () {},
+    session: getSession({cacheKey: cacheKey})
   }
-
-  getSession(state)
 
   return {
     get username () {

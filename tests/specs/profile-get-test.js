@@ -6,10 +6,15 @@ var internals = get.internals
 
 test('profileGet', function (t) {
   simple.mock(internals, 'getProperties').returnWith('foo')
-  var result = get('state', 'path')
+  var result = get({
+    session: {
+      account: {
+        profile: 'profile'
+      }
+    }
+  }, 'path')
 
   t.deepEqual(internals.getProperties.lastCall.args, [
-    'state',
     'profile',
     'path'
   ], 'calls utils.getProperties with "profile" basepath')
