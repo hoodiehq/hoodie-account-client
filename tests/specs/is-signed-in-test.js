@@ -1,46 +1,17 @@
 var test = require('tape')
-var nock = require('nock')
 
-var Account = require('../../index')
+var isSignedIn = require('../../lib/is-signed-in')
 
-var baseURL = 'http://localhost:3000'
-var signUpResponse = require('../fixtures/signup.json')
-var signInResponse = require('../fixtures/signin.json')
-var options = {
-  username: signUpResponse.data.attributes.username,
-  password: 'secret'
-}
+test('isSignedIn without session', function (t) {
+  t.is(isSignedIn({}), false, 'returns false')
 
-test('returns correct signedIn state', function (t) {
-  t.plan(2)
+  t.end()
+})
 
-  var account = new Account({
-    url: baseURL
-  })
+test('isSignedIn with session', function (t) {
+  t.is(isSignedIn({
+    session: {}
+  }), true, 'returns true')
 
-  nock(baseURL)
-    .put('/session/account')
-    .reply(200, signUpResponse)
-    .put('/session')
-    .reply(201, signInResponse)
-    .delete('/session')
-    .reply(204)
-
-  account.signUp(options)
-
-  .then(function () {
-    return account.signIn(options)
-  })
-
-  .then(function () {
-    t.is(account.isSignedIn(), true, 'returns true after signIn()')
-
-    return account.signOut()
-  })
-
-  .then(function () {
-    t.is(account.isSignedIn(), false, 'returns false after signOut()')
-  })
-
-  .catch(t.error)
+  t.end()
 })
