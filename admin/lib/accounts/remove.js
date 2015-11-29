@@ -1,6 +1,6 @@
 module.exports = remove
 
-var request = require('../../../helpers/request')
+var request = require('../../../utils/request')
 var find = require('./find')
 
 function remove (state, id, options) {

@@ -1,7 +1,7 @@
 module.exports = find
 
-var request = require('../../../helpers/request')
-var deserialise = require('../../../helpers/deserialise')
+var request = require('../../../utils/request')
+var deserialise = require('../../../utils/deserialise')
 
 function find (state, id, options) {
   return request({

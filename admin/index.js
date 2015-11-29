@@ -1,6 +1,6 @@
 module.exports = AccountAdmin
 
-var getSession = require('../helpers/get-session')
+var getSession = require('../utils/get-session')
 
 var getUsername = require('../lib/username')
 var signIn = require('../lib/signin')

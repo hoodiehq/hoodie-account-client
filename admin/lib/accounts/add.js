@@ -1,8 +1,8 @@
 module.exports = add
 
-var request = require('../../../helpers/request')
-var deserialise = require('../../../helpers/deserialise')
-var serialise = require('../../../helpers/serialise')
+var request = require('../../../utils/request')
+var deserialise = require('../../../utils/deserialise')
+var serialise = require('../../../utils/serialise')
 
 function add (state, account, options) {
   return request({

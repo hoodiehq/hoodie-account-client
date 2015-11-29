@@ -1,6 +1,6 @@
 var test = require('tape')
 
-var serialise = require('../../helpers/serialise')
+var serialise = require('../../utils/serialise')
 
 test('throws error when no type is passed', function (t) {
   t.plan(1)

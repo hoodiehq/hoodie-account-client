@@ -1,6 +1,6 @@
 var test = require('tape')
 
-var deserialise = require('../../helpers/deserialise')
+var deserialise = require('../../utils/deserialise')
 
 var options = {
   include: 'profile'

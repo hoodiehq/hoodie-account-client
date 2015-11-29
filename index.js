@@ -2,7 +2,7 @@ module.exports = Account
 
 var getUsername = require('./lib/username')
 
-var getSession = require('./helpers/get-session')
+var getSession = require('./utils/get-session')
 
 function Account (options) {
   if (!(this instanceof Account)) {

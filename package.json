@@ -13,7 +13,7 @@
     "predeploydocs": "./bin/authorize-push.js",
     "deploydocs": "gh-pages-deploy",
     "predocs": "rimraf docs/build",
-    "docs": "doxx --source ./ --target docs/build --template docs/template.jade --ignore coverage,bin,dist,helpers,node_modules,tests,utils,index.js",
+    "docs": "doxx --source ./ --target docs/build --template docs/template.jade --ignore coverage,bin,dist,utils,node_modules,tests,utils,index.js",
     "presemantic-release": "npm run -s build",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "pretest": "standard",
