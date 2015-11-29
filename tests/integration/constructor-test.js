@@ -11,8 +11,17 @@ test('new Account(options)', function (t) {
   })
 
   t.is(typeof account, 'object', 'Account is a constructor')
-  t.ok(account.hasOwnProperty('username'), 'account.username exists')
+  t.ok(account.hasOwnProperty('username'), 'has account.username')
   t.is(account.username, undefined, 'account.username is undefined')
+  t.is(typeof account.fetch, 'function', 'has "fetch()"')
+  t.is(typeof account.get, 'function', 'has "get()"')
+  t.is(typeof account.isSignedIn, 'function', 'has "isSignedIn()"')
+  t.is(typeof account.profile.fetch, 'function', 'has "profile.fetch()"')
+  t.is(typeof account.profile.get, 'function', 'has "profile.get()"')
+  t.is(typeof account.profile.update, 'function', 'has "profile.update()"')
+  t.is(typeof account.signIn, 'function', 'has "signIn()"')
+  t.is(typeof account.signOut, 'function', 'has "signOut()"')
+  t.is(typeof account.signUp, 'function', 'has "signUp()"')
 
   t.end()
 })

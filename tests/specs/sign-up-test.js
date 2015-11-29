@@ -16,16 +16,6 @@ var profileData = {
   }
 }
 
-test('has "signUp" method', function (t) {
-  var account = new Account({
-    url: baseURL
-  })
-
-  t.is(typeof account.signUp, 'function', 'has "signUp()"')
-
-  t.end()
-})
-
 test('signUp w/o required options', function (t) {
   t.plan(1)
 

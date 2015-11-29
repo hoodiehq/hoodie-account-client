@@ -1,9 +1,7 @@
 var test = require('tape')
 
-var Account = require('../../index')
 var get = require('../../lib/get')
 
-var baseURL = 'http://localhost:3000'
 var state = {
   session: {
     id: 'sessionId123',
@@ -13,16 +11,6 @@ var state = {
     }
   }
 }
-
-test('has "get" methods', function (t) {
-  var account = new Account({
-    url: baseURL
-  })
-
-  t.is(typeof account.get, 'function', 'has "get()"')
-
-  t.end()
-})
 
 test('get account details', function (t) {
   var accountInfo = get(state, 'account')

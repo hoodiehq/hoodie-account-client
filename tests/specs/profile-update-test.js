@@ -1,7 +1,6 @@
 var test = require('tape')
 var nock = require('nock')
 
-var Account = require('../../index')
 var updateProfile = require('../../lib/update-profile')
 
 var baseURL = 'http://localhost:3000'
@@ -17,16 +16,6 @@ var state = {
     }
   }
 }
-
-test('profile has "update" methods', function (t) {
-  var account = new Account({
-    url: baseURL
-  })
-
-  t.is(typeof account.profile.update, 'function', 'has "update()"')
-
-  t.end()
-})
 
 test('updateProfile w/o options', function (t) {
   t.plan(1)

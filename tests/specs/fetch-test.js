@@ -1,7 +1,6 @@
 var test = require('tape')
 var nock = require('nock')
 
-var Account = require('../../index')
 var fetch = require('../../lib/fetch')
 
 var baseURL = 'http://localhost:3000'
@@ -12,16 +11,6 @@ var state = {
     id: 'sessionId123'
   }
 }
-
-test('has "fetch" methods', function (t) {
-  t.plan(1)
-
-  var account = new Account({
-    url: baseURL
-  })
-
-  t.is(typeof account.fetch, 'function', 'has "fetch()"')
-})
 
 test('fetch account details', function (t) {
   t.plan(2)

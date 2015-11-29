@@ -12,16 +12,6 @@ var options = {
   password: 'secret'
 }
 
-test('has "signOut" method', function (t) {
-  var account = new Account({
-    url: baseURL
-  })
-
-  t.is(typeof account.signOut, 'function', 'has "signOut()"')
-
-  t.end()
-})
-
 test('successful signOut()', function (t) {
   t.plan(2)
 

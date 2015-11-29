@@ -12,16 +12,6 @@ var options = {
   password: 'secret'
 }
 
-test('has signIn method', function (t) {
-  var account = new Account({
-    url: baseURL
-  })
-
-  t.is(typeof account.signIn, 'function', 'has "signIn()')
-
-  t.end()
-})
-
 test('signIn w/o required options', function (t) {
   t.plan(1)
 

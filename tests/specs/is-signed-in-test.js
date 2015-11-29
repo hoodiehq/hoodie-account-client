@@ -11,16 +11,6 @@ var options = {
   password: 'secret'
 }
 
-test('has "isSignedIn" method', function (t) {
-  var account = new Account({
-    url: baseURL
-  })
-
-  t.is(typeof account.isSignedIn, 'function', 'has "isSignedIn()"')
-
-  t.end()
-})
-
 test('returns correct signedIn state', function (t) {
   t.plan(2)
 
