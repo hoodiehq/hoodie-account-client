@@ -83,7 +83,7 @@ test('signUp with username & password', function (t) {
   .catch(t.error)
 })
 
-test.skip('signUp with profile', function (t) {
+test('signUp with profile', function (t) {
   t.plan(1)
 
   var state = {
@@ -101,7 +101,7 @@ test.skip('signUp with profile', function (t) {
   .catch(t.pass.bind(t, 'throws error'))
 })
 
-test.skip('account.signUp with invalid options', function (t) {
+test('account.signUp with invalid options', function (t) {
   t.plan(1)
 
   var state = {
