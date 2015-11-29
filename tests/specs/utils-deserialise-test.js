@@ -8,14 +8,12 @@ var options = {
 var response = require('../fixtures/signup.json')
 
 test('throws error on non-JSON API response', function (t) {
-  t.plan(1)
-
   t.throws(deserialise.bind(null, {}, options), 'throws an error')
+
+  t.end()
 })
 
 test('returns data from JSON API response', function (t) {
-  t.plan(3)
-
   var data = deserialise(response, options)
 
   t.is(data.id, response.data.id, 'returns correct id')
@@ -24,6 +22,8 @@ test('returns data from JSON API response', function (t) {
     email: 'chicken@docs.com',
     fullName: 'Docs Chicken'
   }, 'returns correct relationship')
+
+  t.end()
 })
 
 test('accounts with profile response', function (t) {

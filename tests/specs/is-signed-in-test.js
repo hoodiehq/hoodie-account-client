@@ -12,13 +12,13 @@ var options = {
 }
 
 test('has "isSignedIn" method', function (t) {
-  t.plan(1)
-
   var account = new Account({
     url: baseURL
   })
 
   t.is(typeof account.isSignedIn, 'function', 'has "isSignedIn()"')
+
+  t.end()
 })
 
 test('returns correct signedIn state', function (t) {

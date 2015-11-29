@@ -15,53 +15,51 @@ var state = {
 }
 
 test('has "get" methods', function (t) {
-  t.plan(1)
-
   var account = new Account({
     url: baseURL
   })
 
   t.is(typeof account.get, 'function', 'has "get()"')
+
+  t.end()
 })
 
 test('get account details', function (t) {
-  t.plan(2)
-
   var accountInfo = get(state, 'account')
 
   t.is(typeof accountInfo, 'object', 'returns account object')
   t.equal(accountInfo, state.session.account, 'contains correct object')
+
+  t.end()
 })
 
 test('get account returns undefined when user not logged in', function (t) {
-  t.plan(1)
-
   var accountInfo = get({}, 'account')
 
   t.is(typeof accountInfo, 'undefined', 'returns undefined')
+
+  t.end()
 })
 
 test('get account username from string', function (t) {
-  t.plan(2)
-
   var username = get(state, 'account', 'username')
 
   t.is(typeof username, 'string', 'returns username string')
   t.equal(username, state.session.account.username, 'contains correct username')
+
+  t.end()
 })
 
 test('get account username from array', function (t) {
-  t.plan(2)
-
   var result = get(state, 'account', ['id', 'username'])
 
   t.is(typeof result, 'object', 'returns username string')
   t.equal(result.username, state.session.account.username, 'contains correct username')
+
+  t.end()
 })
 
 test('get account details from array', function (t) {
-  t.plan(2)
-
   var accountInfo = get(state, 'account', ['username', 'plan'])
 
   t.is(typeof accountInfo, 'object', 'returns object')
@@ -69,4 +67,6 @@ test('get account details from array', function (t) {
     username: 'docsChicken',
     plan: 'developer'
   }, 'contains correct account info')
+
+  t.end()
 })

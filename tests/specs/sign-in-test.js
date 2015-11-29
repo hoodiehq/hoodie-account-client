@@ -13,13 +13,13 @@ var options = {
 }
 
 test('has signIn method', function (t) {
-  t.plan(1)
-
   var account = new Account({
     url: baseURL
   })
 
   t.is(typeof account.signIn, 'function', 'has "signIn()')
+
+  t.end()
 })
 
 test('signIn w/o required options', function (t) {

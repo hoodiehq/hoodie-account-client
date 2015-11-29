@@ -13,13 +13,13 @@ var options = {
 }
 
 test('has "signOut" method', function (t) {
-  t.plan(1)
-
   var account = new Account({
     url: baseURL
   })
 
   t.is(typeof account.signOut, 'function', 'has "signOut()"')
+
+  t.end()
 })
 
 test('successful signOut()', function (t) {

@@ -19,13 +19,13 @@ var state = {
 }
 
 test('profile has "update" methods', function (t) {
-  t.plan(1)
-
   var account = new Account({
     url: baseURL
   })
 
   t.is(typeof account.profile.update, 'function', 'has "update()"')
+
+  t.end()
 })
 
 test('updateProfile w/o options', function (t) {

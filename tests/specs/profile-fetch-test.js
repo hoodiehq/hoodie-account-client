@@ -14,13 +14,13 @@ var state = {
 }
 
 test('profile has "fetch" methods', function (t) {
-  t.plan(1)
-
   var account = new Account({
     url: baseURL
   })
 
   t.is(typeof account.profile.fetch, 'function', 'has "fetch()"')
+
+  t.end()
 })
 
 test('fetch profile details', function (t) {
