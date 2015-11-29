@@ -1,6 +1,9 @@
 module.exports = Account
 
+var EventEmitter = require('events').EventEmitter
+
 var getUsername = require('./lib/username')
+var events = require('./lib/events')
 
 var getSession = require('./utils/get-session')
 
@@ -9,16 +12,21 @@ function Account (options) {
     return new Account(options)
   }
 
-  if (!options || !options.url) {
+  if (!options) {
+    options = {}
+  }
+
+  if (!options.url) {
     throw new Error('options.url is required')
   }
 
   var cacheKey = options.cacheKey || '_session'
   var state = {
     cacheKey: cacheKey,
+    emitter: options.emitter || new EventEmitter(),
+    session: getSession({cacheKey: cacheKey}),
     url: options.url,
-    validate: options.validate || function () {},
-    session: getSession({cacheKey: cacheKey})
+    validate: options.validate || function () {}
   }
 
   return {
@@ -35,6 +43,9 @@ function Account (options) {
       get: require('./lib/profile-get').bind(this, state),
       fetch: require('./lib/fetch').bind(this, state, 'account.profile'),
       update: require('./lib/update-profile').bind(this, state)
-    }
+    },
+    on: events.on.bind(this, state),
+    one: events.one.bind(this, state),
+    off: events.off.bind(this, state)
   }
 }

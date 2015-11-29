@@ -9,10 +9,13 @@ function request (options) {
   options.encoding = undefined
 
   return new Promise(function (resolve, reject) {
-    options.json = true
     set(options, 'headers.accept', 'application/vnd.api+json')
+    set(options, 'headers.content-type', 'application/vnd.api+json')
+    options.json = true
     if (options.body) {
-      set(options, 'headers.content-type', 'application/vnd.api+json')
+      // works around an issue where nets-xhr stringifyies options.json
+      // if it is set, which overides options.body
+      options.json = options.body
     }
     nets(options, function (error, response) {
       if (error) {

@@ -18,7 +18,7 @@ function deserialiseOne (options, response) {
   var properties = {}
   options = merge({}, options)
 
-  if (!options.skipId) {
+  if (resource.type !== 'profile') {
     properties.id = resource.id
   }
 
@@ -31,17 +31,20 @@ function deserialiseOne (options, response) {
       nextInclude = ''
     }
 
-    var relationship = resource.relationships[currentInclude].data
-    var includedResource = where(response.included, {
-      type: relationship.type,
-      id: relationship.id
-    })[0]
-    options.include = nextInclude
-    options.skipId = true
-    properties[currentInclude] = deserialiseOne(options, {
-      included: response.included,
-      data: includedResource
-    })
+    if (resource.relationships) {
+      var relationship = resource.relationships[currentInclude].data
+      var includedResource = where(response.included, {
+        type: relationship.type,
+        id: relationship.id
+      })[0]
+      if (includedResource) {
+        options.include = nextInclude
+        properties[currentInclude] = deserialiseOne(options, {
+          included: response.included,
+          data: includedResource
+        })
+      }
+    }
   }
 
   if (resource.attributes) {

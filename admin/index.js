@@ -1,5 +1,7 @@
 module.exports = AccountAdmin
 
+var EventEmitter = require('events').EventEmitter
+
 var getSession = require('../utils/get-session')
 
 var getUsername = require('../lib/username')
@@ -13,6 +15,8 @@ var accountsFindAll = require('./lib/accounts/find-all')
 var accountsUpdate = require('./lib/accounts/update')
 var accountsRemove = require('./lib/accounts/remove')
 
+var events = require('../lib/events')
+
 function AccountAdmin (options) {
   if (!(this instanceof AccountAdmin)) {
     return new AccountAdmin(options)
@@ -25,9 +29,10 @@ function AccountAdmin (options) {
   var cacheKey = options.cacheKey || '_session_admin'
   var state = {
     cacheKey: cacheKey,
+    emitter: options.emitter || new EventEmitter(),
+    session: getSession({cacheKey: cacheKey}),
     url: options.url,
-    validate: options.validate || function () {},
-    session: getSession({cacheKey: cacheKey})
+    validate: options.validate || function () {}
   }
 
   return {
@@ -52,6 +57,10 @@ function AccountAdmin (options) {
       findAll: accountsFindAll.bind(this, state),
       update: accountsUpdate.bind(this, state),
       remove: accountsRemove.bind(this, state)
-    }
+    },
+
+    on: events.on.bind(this, state),
+    one: events.one.bind(this, state),
+    off: events.off.bind(this, state)
   }
 }
