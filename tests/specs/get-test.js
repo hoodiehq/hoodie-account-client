@@ -53,10 +53,10 @@ test('get account username from string', function (t) {
 test('get account username from array', function (t) {
   t.plan(2)
 
-  var username = get(state, 'account', ['username'])
+  var result = get(state, 'account', ['id', 'username'])
 
-  t.is(typeof username, 'string', 'returns username string')
-  t.equal(username, state.session.account.username, 'contains correct username')
+  t.is(typeof result, 'object', 'returns username string')
+  t.equal(result.username, state.session.account.username, 'contains correct username')
 })
 
 test('get account details from array', function (t) {
@@ -64,6 +64,9 @@ test('get account details from array', function (t) {
 
   var accountInfo = get(state, 'account', ['username', 'plan'])
 
-  t.true(Array.isArray(accountInfo), 'returns array')
-  t.deepEqual(accountInfo, [state.session.account.username, state.session.account.plan], 'contains correct account info')
+  t.is(typeof accountInfo, 'object', 'returns object')
+  t.deepEqual(accountInfo, {
+    username: 'docsChicken',
+    plan: 'developer'
+  }, 'contains correct account info')
 })

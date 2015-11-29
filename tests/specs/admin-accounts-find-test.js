@@ -1,11 +1,11 @@
 var test = require('tape')
 var nock = require('nock')
 
-var find = require('../../../admin/lib/accounts/find')
+var find = require('../../admin/lib/accounts/find')
 
 var baseURL = 'http://localhost:3000'
-var accountResponse = require('../../fixtures/admin-account.json')
-var accountReturn = require('../../fixtures/admin-account-return.json')
+var accountResponse = require('../fixtures/admin-account.json')
+var accountReturn = require('../fixtures/admin-account-return.json')
 
 var state = {
   url: baseURL,

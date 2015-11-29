@@ -56,17 +56,22 @@ test('get profile fullName from string', function (t) {
 test('get profile fullName from array', function (t) {
   t.plan(2)
 
-  var fullName = get(state, 'account.profile', ['fullName'])
+  var result = get(state, 'account.profile', ['fullName'])
 
-  t.is(typeof fullName, 'string', 'returns fullName string')
-  t.equal(fullName, state.session.account.profile.fullName, 'contains correct property')
+  t.is(typeof result, 'object', 'returns object')
+  t.deepEqual(result, {
+    fullName: state.session.account.profile.fullName
+  }, 'contains correct property')
 })
 
 test('get profile details from array', function (t) {
   t.plan(2)
 
-  var profileInfo = get(state, 'account.profile', ['fullName', 'favoriteClothing'])
+  var result = get(state, 'account.profile', ['fullName', 'favoriteClothing'])
 
-  t.true(Array.isArray(profileInfo), 'returns array')
-  t.deepEqual(profileInfo, [state.session.account.profile.fullName, state.session.account.profile.favoriteClothing], 'contains correct profile info')
+  t.is(typeof result, 'object', 'returns object')
+  t.deepEqual(result, {
+    fullName: state.session.account.profile.fullName,
+    favoriteClothing: state.session.account.profile.favoriteClothing
+  }, 'contains correct profile info')
 })

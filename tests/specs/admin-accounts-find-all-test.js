@@ -1,13 +1,13 @@
 var test = require('tape')
 var nock = require('nock')
 
-var findAll = require('../../../admin/lib/accounts/find-all')
+var findAll = require('../../admin/lib/accounts/find-all')
 
 var baseURL = 'http://localhost:3000'
-var accountsResponse = require('../../fixtures/accounts.json')
-var accountsReturn = require('../../fixtures/accounts-return.json')
-var accountsWithProfileResponse = require('../../fixtures/accounts-with-profile.json')
-var accountsWithProfileReturn = require('../../fixtures/accounts-with-profile-return.json')
+var accountsResponse = require('../fixtures/accounts.json')
+var accountsReturn = require('../fixtures/accounts-return.json')
+var accountsWithProfileResponse = require('../fixtures/accounts-with-profile.json')
+var accountsWithProfileReturn = require('../fixtures/accounts-with-profile-return.json')
 
 var state = {
   url: baseURL,

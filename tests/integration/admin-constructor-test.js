@@ -1,6 +1,6 @@
 var test = require('tape')
 
-var AccountAdmin = require('../../../admin/index')
+var AccountAdmin = require('../../admin/index')
 
 test('new AccountAdmin(options)', function (t) {
   var accountAdmin = new AccountAdmin({
