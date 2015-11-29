@@ -29,10 +29,10 @@ function Account (options) {
     signIn: require('./lib/signin').bind(this, state),
     signOut: require('./lib/signout').bind(this, state),
     isSignedIn: require('./lib/is-signedin').bind(this, state),
-    get: require('./lib/get').bind(this, state, 'account'),
+    get: require('./lib/get').bind(this, state),
     fetch: require('./lib/fetch').bind(this, state, 'account'),
     profile: {
-      get: require('./lib/get').bind(this, state, 'account.profile'),
+      get: require('./lib/profile-get').bind(this, state),
       fetch: require('./lib/fetch').bind(this, state, 'account.profile'),
       update: require('./lib/update-profile').bind(this, state)
     }
