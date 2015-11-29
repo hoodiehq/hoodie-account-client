@@ -1,82 +1,62 @@
+var simple = require('simple-mock')
 var test = require('tape')
-var nock = require('nock')
 
-var Account = require('../../index')
-var localStorageWrapper = require('humble-localstorage')
+var signOut = require('../../lib/sign-out')
 
-var baseURL = 'http://localhost:3000'
-var signUpResponse = require('../fixtures/signup.json')
-var signInResponse = require('../fixtures/signin.json')
-var options = {
-  username: signUpResponse.data.attributes.username,
-  password: 'secret'
-}
+test('signOut()', function (t) {
+  t.plan(3)
 
-test('successful signOut()', function (t) {
-  t.plan(2)
-
-  var account = new Account({
-    url: baseURL
+  simple.mock(signOut.internals, 'request').resolveWith({
+    statusCode: 204,
+    body: null
   })
+  simple.mock(signOut.internals, 'clearSession').callFn(function () {})
 
-  nock(baseURL)
-    .put('/session/account')
-    .reply(200, signUpResponse)
-    .put('/session')
-    .reply(201, signInResponse)
-    .delete('/session')
-    .reply(204)
+  var state = {
+    url: 'http://example.com',
+    cacheKey: 'cacheKey123',
+    session: {
+      id: 'abc4567',
+      account: {
+        username: 'pat'
+      }
+    }
+  }
 
-  account.signUp(options)
+  signOut(state)
 
-  .then(function () {
-    return account.signIn(options)
-  })
+  .then(function (result) {
+    t.deepEqual(signOut.internals.request.lastCall.arg, {
+      method: 'DELETE',
+      url: 'http://example.com/session',
+      headers: {
+        authorization: 'Bearer abc4567'
+      }
+    })
+    t.deepEqual(signOut.internals.clearSession.lastCall.arg, {
+      cacheKey: 'cacheKey123'
+    })
 
-  .then(function () {
-    return account.signOut()
-  })
+    t.is(state.session, undefined, 'unsets session')
 
-  .then(function (returnedObject) {
-    var sessionData = localStorageWrapper.getObject('_session')
-
-    t.is(returnedObject.username, options.username, 'returns correct username')
-    t.is(sessionData, null, 'nulls stored session object')
+    simple.restore()
   })
 
   .catch(t.error)
 })
 
-test('catch errors from signOut()', function (t) {
+test('signOut() with request error', function (t) {
   t.plan(1)
 
-  var account = new Account({
-    url: baseURL
+  simple.mock(signOut.internals, 'request').rejectWith(new Error('Ooops'))
+
+  signOut({
+    session: {}
   })
 
-  nock(baseURL)
-    .put('/session/account')
-    .reply(200, signUpResponse)
-    .put('/session')
-    .reply(201, signInResponse)
-    .delete('/session')
-    .replyWithError({ 'message': 'no server connection' })
-
-  account.signUp(options)
-
-  .then(function () {
-    return account.signIn(options)
-  })
-
-  .then(function () {
-    return account.signOut()
-  })
-
-  .then(function () {
-    t.fail('error was not caught')
-  })
+  .then(t.fail.bind(t, 'must reject'))
 
   .catch(function () {
-    t.pass('error has been caught')
+    t.pass('rejects with error')
   })
 })
