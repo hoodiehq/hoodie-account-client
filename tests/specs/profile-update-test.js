@@ -12,7 +12,7 @@ test('updateProfile without change', function (t) {
 })
 
 test('updateProfile with change', function (t) {
-  t.plan(3)
+  t.plan(4)
 
   simple.mock(updateProfile.internals, 'request').resolveWith({
     statusCode: 204,
@@ -58,7 +58,8 @@ test('updateProfile with change', function (t) {
       }
     })
 
-    t.equal(profile.fullName, 'Docs Chicken', 'returns correct object')
+    t.equal(profile.foo, 'bar', 'returns old property')
+    t.equal(profile.fullName, 'Docs Chicken', 'returns new property')
 
     simple.restore()
   })
