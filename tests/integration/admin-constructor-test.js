@@ -4,7 +4,7 @@ var AccountAdmin = require('../../admin/index')
 
 test('new AccountAdmin(options)', function (t) {
   var accountAdmin = new AccountAdmin({
-    url: 'http://localhost:3000/session/account'
+    url: 'http://localhost:3000'
   })
 
   t.is(typeof accountAdmin, 'object', 'AccountAdmin is a constructor')
@@ -21,6 +21,9 @@ test('new AccountAdmin(options)', function (t) {
   t.is(typeof accountAdmin.accounts.findAll, 'function', 'accountAdmin.accounts.findAll is a function')
   t.is(typeof accountAdmin.accounts.update, 'function', 'accountAdmin.accounts.update is a function')
   t.is(typeof accountAdmin.accounts.remove, 'function', 'accountAdmin.accounts.remove is a function')
+  t.is(typeof accountAdmin.accounts.on, 'function', 'accountAdmin.accounts.on is a function')
+  t.is(typeof accountAdmin.accounts.one, 'function', 'accountAdmin.accounts.one is a function')
+  t.is(typeof accountAdmin.accounts.off, 'function', 'accountAdmin.accounts.off is a function')
 
   t.is(typeof accountAdmin.on, 'function', 'has "on()"')
   t.is(typeof accountAdmin.one, 'function', 'has "one()"')

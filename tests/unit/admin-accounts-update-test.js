@@ -11,15 +11,20 @@ var state = {
   url: baseURL,
   session: {
     id: 'sessionId123'
+  },
+  accountsEmitter: {
+    emit: function () {}
   }
 }
 
-test('fetch one account', function (t) {
+test('acconuntsUpdate', function (t) {
   t.plan(1)
 
   nock(baseURL)
-    .patch('/accounts/abc1234')
+    .get('/accounts/abc1234')
     .reply(200, accountResponse)
+    .patch('/accounts/abc1234')
+    .reply(204)
 
   update(state, 'abc1234', {
     password: 'newsecret'

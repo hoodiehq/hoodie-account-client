@@ -14,7 +14,7 @@ var state = {
   }
 }
 
-test('fetch one account', function (t) {
+test('acconuntsFindAll', function (t) {
   t.plan(1)
 
   nock(baseURL)

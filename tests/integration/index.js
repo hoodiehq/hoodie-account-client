@@ -1,4 +1,5 @@
 require('./admin-constructor-test')
+require('./admin-events')
 require('./cachekey-test')
 require('./constructor-test')
 require('./events-test')

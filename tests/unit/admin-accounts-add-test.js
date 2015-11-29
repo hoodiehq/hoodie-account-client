@@ -11,10 +11,13 @@ var state = {
   url: baseURL,
   session: {
     id: 'sessionId123'
+  },
+  accountsEmitter: {
+    emit: function () {}
   }
 }
 
-test('fetch one account', function (t) {
+test('acconuntsAdd', function (t) {
   t.plan(1)
 
   nock(baseURL)
