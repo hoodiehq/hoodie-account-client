@@ -591,12 +591,6 @@ account.on('signin', function (accountProperties) {
 })
 ```
 
----
-
-🐕 **TO BE DONE**: [#17](https://github.com/hoodiehq/hoodie-client-account/issues/17)
-
----
-
 ### account.one
 
 Call function once at given account event.
@@ -613,12 +607,6 @@ account.on('signin', function (accountProperties) {
 })
 ```
 
----
-
-🐕 **TO BE DONE**: [#17](https://github.com/hoodiehq/hoodie-client-account/issues/17)
-
----
-
 ### account.off
 
 Removes event handler that has been added before
@@ -632,12 +620,6 @@ Example
 ```js
 hoodie.off('connectionstatus:disconnected', showNotification)
 ```
-
----
-
-🐕 **TO BE DONE**: [#17](https://github.com/hoodiehq/hoodie-client-account/issues/17)
-
----
 
 ### events
 
@@ -656,11 +638,17 @@ hoodie.off('connectionstatus:disconnected', showNotification)
   </tr>
   <tr>
     <th align="left"><code>unauthenticate</code></th>
-    <td>Server responded with "unauthenticated" when checking session</td>
+    <td>
+      Server responded with "unauthenticated" when checking session<br>
+      🐕 <strong>TO BE DONE</strong> <a href="https://github.com/hoodiehq/hoodie-client-account/issues/35">#35</a>
+      </td>
   </tr>
   <tr>
     <th align="left"><code>reauthenticate</code></th>
-    <td>Successfully signed in after "unauthenticated" state</td>
+    <td>
+      Successfully signed in after "unauthenticated" state<br>
+      🐕 <strong>TO BE DONE</strong> <a href="https://github.com/hoodiehq/hoodie-client-account/issues/35">#35</a>
+      </td>
   </tr>
 </table>
 
