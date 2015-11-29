@@ -36,7 +36,10 @@ test('signUp with username & password', function (t) {
 
   var state = {
     url: 'http://example.com',
-    validate: simple.stub()
+    validate: simple.stub(),
+    emitter: {
+      emit: simple.stub()
+    }
   }
 
   simple.mock(signUp.internals, 'request').resolveWith({

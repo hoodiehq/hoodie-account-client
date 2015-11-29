@@ -38,19 +38,28 @@ test('signIn without username', function (t) {
 test('successful account.signIn(options)', function (t) {
   t.plan(5)
 
+  var state = {
+    url: 'http://example.com',
+    cacheKey: 'cacheKey123',
+    emitter: {
+      emit: simple.stub()
+    }
+  }
+
   simple.mock(signIn.internals, 'request').resolveWith({
     body: 'response body'
   })
   simple.mock(signIn.internals, 'serialise').returnWith('serialised')
   simple.mock(signIn.internals, 'deserialise').returnWith({
-    id: 'abc1234'
+    id: 'session123',
+    account: {
+      id: 'deserialise id',
+      username: 'deserialise username'
+    }
   })
   simple.mock(signIn.internals, 'saveSession').callFn(function () {})
 
-  signIn({
-    url: 'http://example.com',
-    cacheKey: 'cacheKey123'
-  }, {
+  signIn(state, {
     username: 'pat',
     password: 'secret'
   })
@@ -65,15 +74,16 @@ test('successful account.signIn(options)', function (t) {
     t.deepEqual(signIn.internals.saveSession.lastCall.arg, {
       cacheKey: 'cacheKey123',
       session: {
-        id: 'abc1234',
+        id: 'session123',
         account: {
-          username: 'pat'
+          id: 'deserialise id',
+          username: 'deserialise username'
         }
       }
     })
 
-    t.equal(session.sessionId, 'abc1234', 'resolves with session.id')
-    t.equal(session.username, 'pat', 'resolves with session.account.username')
+    t.equal(session.sessionId, 'session123', 'resolves with session.id')
+    t.equal(session.username, 'deserialise username', 'resolves with session.account.username')
 
     simple.restore()
   })

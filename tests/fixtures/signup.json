@@ -6,8 +6,7 @@
     "id": "abc4567",
     "type": "account",
     "attributes": {
-      "username": "chicken@docs.com",
-      "password": "secret"
+      "username": "chicken@docs.com"
     },
     "relationships": {
       "profile": {

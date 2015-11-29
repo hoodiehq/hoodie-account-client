@@ -20,6 +20,9 @@ test('signOut()', function (t) {
       account: {
         username: 'pat'
       }
+    },
+    emitter: {
+      emit: simple.stub()
     }
   }
 

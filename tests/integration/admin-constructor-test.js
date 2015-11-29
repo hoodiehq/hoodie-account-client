@@ -22,6 +22,10 @@ test('new AccountAdmin(options)', function (t) {
   t.is(typeof accountAdmin.accounts.update, 'function', 'accountAdmin.accounts.update is a function')
   t.is(typeof accountAdmin.accounts.remove, 'function', 'accountAdmin.accounts.remove is a function')
 
+  t.is(typeof accountAdmin.on, 'function', 'has "on()"')
+  t.is(typeof accountAdmin.one, 'function', 'has "one()"')
+  t.is(typeof accountAdmin.off, 'function', 'has "off()"')
+
   t.end()
 })
 
