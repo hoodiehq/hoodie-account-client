@@ -1,23 +1,9 @@
+var simple = require('simple-mock')
 var test = require('tape')
-var nock = require('nock')
 
 var updateProfile = require('../../lib/update-profile')
 
-var baseURL = 'http://localhost:3000'
-var state = {
-  url: baseURL,
-  session: {
-    id: 'sessionId123',
-    account: {
-      id: 'abcd1234',
-      profile: {
-        id: 'abcd1234-profile'
-      }
-    }
-  }
-}
-
-test('updateProfile w/o options', function (t) {
+test('updateProfile without change', function (t) {
   t.plan(1)
 
   updateProfile()
@@ -25,22 +11,56 @@ test('updateProfile w/o options', function (t) {
     .catch(t.pass.bind(t, 'rejects with error'))
 })
 
-test('update profile property', function (t) {
-  t.plan(2)
+test('updateProfile with change', function (t) {
+  t.plan(3)
 
-  var options = {
-    fullName: 'Documents Chicken'
-  }
+  simple.mock(updateProfile.internals, 'request').resolveWith({
+    statusCode: 204,
+    body: null
+  })
+  simple.mock(updateProfile.internals, 'serialise').returnWith('profileJsonData')
+  simple.mock(updateProfile.internals, 'saveSession').callFn(function () {})
 
-  nock(baseURL)
-    .patch('/session/account/profile')
-    .reply(204)
+  updateProfile({
+    cacheKey: 'cacheKey123',
+    url: 'http://example.com',
+    session: {
+      id: 'abc1234',
+      account: {
+        profile: {
+          foo: 'bar'
+        }
+      }
+    }
+  }, {
+    fullName: 'Docs Chicken'
+  })
 
-  updateProfile(state, options)
+  .then(function (profile) {
+    t.deepEqual(updateProfile.internals.request.lastCall.arg, {
+      method: 'PATCH',
+      url: 'http://example.com/session/account/profile',
+      headers: {
+        authorization: 'Bearer abc1234'
+      },
+      body: 'profileJsonData'
+    })
+    t.deepEqual(updateProfile.internals.saveSession.lastCall.arg, {
+      cacheKey: 'cacheKey123',
+      session: {
+        id: 'abc1234',
+        account: {
+          profile: {
+            foo: 'bar',
+            fullName: 'Docs Chicken'
+          }
+        }
+      }
+    })
 
-  .then(function (newPropObject) {
-    t.is(typeof newPropObject, 'object', 'returns prop object')
-    t.equal(newPropObject, options, 'returns correct object')
+    t.equal(profile.fullName, 'Docs Chicken', 'returns correct object')
+
+    simple.restore()
   })
 
   .catch(t.error)
