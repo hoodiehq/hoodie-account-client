@@ -572,7 +572,7 @@ Rejects with:
 Examples
 
 ```js
-account.update({fullname: 'Prof Pat Hook'}).then(function (properties) {
+account.profile.update({fullname: 'Prof Pat Hook'}).then(function (properties) {
   alert('Congratulations, ' + properties.fullname)
 })
 ```
