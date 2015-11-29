@@ -1,38 +1,21 @@
+var simple = require('simple-mock')
 var test = require('tape')
-var nock = require('nock')
 
-var Account = require('../../index')
-var localStorageWrapper = require('humble-localstorage')
+var signIn = require('../../lib/sign-in')
 
-var baseURL = 'http://localhost:3000'
-var signUpResponse = require('../fixtures/signup.json')
-var signInResponse = require('../fixtures/signin.json')
-var options = {
-  username: signUpResponse.data.attributes.username,
-  password: 'secret'
-}
-
-test('signIn w/o required options', function (t) {
+test('signIn without options', function (t) {
   t.plan(1)
 
-  var account = new Account({
-    url: baseURL
-  })
-
-  account.signIn()
+  signIn({})
     .then(t.fail.bind(t, 'must reject'))
     .catch(t.pass.bind(t, 'rejects with error'))
 })
 
-test('signIn w/o required username', function (t) {
+test('signIn without password', function (t) {
   t.plan(1)
 
-  var account = new Account({
-    url: baseURL
-  })
-
-  account.signIn({
-    username: options.username
+  signIn({}, {
+    username: 'username'
   })
 
   .catch(function (error) {
@@ -40,15 +23,11 @@ test('signIn w/o required username', function (t) {
   })
 })
 
-test('signIn w/o required password', function (t) {
+test('signIn without username', function (t) {
   t.plan(1)
 
-  var account = new Account({
-    url: baseURL
-  })
-
-  account.signIn({
-    password: options.password
+  signIn({}, {
+    password: 'password'
   })
 
   .catch(function (error) {
@@ -57,48 +36,62 @@ test('signIn w/o required password', function (t) {
 })
 
 test('successful account.signIn(options)', function (t) {
-  t.plan(3)
+  t.plan(5)
 
-  var account = new Account({
-    url: baseURL
+  simple.mock(signIn.internals, 'request').resolveWith({
+    body: 'response body'
+  })
+  simple.mock(signIn.internals, 'serialise').returnWith('serialised')
+  simple.mock(signIn.internals, 'deserialise').returnWith({
+    id: 'abc1234'
+  })
+  simple.mock(signIn.internals, 'saveSession').callFn(function () {})
+
+  signIn({
+    url: 'http://example.com',
+    cacheKey: 'cacheKey123'
+  }, {
+    username: 'pat',
+    password: 'secret'
   })
 
-  nock(baseURL)
-    .put('/session/account')
-    .reply(200, signUpResponse)
-    .put('/session')
-    .reply(201, signInResponse)
+  .then(function (session) {
+    t.deepEqual(signIn.internals.request.lastCall.arg, {
+      method: 'PUT',
+      url: 'http://example.com/session',
+      body: 'serialised'
+    })
+    t.deepEqual(signIn.internals.deserialise.lastCall.arg, 'response body')
+    t.deepEqual(signIn.internals.saveSession.lastCall.arg, {
+      cacheKey: 'cacheKey123',
+      session: {
+        id: 'abc1234',
+        account: {
+          username: 'pat'
+        }
+      }
+    })
 
-  account.signUp(options)
+    t.equal(session.sessionId, 'abc1234', 'resolves with session.id')
+    t.equal(session.username, 'pat', 'resolves with session.account.username')
 
-  .then(function () {
-    return account.signIn(options)
-  })
-
-  .then(function (returnedObject) {
-    var sessionData = localStorageWrapper.getObject('_session')
-    t.is(returnedObject.username, options.username, 'returns correct username')
-    t.is(sessionData.account.username, returnedObject.username, 'stored correct username in session')
-    t.is(sessionData.id, signInResponse.data.id, 'stored correct session id')
+    simple.restore()
   })
 
   .catch(t.error)
 })
 
-test('catch error from account.signIn', function (t) {
+test('signIn with request error', function (t) {
   t.plan(1)
 
-  var account = new Account({
-    url: baseURL
-  })
+  simple.mock(signIn.internals, 'request').rejectWith(new Error('Ooops'))
 
-  nock(baseURL)
-    .put('/session')
-    .replyWithError({ 'message': 'username not found' })
+  signIn({})
 
-  account.signIn(options)
+  .then(t.fail.bind(t, 'must reject'))
 
   .catch(function (error) {
     t.is(typeof error, 'object', 'returns error object')
+    simple.restore()
   })
 })
