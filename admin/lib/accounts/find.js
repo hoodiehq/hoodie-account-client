@@ -8,14 +8,12 @@ function find (state, id, options) {
     url: state.url + '/accounts/' + id + query(options),
     method: 'GET',
     headers: {
-      'Accept': 'application/vnd.api+json',
-      'Authorization': 'Bearer ' + state.session.id
+      authorization: 'Bearer ' + state.session.id
     }
   })
 
   .then(function (response) {
-    var data = JSON.parse(response.body)
-    return deserialise(data, options)
+    return deserialise(response.body, options)
   })
 }
 

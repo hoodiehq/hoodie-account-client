@@ -9,16 +9,13 @@ function add (state, account, options) {
     url: state.url + '/accounts' + query(options),
     method: 'POST',
     headers: {
-      'Accept': 'application/vnd.api+json',
-      'Authorization': 'Bearer ' + state.session.id,
-      'Content-Type': 'application/vnd.api+json'
+      authorization: 'Bearer ' + state.session.id
     },
-    body: JSON.stringify(serialise('account', account))
+    body: serialise('account', account)
   })
 
   .then(function (response) {
-    var data = JSON.parse(response.body)
-    return deserialise(data, options)
+    return deserialise(response.body, options)
   })
 }
 

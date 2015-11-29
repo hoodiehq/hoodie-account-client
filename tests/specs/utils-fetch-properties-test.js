@@ -14,7 +14,7 @@ test('fetch profile details', function (t) {
 
   nock(baseURL)
     .get('/session/account/profile')
-    .reply(200, JSON.stringify(fetchResponse))
+    .reply(200, fetchResponse)
 
   fetchProperties({
     url: baseURL + '/session/account/profile'
@@ -33,7 +33,7 @@ test('fetch profile fullName', function (t) {
 
   nock(baseURL)
     .get('/session/account/profile')
-    .reply(200, JSON.stringify(fetchResponse))
+    .reply(200, fetchResponse)
 
   fetchProperties({
     url: baseURL + '/session/account/profile',

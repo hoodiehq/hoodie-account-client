@@ -65,9 +65,9 @@ test('successful account.signIn(options)', function (t) {
 
   nock(baseURL)
     .put('/session/account')
-    .reply(200, JSON.stringify(signUpResponse))
+    .reply(200, signUpResponse)
     .put('/session')
-    .reply(201, JSON.stringify(signInResponse))
+    .reply(201, signInResponse)
 
   account.signUp(options)
 

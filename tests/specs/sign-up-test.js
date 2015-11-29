@@ -71,7 +71,7 @@ test('successful account.signUp(options)', function (t) {
 
   nock(baseURL)
     .put('/session/account')
-    .reply(201, JSON.stringify(signUpResponse))
+    .reply(201, signUpResponse)
 
   account.signUp(options)
 

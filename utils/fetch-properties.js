@@ -9,14 +9,12 @@ function fetchProperties (options) {
     url: options.url,
     method: 'GET',
     headers: {
-      'Accept': 'application/vnd.api+json',
-      'Authorization': 'Bearer ' + options.bearerToken
+      authorization: 'Bearer ' + options.bearerToken
     }
   })
 
   .then(function (response) {
-    var data = JSON.parse(response.body)
-    data = deserialise(data)
+    var data = deserialise(response.body)
 
     return getProperties(data, options.path)
   })
