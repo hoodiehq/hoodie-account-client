@@ -15,7 +15,12 @@ function add (state, account, options) {
   })
 
   .then(function (response) {
-    return deserialise(response.body, options)
+    var account = deserialise(response.body, options)
+
+    state.accountsEmitter.emit('add', account)
+    state.accountsEmitter.emit('change', 'add', account)
+
+    return account
   })
 }
 

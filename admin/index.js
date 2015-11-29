@@ -27,9 +27,12 @@ function AccountAdmin (options) {
   }
 
   var cacheKey = options.cacheKey || '_session_admin'
+  var emitter = options.emitter || new EventEmitter()
+  var accountsEmitter = new EventEmitter()
   var state = {
+    accountsEmitter: accountsEmitter,
     cacheKey: cacheKey,
-    emitter: options.emitter || new EventEmitter(),
+    emitter: emitter,
     session: getSession({cacheKey: cacheKey}),
     url: options.url,
     validate: options.validate || function () {}
@@ -56,7 +59,10 @@ function AccountAdmin (options) {
       find: accountsFind.bind(this, state),
       findAll: accountsFindAll.bind(this, state),
       update: accountsUpdate.bind(this, state),
-      remove: accountsRemove.bind(this, state)
+      remove: accountsRemove.bind(this, state),
+      on: events.on.bind(this, {emitter: accountsEmitter}),
+      one: events.one.bind(this, {emitter: accountsEmitter}),
+      off: events.off.bind(this, {emitter: accountsEmitter})
     },
 
     on: events.on.bind(this, state),

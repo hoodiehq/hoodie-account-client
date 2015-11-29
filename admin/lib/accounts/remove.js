@@ -22,7 +22,10 @@ function remove (state, id, options) {
     })
   })
 
-  .then(function (response) {
+  .then(function () {
+    state.accountsEmitter.emit('remove', account)
+    state.accountsEmitter.emit('change', 'remove', account)
+
     return account
   })
 }
