@@ -22,7 +22,7 @@ test('events', function (t) {
 
   nock(baseURL)
     .put('/session/account')
-    .reply(200, signUpResponse)
+    .reply(201, signUpResponse)
     .put('/session')
     .reply(201, signInResponse)
     .delete('/session')
