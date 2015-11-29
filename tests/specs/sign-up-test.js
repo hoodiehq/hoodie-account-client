@@ -1,127 +1,142 @@
+var simple = require('simple-mock')
 var test = require('tape')
-var nock = require('nock')
-var merge = require('lodash.merge')
 
-var Account = require('../../index')
+var signUp = require('../../lib/sign-up')
 
-var baseURL = 'http://localhost:3000'
-var signUpResponse = require('../fixtures/signup.json')
-var options = {
-  username: signUpResponse.data.attributes.username,
-  password: 'secret'
-}
-var profileData = {
-  profile: {
-    fullName: 'Docs Chicken'
+test('signUp without options', function (t) {
+  t.plan(1)
+
+  signUp({})
+
+  .catch(t.pass.bind(t, 'rejects'))
+})
+
+test('signUp without password', function (t) {
+  t.plan(1)
+
+  signUp({}, {
+    username: 'pat'
+  })
+
+  .catch(t.pass.bind(t, 'rejects'))
+})
+
+test('signUp without username', function (t) {
+  t.plan(1)
+
+  signUp({}, {
+    password: 'secret'
+  })
+
+  .catch(t.pass.bind(t, 'rejects'))
+})
+
+test('signUp with username & password', function (t) {
+  t.plan(6)
+
+  var state = {
+    url: 'http://example.com',
+    validate: simple.stub()
   }
-}
 
-test('signUp w/o required options', function (t) {
-  t.plan(1)
-
-  var account = new Account({
-    url: baseURL
+  simple.mock(signUp.internals, 'request').resolveWith({
+    body: 'response body'
+  })
+  simple.mock(signUp.internals, 'serialise').returnWith('serialise return')
+  simple.mock(signUp.internals, 'deserialise').returnWith({
+    id: 'deserialise id',
+    username: 'deserialise username'
   })
 
-  account.signUp()
-
-  .catch(function (error) {
-    t.is(typeof error, 'object', 'rejects with error object')
+  signUp(state, {
+    username: 'pat',
+    password: 'secret'
   })
+
+  .then(function (result) {
+    t.deepEqual(state.validate.lastCall.arg, {
+      username: 'pat',
+      password: 'secret'
+    })
+    t.deepEqual(signUp.internals.serialise.lastCall.args, [
+      'account',
+      {
+        username: 'pat',
+        password: 'secret'
+      }
+    ])
+    t.deepEqual(signUp.internals.request.lastCall.arg, {
+      method: 'PUT',
+      url: 'http://example.com/session/account',
+      body: 'serialise return'
+    })
+    t.deepEqual(signUp.internals.deserialise.lastCall.args, [
+      'response body',
+      { include: 'profile' }
+    ])
+
+    t.is(result.id, 'deserialise id', 'resolves with account id')
+    t.is(result.username, 'deserialise username', 'resolves with account username')
+
+    simple.restore()
+  })
+  .catch(t.error)
 })
 
-test('signUp w/o required password', function (t) {
+test.skip('signUp with profile', function (t) {
   t.plan(1)
 
-  var account = new Account({
-    url: baseURL
+  var state = {
+    validate: function () {}
+  }
+
+  signUp(state, {
+    username: 'pat',
+    password: 'secret',
+    profile: {}
   })
 
-  account.signUp({
-    username: options.username
-  })
+  .then(t.fail.bind(t, 'must throw'))
 
-  .catch(function (error) {
-    t.is(typeof error, 'object', 'rejects with error object')
-  })
+  .catch(t.pass.bind(t, 'throws error'))
 })
 
-test('signUp w/o required username', function (t) {
+test.skip('account.signUp with invalid options', function (t) {
   t.plan(1)
 
-  var account = new Account({
-    url: baseURL
-  })
-
-  account.signUp({
-    password: options.password
-  })
-
-  .catch(function (error) {
-    t.is(typeof error, 'object', 'rejects with error object')
-  })
-})
-
-test('successful account.signUp(options)', function (t) {
-  t.plan(2)
-
-  var account = new Account({
-    url: baseURL
-  })
-
-  nock(baseURL)
-    .put('/session/account')
-    .reply(201, signUpResponse)
-
-  account.signUp(options)
-
-  .then(function (returnedObject) {
-    t.is(returnedObject.username, options.username, 'returns correct username')
-    t.ok(returnedObject.id, 'returns account id')
-  })
-  .catch(function (error) {
-    t.fail(error)
-  })
-})
-
-test('account.signUp w/ profile options', function (t) {
-  t.plan(1)
-
-  var account = new Account({
-    url: baseURL
-  })
-
-  t.throws(account.signUp.bind(null, merge({}, options, profileData)), 'throws profile options error')
-})
-
-test('account.signUp w/ invalid options', function (t) {
-  t.plan(1)
-
-  var validate = function (options) {
-    if (options.password && options.password.length < 8) {
-      throw new Error('Password must be 8 characters or more')
+  var state = {
+    validate: function (options) {
+      throw new Error('Not funky enough!')
     }
   }
-  var account = new Account({
-    url: baseURL,
-    validate: validate
+
+  signUp(state, {
+    username: 'pat',
+    password: 'secret'
   })
 
-  t.throws(account.signUp.bind(null, options), 'throws missing password error')
+  .then(t.fail.bind(t, 'must throw'))
+
+  .catch(function (error) {
+    t.is(error.message, 'Not funky enough!', 'throws error')
+  })
 })
 
-test('account.signUp w/ errors', function (t) {
+test('signUp with request error', function (t) {
   t.plan(1)
 
-  var account = new Account({
-    url: baseURL
+  var state = {
+    validate: function () {}
+  }
+
+  simple.mock(signUp.internals, 'request').rejectWith(new Error('Ooops'))
+
+  signUp(state, {
+    username: 'pat',
+    password: 'secret'
   })
 
-  nock(baseURL)
-    .put('/session/account')
-    .replyWithError({'message': 'username taken'})
-
-  account.signUp(options)
+  .then(t.fail.bind(t, 'must throw'))
 
   .catch(function (error) {
     t.is(typeof error, 'object', 'returns error object')
