@@ -13,7 +13,7 @@ var options = {
   password: 'secret'
 }
 
-test('sign up / in and out', function (t) {
+test('events', function (t) {
   t.plan(9)
 
   var account = new Account({
