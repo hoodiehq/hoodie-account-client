@@ -3,9 +3,9 @@ module.exports = AccountAdmin
 var getSession = require('../utils/get-session')
 
 var getUsername = require('../lib/username')
-var signIn = require('../lib/signin')
-var signOut = require('../lib/signout')
-var isSignedIn = require('../lib/is-signedin')
+var signIn = require('../lib/sign-in')
+var signOut = require('../lib/sign-out')
+var isSignedIn = require('../lib/is-signed-in')
 
 var accountsAdd = require('./lib/accounts/add')
 var accountsFind = require('./lib/accounts/find')

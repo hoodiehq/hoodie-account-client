@@ -25,10 +25,10 @@ function Account (options) {
     get username () {
       return getUsername(state)
     },
-    signUp: require('./lib/signup').bind(this, state),
-    signIn: require('./lib/signin').bind(this, state),
-    signOut: require('./lib/signout').bind(this, state),
-    isSignedIn: require('./lib/is-signedin').bind(this, state),
+    signUp: require('./lib/sign-up').bind(this, state),
+    signIn: require('./lib/sign-in').bind(this, state),
+    signOut: require('./lib/sign-out').bind(this, state),
+    isSignedIn: require('./lib/is-signed-in').bind(this, state),
     get: require('./lib/get').bind(this, state),
     fetch: require('./lib/fetch').bind(this, state, 'account'),
     profile: {
