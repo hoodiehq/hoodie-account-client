@@ -660,12 +660,6 @@ admin.sessions.removeAll().then(function (sessionProperties) {
 
 ### admin.accounts.add()
 
----
-
-🐕 **TO BE DONE**: [#7](https://github.com/hoodiehq/hoodie-client-account/issues/7)
-
----
-
 ```js
 admin.accounts.add(object)
 ```
