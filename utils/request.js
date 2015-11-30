@@ -13,16 +13,23 @@ function request (options) {
     set(options, 'headers.content-type', 'application/vnd.api+json')
     options.json = true
     if (options.body) {
-      // works around an issue where nets-xhr stringifyies options.json
-      // if it is set, which overides options.body
+      // works around an issue where nets-xhr stringifies options.json
+      // if it is truthy, which overides options.body
       options.json = options.body
     }
     nets(options, function (error, response) {
       if (error) {
-        reject(error)
-      } else {
-        resolve(response)
+        return reject(error)
       }
+
+      if (response.statusCode >= 400) {
+        error = new Error(response.body.errors[0].detail)
+        error.name = response.body.errors[0].title + 'Error'
+        error.statusCode = parseInt(response.body.errors[0].status, 10)
+        return reject(error)
+      }
+
+      resolve(response)
     })
   })
 }
