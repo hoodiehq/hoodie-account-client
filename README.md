@@ -206,8 +206,8 @@ Rejects with:
     <td>Account has not been confirmed yet</td>
   </tr>
   <tr>
-    <th align="left"><code>NotFoundError</code></th>
-    <td>Account could not be found</td>
+    <th align="left"><code>UnauthorizedError</code></th>
+    <td>Invalid Credentials</td>
   </tr>
   <tr>
     <th align="left"><code>Error</code></th>
