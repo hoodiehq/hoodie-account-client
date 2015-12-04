@@ -41,10 +41,12 @@ account.on('signout', redirectToHome)
 - [account.profile.get](#accountprofileget)
 - [account.profile.fetch](#accountprofilefetch)
 - [account.profile.update](#accountprofileupdate)
+- [account.request](#accountrequest)
 - [account.on](#accounton)
 - [account.one](#accountone)
 - [account.off](#accountoff)
 - [Events](#events)
+- [Requests](#requests)
 
 ### Constructor
 
@@ -569,13 +571,87 @@ Rejects with:
   </tr>
 </table>
 
-Examples
+Example
 
 ```js
 account.profile.update({fullname: 'Prof Pat Hook'}).then(function (properties) {
   alert('Congratulations, ' + properties.fullname)
 })
 ```
+
+### account.request
+
+Sends a custom request to the server, for things like password resets,
+account upgrades, etc.
+
+```js
+account.request(properties)
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>properties.type</code></th>
+    <td>String</td>
+    <td>
+      Name of the request type, e.g. "passwordreset"
+    </td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <th align="left"><code>properties</code></th>
+    <td>Object</td>
+    <td>
+      Additional properties for the request
+    </td>
+    <td>No</td>
+  </tr>
+</table>
+
+Resolves with `requestProperties`:
+
+```json
+{
+  "id": "request123",
+  "type": "passwordreset",
+  "contact": "pat@example.com",
+  "createdAt": "2016-01-01T00:00.000Z",
+  "updatedAt": "2016-01-01T00:00.000Z"
+}
+```
+
+Rejects with:
+
+<table>
+  <tr>
+    <th align="left"><code>ConnectionError</code></th>
+    <td>Could not connect to server</td>
+  </tr>
+  <tr>
+    <th align="left"><code>NotFoundError</code></th>
+    <td>Handler missing for "passwordreset"</td>
+  </tr>
+  <tr>
+    <th align="left"><code>InvalidError</code></th>
+    <td><em>Custom validation error</em></td>
+  </tr>
+</table>
+
+Example
+
+```js
+account.request({type: 'passwordreset', contact: 'pat@example.com'}).then(function (properties) {
+  alert('A password reset link was sent to ' + properties.contact)
+})
+```
+
 
 ### account.on
 
@@ -621,7 +697,7 @@ Example
 hoodie.off('connectionstatus:disconnected', showNotification)
 ```
 
-### events
+### Events
 
 <table>
   <tr>
@@ -635,6 +711,10 @@ hoodie.off('connectionstatus:disconnected', showNotification)
   <tr>
     <th align="left"><code>signout</code></th>
     <td>Successfully signed out</td>
+  </tr>
+  <tr>
+    <th align="left"><code>passwordreset</code></th>
+    <td>Email with password reset token sent</td>
   </tr>
   <tr>
     <th align="left"><code>unauthenticate</code></th>
@@ -652,6 +732,22 @@ hoodie.off('connectionstatus:disconnected', showNotification)
   </tr>
 </table>
 
+
+### Requests
+
+Hoodie comes with a list of built-in account requests, which can be disabled,
+overwritten or extended in [hoodie-server-account](https://github.com/hoodiehq/hoodie-server-account/tree/master/plugin#optionsrequests)
+
+When a request succeeds, an event with the same name as the request type gets
+emitted. For example, `account.request({type: 'passwordreset', contact: 'pat@example.com')`
+triggers a `passwordreset` event, with the `requestProperties` passed as argument.
+
+<table>
+  <tr>
+    <th align="left"><code>passwordreset</code></th>
+    <td>Request a password reset token</td>
+  </tr>
+</table>
 
 ## Testing
 
