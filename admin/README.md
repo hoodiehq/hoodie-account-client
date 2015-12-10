@@ -261,7 +261,6 @@ Resolves with `sessionProperties`
   account: {
     id: 'account456',
     username: 'pat@example.com'
-    // admin accounts have no profile
   }
 }
 ```
