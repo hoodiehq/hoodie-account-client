@@ -44,6 +44,7 @@ function Account (options) {
       fetch: require('./lib/fetch').bind(this, state, 'account.profile'),
       update: require('./lib/update-profile').bind(this, state)
     },
+    request: require('./lib/request').bind(this, state),
     on: events.on.bind(this, state),
     one: events.one.bind(this, state),
     off: events.off.bind(this, state)
