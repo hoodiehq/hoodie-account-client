@@ -22,6 +22,7 @@ test('new Account(options)', function (t) {
   t.is(typeof account.signIn, 'function', 'has "signIn()"')
   t.is(typeof account.signOut, 'function', 'has "signOut()"')
   t.is(typeof account.signUp, 'function', 'has "signUp()"')
+  t.is(typeof account.request, 'function', 'has "request()"')
   t.is(typeof account.on, 'function', 'has "on()"')
   t.is(typeof account.one, 'function', 'has "one()"')
   t.is(typeof account.off, 'function', 'has "off()"')
