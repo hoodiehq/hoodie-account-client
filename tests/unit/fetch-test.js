@@ -23,3 +23,16 @@ test('fetch', function (t) {
   simple.restore()
   t.end()
 })
+
+test('fetch without state', function (t) {
+  t.plan(1)
+
+  fetch({
+    baseUrl: 'http://example.com'
+  }, 'path')
+
+  .then(t.fail.bind(t, 'Must reject'))
+  .catch(function (error) {
+    t.equal(error.name, 'UnauthenticatedError', 'rejects with UnauthenticatedError error')
+  })
+})
