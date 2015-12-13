@@ -33,6 +33,7 @@ account.on('signout', redirectToHome)
 
 - [Constructor](#constructor)
 - [account.username](#accountusername)
+- [account.validate](#accountvalidate)
 - [account.signUp](#accountsignup)
 - [account.signIn](#accountsignin)
 - [account.signOut](#accountsignout)
@@ -56,7 +57,13 @@ new Account({
   url: '/api',
   // name of localStorage key where to persist the session state.
   // Defaults to "_session"
-  cacheKey: 'myapp.session'
+  cacheKey: 'myapp.session',
+  // function to validate account details
+  // defaults to return true
+  validate: function (options) {
+    // "this" is the new Account
+    // "options" is an object with "username", "password", and "profile" properties
+  }
 })
 ```
 
@@ -64,6 +71,70 @@ new Account({
 
 _Read-only_. Returns the username if signed in, otherwise `undefined`.
 
+### account.validate
+
+Calls the function passed into the Constructor.
+Returns a Promise that resolves to `true` by default
+
+```js
+account.validate(options)
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Type</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>options.username</code></th>
+    <td>String</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.password</code></th>
+    <td>String</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.profile</code></th>
+    <td>Object</td>
+    <td>No</td>
+  </tr>
+</table>
+
+Resolves with an argument.
+
+Rejects with any errors thrown by the function originally passed into the Constructor.
+
+Example
+
+```js
+var account = new Account({
+  url: '/api',
+  cacheKey: 'app.session',
+  validate: function (options) {
+    if (options.password.length < 8) {
+      throw new Error('password should contain at least 8 characters')
+    }
+  }
+})
+
+account.validate({
+  username: 'DocsChicken',
+  password: 'secret'
+})
+
+.then(function () {
+  console.log('Successfully validated!')
+})
+
+.catch(function (error) {
+  console.log(error) // should be an error about the password being too short
+})
+```
 
 ### account.isSignedIn
 
@@ -385,18 +456,6 @@ account.fetch(['createdAt', 'updatedAt']).then(function (properties) {
   alert('You signed up at ' + properties.createdAt)
 })
 ```
-
-### account.validate
-
-```js
-account.validate()
-```
-
----
-
-🐕 **TO BE DONE**: [#14](https://github.com/hoodiehq/hoodie-client-account/issues/14)
-
----
 
 ### account.profile.get
 
