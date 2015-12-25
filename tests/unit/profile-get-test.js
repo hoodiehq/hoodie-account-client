@@ -7,10 +7,8 @@ var internals = get.internals
 test('profileGet', function (t) {
   simple.mock(internals, 'getProperties').returnWith('foo')
   var result = get({
-    session: {
-      account: {
-        profile: 'profile'
-      }
+    account: {
+      profile: 'profile'
     }
   }, 'path')
 

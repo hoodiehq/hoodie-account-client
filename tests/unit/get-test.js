@@ -6,14 +6,18 @@ var internals = get.internals
 
 test('get', function (t) {
   simple.mock(internals, 'getProperties').returnWith('foo')
-  var result = get({
-    session: {
-      account: 'account'
+  var state = {
+    account: {
+      session: {
+        id: 'session123'
+      },
+      username: 'username'
     }
-  }, 'path')
+  }
+  var result = get(state, 'path')
 
   t.deepEqual(internals.getProperties.lastCall.args, [
-    'account',
+    state.account,
     'path'
   ], 'calls utils.getProperties with "account" basepath')
   t.is(result, 'foo', 'returns result of fetchProperties')

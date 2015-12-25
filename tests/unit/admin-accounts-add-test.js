@@ -8,8 +8,10 @@ test('acconuntsAdd', function (t) {
 
   var state = {
     url: 'http://localhost:3000',
-    session: {
-      id: 'sessionId123'
+    account: {
+      session: {
+        id: 'sessionId123'
+      }
     },
     accountsEmitter: {
       emit: simple.stub()

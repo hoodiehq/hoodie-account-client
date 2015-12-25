@@ -10,7 +10,7 @@ test('isSignedIn without session', function (t) {
 
 test('isSignedIn with session', function (t) {
   t.is(isSignedIn({
-    session: {}
+    account: {}
   }), true, 'returns true')
 
   t.end()

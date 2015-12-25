@@ -57,7 +57,7 @@ test('successful account.signIn(options)', function (t) {
       username: 'deserialise username'
     }
   })
-  simple.mock(signIn.internals, 'saveSession').callFn(function () {})
+  simple.mock(signIn.internals, 'saveAccount').callFn(function () {})
 
   signIn(state, {
     username: 'pat',
@@ -71,14 +71,14 @@ test('successful account.signIn(options)', function (t) {
       body: 'serialised'
     })
     t.deepEqual(signIn.internals.deserialise.lastCall.arg, 'response body')
-    t.deepEqual(signIn.internals.saveSession.lastCall.arg, {
+    t.deepEqual(signIn.internals.saveAccount.lastCall.arg, {
       cacheKey: 'cacheKey123',
-      session: {
-        id: 'session123',
-        account: {
-          id: 'deserialise id',
-          username: 'deserialise username'
-        }
+      account: {
+        session: {
+          id: 'session123'
+        },
+        id: 'deserialise id',
+        username: 'deserialise username'
       }
     })
 

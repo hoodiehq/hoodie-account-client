@@ -9,8 +9,10 @@ test('fetch', function (t) {
 
   fetch({
     baseUrl: 'http://example.com',
-    session: {
-      id: 'abc4567'
+    account: {
+      session: {
+        id: 'abc4567'
+      }
     }
   }, 'path')
 

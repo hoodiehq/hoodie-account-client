@@ -8,8 +8,10 @@ test('acconuntsFindAll', function (t) {
 
   var state = {
     url: 'http://localhost:3000',
-    session: {
-      id: 'sessionId123'
+    account: {
+      session: {
+        id: 'sessionId123'
+      }
     }
   }
   var options = {
@@ -47,8 +49,10 @@ test('acconuntsFindAll with {include: "profile"}', function (t) {
 
   var state = {
     url: 'http://localhost:3000',
-    session: {
-      id: 'sessionId123'
+    account: {
+      session: {
+        id: 'sessionId123'
+      }
     }
   }
 

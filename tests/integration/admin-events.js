@@ -10,10 +10,10 @@ var accountResponse = require('../fixtures/admin-account')
 test('admin events', function (t) {
   t.plan(5)
 
-  store.setObject('_session_admin', {
-    id: 'abc4567',
-    account: {
-      username: 'patmin'
+  store.setObject('account_admin', {
+    username: 'patmin',
+    session: {
+      id: 'abc4567'
     }
   })
 

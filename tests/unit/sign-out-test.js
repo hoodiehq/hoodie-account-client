@@ -15,11 +15,11 @@ test('signOut()', function (t) {
   var state = {
     url: 'http://example.com',
     cacheKey: 'cacheKey123',
-    session: {
-      id: 'abc4567',
-      account: {
-        username: 'pat'
-      }
+    account: {
+      session: {
+        id: 'abc4567'
+      },
+      username: 'pat'
     },
     emitter: {
       emit: simple.stub()
@@ -40,7 +40,7 @@ test('signOut()', function (t) {
       cacheKey: 'cacheKey123'
     })
 
-    t.is(state.session, undefined, 'unsets session')
+    t.is(state.account, undefined, 'unsets account')
 
     simple.restore()
   })
@@ -54,7 +54,9 @@ test('signOut() with request error', function (t) {
   simple.mock(signOut.internals, 'request').rejectWith(new Error('Ooops'))
 
   signOut({
-    session: {}
+    account: {
+      session: {}
+    }
   })
 
   .then(t.fail.bind(t, 'must reject'))

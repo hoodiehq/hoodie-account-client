@@ -3,7 +3,7 @@ var test = require('tape')
 
 var signInResponse = require('../fixtures/signin.json')
 
-test('new Account(options) defaults to "_session" cacheKey', function (t) {
+test('new Account(options) defaults to "account" cacheKey', function (t) {
   t.plan(3)
 
   var Account = require('../../index')
@@ -37,10 +37,10 @@ test('new Account(options) defaults to "_session" cacheKey', function (t) {
 
     var account3 = new Account({
       url: 'http://localhost:3000',
-      cacheKey: '_session'
+      cacheKey: 'account'
     })
 
-    t.is(account3.isSignedIn(), true, 'is signed in if cacheKey set to "_session"')
+    t.is(account3.isSignedIn(), true, 'is signed in if cacheKey set to "account"')
   })
 
   .catch(t.error)

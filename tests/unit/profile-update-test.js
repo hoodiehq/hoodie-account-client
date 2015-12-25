@@ -19,17 +19,17 @@ test('updateProfile with change', function (t) {
     body: null
   })
   simple.mock(updateProfile.internals, 'serialise').returnWith('profileJsonData')
-  simple.mock(updateProfile.internals, 'saveSession').callFn(function () {})
+  simple.mock(updateProfile.internals, 'saveAccount').callFn(function () {})
 
   updateProfile({
     cacheKey: 'cacheKey123',
     url: 'http://example.com',
-    session: {
-      id: 'abc1234',
-      account: {
-        profile: {
-          foo: 'bar'
-        }
+    account: {
+      session: {
+        id: 'abc1234'
+      },
+      profile: {
+        foo: 'bar'
       }
     }
   }, {
@@ -45,15 +45,15 @@ test('updateProfile with change', function (t) {
       },
       body: 'profileJsonData'
     })
-    t.deepEqual(updateProfile.internals.saveSession.lastCall.arg, {
+    t.deepEqual(updateProfile.internals.saveAccount.lastCall.arg, {
       cacheKey: 'cacheKey123',
-      session: {
-        id: 'abc1234',
-        account: {
-          profile: {
-            foo: 'bar',
-            fullName: 'Docs Chicken'
-          }
+      account: {
+        session: {
+          id: 'abc1234'
+        },
+        profile: {
+          foo: 'bar',
+          fullName: 'Docs Chicken'
         }
       }
     })

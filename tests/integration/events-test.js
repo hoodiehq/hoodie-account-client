@@ -47,10 +47,10 @@ test('events', function (t) {
   })
 
   .then(function (accountProperties) {
-    var sessionData = store.getObject('_session')
+    var storeAccountData = store.getObject('account')
     t.is(accountProperties.username, options.username, 'returns correct username')
-    t.is(sessionData.account.username, accountProperties.username, 'stored correct username in session')
-    t.is(sessionData.id, signInResponse.data.id, 'stored correct session id')
+    t.is(storeAccountData.username, accountProperties.username, 'stored correct username in session')
+    t.is(storeAccountData.session.id, signInResponse.data.id, 'stored correct session id')
 
     t.deepEqual(signInHandler.lastCall.arg, {
       id: 'abc4567',

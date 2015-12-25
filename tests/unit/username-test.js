@@ -8,12 +8,10 @@ test('.username with empty state', function (t) {
   t.end()
 })
 
-test('.username with state: session.account.username = "pat"}', function (t) {
+test('.username with state: account.username = "pat"}', function (t) {
   t.is(username({
-    session: {
-      account: {
-        username: 'pat'
-      }
+    account: {
+      username: 'pat'
     }
   }), 'pat', 'returns undefined')
 
