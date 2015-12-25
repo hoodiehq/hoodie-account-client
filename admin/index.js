@@ -2,7 +2,7 @@ module.exports = AccountAdmin
 
 var EventEmitter = require('events').EventEmitter
 
-var getSession = require('../utils/get-session')
+var getAccount = require('../utils/get-account')
 
 var getUsername = require('../lib/username')
 var signIn = require('../lib/sign-in')
@@ -26,14 +26,14 @@ function AccountAdmin (options) {
     throw new Error('options.url is required')
   }
 
-  var cacheKey = options.cacheKey || '_session_admin'
+  var cacheKey = options.cacheKey || 'account_admin'
   var emitter = options.emitter || new EventEmitter()
   var accountsEmitter = new EventEmitter()
   var state = {
     accountsEmitter: accountsEmitter,
     cacheKey: cacheKey,
     emitter: emitter,
-    session: getSession({cacheKey: cacheKey}),
+    account: getAccount({cacheKey: cacheKey}),
     url: options.url,
     validate: options.validate || function () {}
   }

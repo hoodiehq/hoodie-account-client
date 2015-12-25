@@ -5,7 +5,7 @@ var EventEmitter = require('events').EventEmitter
 var getUsername = require('./lib/username')
 var events = require('./lib/events')
 
-var getSession = require('./utils/get-session')
+var getAccount = require('./utils/get-account')
 
 function Account (options) {
   if (!(this instanceof Account)) {
@@ -20,11 +20,11 @@ function Account (options) {
     throw new Error('options.url is required')
   }
 
-  var cacheKey = options.cacheKey || '_session'
+  var cacheKey = options.cacheKey || 'account'
   var state = {
     cacheKey: cacheKey,
     emitter: options.emitter || new EventEmitter(),
-    session: getSession({cacheKey: cacheKey}),
+    account: getAccount({cacheKey: cacheKey}),
     url: options.url,
     id: options.id,
     validate: options.validate || function () {}

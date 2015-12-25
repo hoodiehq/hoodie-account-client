@@ -10,7 +10,7 @@ function add (state, account, options) {
     url: state.url + '/accounts' + query(options),
     method: 'POST',
     headers: {
-      authorization: 'Bearer ' + state.session.id
+      authorization: 'Bearer ' + state.account.session.id
     },
     body: internals.serialise('account', account)
   })
