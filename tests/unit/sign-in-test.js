@@ -64,7 +64,7 @@ test('successful account.signIn(options)', function (t) {
     password: 'secret'
   })
 
-  .then(function (sessionProperties) {
+  .then(function (accountProperties) {
     t.deepEqual(signIn.internals.request.lastCall.arg, {
       method: 'PUT',
       url: 'http://example.com/session',
@@ -82,9 +82,9 @@ test('successful account.signIn(options)', function (t) {
       }
     })
 
-    t.assert(sessionProperties.account, 'resolves with account object')
-    t.equal(sessionProperties.account.id, 'deserialise id', 'resolves with account.id')
-    t.equal(sessionProperties.account.username, 'deserialise username', 'resolves with account.username')
+    t.assert(accountProperties, 'resolves with account object')
+    t.equal(accountProperties.id, 'deserialise id', 'resolves with account.id')
+    t.equal(accountProperties.username, 'deserialise username', 'resolves with account.username')
 
     simple.restore()
   })

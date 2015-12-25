@@ -60,14 +60,15 @@ test('signUp with username & password', function (t) {
     t.deepEqual(state.validate.lastCall.arg, {
       username: 'pat',
       password: 'secret'
-    })
+    }, 'passes username & password to validate')
     t.deepEqual(signUp.internals.serialise.lastCall.args, [
       'account',
       {
         username: 'pat',
         password: 'secret'
-      }
-    ])
+      },
+      undefined // state.id, from `new Account({id: ...})`
+    ], 'passes username & password to serialise')
     t.deepEqual(signUp.internals.request.lastCall.arg, {
       method: 'PUT',
       url: 'http://example.com/session/account',

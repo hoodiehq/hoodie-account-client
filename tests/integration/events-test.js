@@ -41,21 +41,22 @@ test('events', function (t) {
     t.deepEqual(signUpHandler.lastCall.arg, {
       id: 'abc4567',
       username: 'chicken@docs.com'
-    }, '"signup" event emitted with session object')
+    }, '"signup" event emitted with account object')
 
     return account.signIn(options)
   })
 
-  .then(function (returnedObject) {
+  .then(function (accountProperties) {
     var sessionData = store.getObject('_session')
-    t.is(returnedObject.account.username, options.username, 'returns correct username')
-    t.is(sessionData.account.username, returnedObject.account.username, 'stored correct username in session')
+    t.is(accountProperties.username, options.username, 'returns correct username')
+    t.is(sessionData.account.username, accountProperties.username, 'stored correct username in session')
     t.is(sessionData.id, signInResponse.data.id, 'stored correct session id')
 
     t.deepEqual(signInHandler.lastCall.arg, {
       id: 'abc4567',
-      username: 'chicken@docs.com'
-    }, '"signin" event emitted with session object')
+      username: 'chicken@docs.com',
+      session: { id: 'sessionid123' }
+    }, '"signin" event emitted with account object')
 
     return account.signOut()
   })
@@ -63,8 +64,9 @@ test('events', function (t) {
   .then(function () {
     t.deepEqual(signOutHandler.lastCall.arg, {
       id: 'abc4567',
-      username: 'chicken@docs.com'
-    }, '"signout" event emitted with session object')
+      username: 'chicken@docs.com',
+      session: { id: 'sessionid123' }
+    }, '"signout" event emitted with account object')
 
     t.is(signUpHandler.callCount, 1, '"signup" event emitted once')
     t.is(signInHandler.callCount, 1, '"signin" event emitted once')
