@@ -26,6 +26,7 @@ function Account (options) {
     emitter: options.emitter || new EventEmitter(),
     session: getSession({cacheKey: cacheKey}),
     url: options.url,
+    id: options.id,
     validate: options.validate || function () {}
   }
 
