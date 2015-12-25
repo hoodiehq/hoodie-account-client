@@ -52,17 +52,65 @@ account.on('signout', redirectToHome)
 ### Constructor
 
 ```js
+new Account(options)
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>options.url</code></th>
+    <td>String</td>
+    <td>Path or full URL to root location of the account JSON API</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.id</code></th>
+    <td>String</td>
+    <td>
+      The initial account id can be passed. Useful for apps that can be used
+      locally without an account.
+    </td>
+    <td>Defaults to random id</td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.cacheKey</code></th>
+    <td>String</td>
+    <td>
+      Name of localStorage key where to persist the session state.
+    </td>
+    <td>Defaults to <code>\_session</code></td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.validate</code></th>
+    <td>Function</td>
+    <td>
+      Optional function to validate account before sending
+      sign up / sign in / update requests
+    </td>
+    <td>No</td>
+  </tr>
+</table>
+
+Returns `account` API.
+
+Example
+
+```js
 new Account({
-  // required. Path or full URL to root location of the account JSON API
   url: '/api',
-  // name of localStorage key where to persist the session state.
-  // Defaults to "_session"
+  id: 'user123',
   cacheKey: 'myapp.session',
-  // function to validate account details
-  // defaults to return true
   validate: function (options) {
-    // "this" is the new Account
-    // "options" is an object with "username", "password", and "profile" properties
+    if (options.username.length < 3) {
+      throw new Error('Username must have at least 3 characters')
+    }
   }
 })
 ```
@@ -254,19 +302,16 @@ account.signIn(options)
   </tr>
 </table>
 
-Resolves with `sessionProperties`:
+Resolves with `accountProperties`:
 
 ```json
 {
-  "id": "session123",
-  "account": {
-    "id": "account123",
-    "username": "pat",
-    "createdAt": "2016-01-01T00:00.000Z",
-    "updatedAt": "2016-01-02T00:00.000Z",
-    "profile": {
-      "fullname": "Dr. Pat Hook"
-    }
+  "id": "account123",
+  "username": "pat",
+  "createdAt": "2016-01-01T00:00.000Z",
+  "updatedAt": "2016-01-02T00:00.000Z",
+  "profile": {
+    "fullname": "Dr. Pat Hook"
   }
 }
 ```
@@ -759,17 +804,33 @@ hoodie.off('connectionstatus:disconnected', showNotification)
 ### Events
 
 <table>
+  <thead>
+    <tr>
+      <th align="left">
+        Event
+      </th>
+      <th align="left">
+        Description
+      </th>
+      <th align="left">
+        Arguments
+      </th>
+    </tr>
+  </thead>
   <tr>
     <th align="left"><code>signup</code></th>
     <td>New user account created successfully</td>
+    <td><code>accountProperties</code> with <code>.session</code> property</td>
   </tr>
   <tr>
     <th align="left"><code>signin</code></th>
     <td>Successfully signed in to an account</td>
+    <td><code>accountProperties</code> with <code>.session</code> property</td>
   </tr>
   <tr>
     <th align="left"><code>signout</code></th>
     <td>Successfully signed out</td>
+    <td><code>accountProperties</code> with <code>.session</code> property</td>
   </tr>
   <tr>
     <th align="left"><code>passwordreset</code></th>
@@ -780,14 +841,14 @@ hoodie.off('connectionstatus:disconnected', showNotification)
     <td>
       Server responded with "unauthenticated" when checking session<br>
       🐕 <strong>TO BE DONE</strong> <a href="https://github.com/hoodiehq/hoodie-client-account/issues/35">#35</a>
-      </td>
+    </td>
   </tr>
   <tr>
     <th align="left"><code>reauthenticate</code></th>
     <td>
       Successfully signed in after "unauthenticated" state<br>
       🐕 <strong>TO BE DONE</strong> <a href="https://github.com/hoodiehq/hoodie-client-account/issues/35">#35</a>
-      </td>
+    </td>
   </tr>
 </table>
 
