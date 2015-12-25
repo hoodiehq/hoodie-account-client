@@ -22,7 +22,8 @@
     "pretest:browser:local": "npm run -s build",
     "test:coverage": "istanbul cover tests",
     "test:coverage:upload": "istanbul-coveralls",
-    "test:node": "node tests"
+    "test:node": "node tests",
+    "test:watch": "gaze 'clear && tape tests | tap-min' index.js tests/**/*.js lib/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -41,6 +42,7 @@
   "devDependencies": {
     "browserify": "^11.0.1",
     "doxx": "1.5.0",
+    "gaze-cli": "^0.2.0",
     "gh-pages-deploy": "^0.3.0",
     "istanbul": "^0.3.19",
     "istanbul-coveralls": "^1.0.3",
@@ -51,6 +53,7 @@
     "semantic-release": "^6.0.3",
     "simple-mock": "^0.5.0",
     "standard": "^5.2.2",
+    "tap-min": "^1.0.0",
     "tap-spec": "^4.1.0",
     "tape": "^4.2.0",
     "uglify-js": "^2.4.24"
