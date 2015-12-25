@@ -85,7 +85,7 @@ new Account(options)
     <td>
       Name of localStorage key where to persist the session state.
     </td>
-    <td>Defaults to <code>\_session</code></td>
+    <td>Defaults to <code>\account</code></td>
   </tr>
   <tr>
     <th align="left"><code>options.validate</code></th>
