@@ -1,38 +1,24 @@
 module.exports = Account
 
-var EventEmitter = require('events').EventEmitter
-
 var getUsername = require('./lib/username')
+var getId = require('./lib/id')
 var events = require('./lib/events')
 
-var getAccount = require('./utils/get-account')
+var getState = require('./utils/get-state')
 
 function Account (options) {
   if (!(this instanceof Account)) {
     return new Account(options)
   }
 
-  if (!options) {
-    options = {}
-  }
-
-  if (!options.url) {
-    throw new Error('options.url is required')
-  }
-
-  var cacheKey = options.cacheKey || 'account'
-  var state = {
-    cacheKey: cacheKey,
-    emitter: options.emitter || new EventEmitter(),
-    account: getAccount({cacheKey: cacheKey}),
-    url: options.url,
-    id: options.id,
-    validate: options.validate || function () {}
-  }
+  var state = getState(options)
 
   return {
     get username () {
       return getUsername(state)
+    },
+    get id () {
+      return getId(state)
     },
     signUp: require('./lib/sign-up').bind(this, state),
     signIn: require('./lib/sign-in').bind(this, state),
