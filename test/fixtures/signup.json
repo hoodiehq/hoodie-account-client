@@ -1,0 +1,33 @@
+{
+  "links": {
+    "self": "https://example.com/session/account"
+  },
+  "data": {
+    "id": "abc4567",
+    "type": "account",
+    "attributes": {
+      "username": "chicken@docs.com"
+    },
+    "relationships": {
+      "profile": {
+        "links": {
+          "related": "https://example.com/session/account/profile"
+        },
+        "data": {
+          "id": "abc4567-profile",
+          "type": "profile"
+        }
+      }
+    }
+  },
+  "included": [
+    {
+      "id": "abc4567-profile",
+      "type": "profile",
+      "attributes": {
+        "fullName": "Docs Chicken",
+        "email": "chicken@docs.com"
+      }
+    }
+  ]
+}

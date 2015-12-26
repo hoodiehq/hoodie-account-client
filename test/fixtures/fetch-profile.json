@@ -1,0 +1,13 @@
+{
+  "links": {
+    "self": "https://example.com/session/account/profile"
+  },
+  "data": {
+    "id": "abc123-profile",
+    "type": "profile",
+    "attributes": {
+     "fullName": "Docs Chicken",
+     "favoriteClothing": "Hoodie"
+    }
+  }
+}
