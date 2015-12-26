@@ -36,7 +36,7 @@ function getState (options) {
 
   if (!state.account) {
     state.account = {
-      id: generateId()
+      id: options.id || generateId()
     }
 
     saveAccount({
