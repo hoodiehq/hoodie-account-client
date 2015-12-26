@@ -15,7 +15,8 @@ var options = {
 }
 
 test('sign in', function (t) {
-  t.plan(10)
+  store.clear()
+  t.plan(9)
 
   var account = new Account({
     url: baseURL,
@@ -23,10 +24,7 @@ test('sign in', function (t) {
   })
 
   nock(baseURL)
-    .put('/session', function (body) {
-      t.isNot(body.data.id, 'abc4567', 'sends new account id')
-      return true
-    })
+    .put('/session')
     .reply(201, signInResponse)
 
     .delete('/session')

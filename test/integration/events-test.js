@@ -40,7 +40,11 @@ test('events', function (t) {
   .then(function () {
     t.deepEqual(signUpHandler.lastCall.arg, {
       id: 'abc4567',
-      username: 'chicken@docs.com'
+      username: 'chicken@docs.com',
+      profile: {
+        email: 'chicken@docs.com',
+        fullName: 'Docs Chicken'
+      }
     }, '"signup" event emitted with account object')
 
     return account.signIn(options)

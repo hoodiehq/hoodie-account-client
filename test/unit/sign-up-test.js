@@ -67,7 +67,7 @@ test('signUp with username & password', function (t) {
         username: 'pat',
         password: 'secret'
       },
-      undefined // state.id, from `new Account({id: ...})`
+      undefined // state.account.id, from `new Account({id: ...})`
     ], 'passes username & password to serialise')
     t.deepEqual(signUp.internals.request.lastCall.arg, {
       method: 'PUT',
