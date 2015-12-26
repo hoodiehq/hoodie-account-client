@@ -32,6 +32,7 @@ account.on('signout', redirectToHome)
 ## API
 
 - [Constructor](#constructor)
+- [account.id](#accountid)
 - [account.username](#accountusername)
 - [account.validate](#accountvalidate)
 - [account.signUp](#accountsignup)
@@ -114,6 +115,11 @@ new Account({
   }
 })
 ```
+
+### account.id
+
+_Read-only_. Returns the account id. If accessed for the first time, a
+new id gets generated and persisted in localStorage.
 
 ### account.username
 
