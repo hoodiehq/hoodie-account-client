@@ -1,9 +1,8 @@
 module.exports = request
 
 var nets = require('nets')
+var Promise = require('lie')
 var set = require('lodash.set')
-
-var Promise = require('./promise')
 
 function request (options) {
   options.encoding = undefined
