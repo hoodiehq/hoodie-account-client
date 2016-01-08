@@ -20,7 +20,7 @@ test('request without options.type', function (t) {
 })
 
 test('successful account.request(options)', function (t) {
-  t.plan(6)
+  t.plan(8)
 
   var state = {
     url: 'http://example.com',
@@ -38,7 +38,7 @@ test('successful account.request(options)', function (t) {
 
   request(state, {
     type: 'passwordreset',
-    password: 'secret'
+    email: 'pat@example.com'
   })
 
   .then(function (accountProperties) {
@@ -48,6 +48,11 @@ test('successful account.request(options)', function (t) {
       body: 'serialised'
     })
     t.deepEqual(request.internals.deserialise.lastCall.arg, 'response body')
+    t.deepEqual(request.internals.serialise.lastCall.args[0], 'request')
+    t.deepEqual(request.internals.serialise.lastCall.args[1], {
+      type: 'passwordreset',
+      email: 'pat@example.com'
+    })
 
     t.equal(accountProperties, 'deserialised', 'resolves deserialised request')
     t.equal(state.emitter.emit.callCount, 1, '1 event emitted')
