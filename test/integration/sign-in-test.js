@@ -16,7 +16,7 @@ var options = {
 
 test('sign in', function (t) {
   store.clear()
-  t.plan(10)
+  t.plan(11)
 
   var account = new Account({
     url: baseURL,
@@ -59,8 +59,7 @@ test('sign in', function (t) {
   .then(function (signOutResult) {
     t.pass('signes out')
 
-    // https://github.com/hoodiehq/hoodie-client-account/issues/50
-    // t.is(signOutResult.username, 'chicken@docs.com')
+    t.is(signOutResult.username, 'chicken@docs.com')
 
     var storeAccount = store.getObject('account')
 
