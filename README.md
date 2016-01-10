@@ -846,14 +846,14 @@ hoodie.off('connectionstatus:disconnected', showNotification)
     <th align="left"><code>unauthenticate</code></th>
     <td>
       Server responded with "unauthenticated" when checking session<br>
-      🐕 <strong>TO BE DONE</strong> <a href="https://github.com/hoodiehq/hoodie-client-account/issues/35">#35</a>
+      🐕 <strong>TO BE DONE</strong> <a href="https://github.com/hoodiehq/hoodie-client-account/issues/56">#56</a>
     </td>
   </tr>
   <tr>
     <th align="left"><code>reauthenticate</code></th>
     <td>
       Successfully signed in after "unauthenticated" state<br>
-      🐕 <strong>TO BE DONE</strong> <a href="https://github.com/hoodiehq/hoodie-client-account/issues/35">#35</a>
+      🐕 <strong>TO BE DONE</strong> <a href="https://github.com/hoodiehq/hoodie-client-account/issues/57">#57</a>
     </td>
   </tr>
 </table>
