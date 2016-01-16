@@ -1,6 +1,6 @@
 var store = require('humble-localstorage')
 
-var clone = require('lodash.clone')
+var clone = require('lodash/clone')
 var nock = require('nock')
 var test = require('tape')
 

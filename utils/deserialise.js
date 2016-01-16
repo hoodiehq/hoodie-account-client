@@ -1,7 +1,7 @@
 module.exports = deserialise
 
-var merge = require('lodash.merge')
-var where = require('lodash.where')
+var merge = require('lodash/merge')
+var filter = require('lodash/filter')
 
 function deserialise (response, options) {
   if (!response || !response.data) {
@@ -33,7 +33,7 @@ function deserialiseOne (options, response) {
 
     if (resource.relationships) {
       var relationship = resource.relationships[currentInclude].data
-      var includedResource = where(response.included, {
+      var includedResource = filter(response.included, {
         type: relationship.type,
         id: relationship.id
       })[0]

@@ -1,6 +1,6 @@
 module.exports = update
 
-var merge = require('lodash.merge')
+var merge = require('lodash/merge')
 
 var internals = module.exports.internals = {}
 internals.find = require('./find')

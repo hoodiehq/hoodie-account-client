@@ -1,7 +1,7 @@
 module.exports = getState
 
 var EventEmitter = require('events').EventEmitter
-var get = require('lodash.get')
+var get = require('lodash/get')
 
 var generateId = require('./generate-id')
 var getAccount = require('./get-account')

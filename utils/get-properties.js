@@ -1,7 +1,7 @@
 module.exports = getProperties
 
-var get = require('lodash.get')
-var set = require('lodash.set')
+var get = require('lodash/get')
+var set = require('lodash/set')
 
 function getProperties (baseObject, path) {
   if (path === undefined) {
