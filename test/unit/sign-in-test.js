@@ -109,7 +109,7 @@ test('signIn with request error', function (t) {
 
 // account.signIn() to emit `reauthenticate` event when unauthenticated
 
-test.only('signIn with same username', function (t) {
+test('signIn with same username', function (t) {
   t.plan(2)
 
   var state = {
@@ -131,11 +131,7 @@ test.only('signIn with same username', function (t) {
   })
   simple.mock(signIn.internals, 'serialise').returnWith('serialised')
   simple.mock(signIn.internals, 'deserialise').returnWith({
-    id: 'session123',
-    account: {
-      id: 'deserialise id',
-      username: 'deserialise username'
-    }
+    id: 'session123'
   })
   simple.mock(signIn.internals, 'saveAccount').callFn(function () {})
 
