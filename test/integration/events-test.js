@@ -14,7 +14,7 @@ var options = {
 }
 
 test('events', function (t) {
-  t.plan(9)
+  t.plan(10)
 
   var account = new Account({
     url: baseURL
@@ -23,7 +23,7 @@ test('events', function (t) {
   nock(baseURL)
     .put('/session/account')
     .reply(201, signUpResponse)
-    .put('/session')
+    .put('/session').twice()
     .reply(201, signInResponse)
     .delete('/session')
     .reply(204)
@@ -31,9 +31,11 @@ test('events', function (t) {
   var signUpHandler = simple.stub()
   var signInHandler = simple.stub()
   var signOutHandler = simple.stub()
+  var reauthenticateHandler = simple.stub()
   account.on('signup', signUpHandler)
   account.on('signin', signInHandler)
   account.on('signout', signOutHandler)
+  account.on('reauthenticate', reauthenticateHandler)
 
   account.signUp(options)
 
@@ -47,6 +49,11 @@ test('events', function (t) {
       }
     }, '"signup" event emitted with account object')
 
+    return account.signIn(options)
+  })
+
+  // Check whether signing in again emits 'reauthenticate' instead of 'signin'
+  .then(function (accountProperties) {
     return account.signIn(options)
   })
 
@@ -75,6 +82,7 @@ test('events', function (t) {
     t.is(signUpHandler.callCount, 1, '"signup" event emitted once')
     t.is(signInHandler.callCount, 1, '"signin" event emitted once')
     t.is(signOutHandler.callCount, 1, '"signout" event emitted once')
+    t.is(reauthenticateHandler.callCount, 1, '"reauthenticate" event emitted once')
   })
 
   .catch(t.error)
