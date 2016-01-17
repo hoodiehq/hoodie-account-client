@@ -853,7 +853,7 @@ hoodie.off('connectionstatus:disconnected', showNotification)
   <tr>
     <th align="left"><code>reauthenticate</code></th>
     <td>
-      Successfully signed with the same username (useful when session has expired)
+      Successfully signed in with the same username (useful when session has expired)
     </td>
     <td><code>accountProperties</code> with <code>.session</code> property</td>
   </tr>
