@@ -853,9 +853,9 @@ hoodie.off('connectionstatus:disconnected', showNotification)
   <tr>
     <th align="left"><code>reauthenticate</code></th>
     <td>
-      Successfully signed in after "unauthenticated" state<br>
-      🐕 <strong>TO BE DONE</strong> <a href="https://github.com/hoodiehq/hoodie-client-account/issues/57">#57</a>
+      Successfully signed with the same username (useful when session has expired)
     </td>
+    <td><code>accountProperties</code> with <code>.session</code> property</td>
   </tr>
 </table>
 
