@@ -106,3 +106,49 @@ test('signIn with request error', function (t) {
     simple.restore()
   })
 })
+
+// account.signIn() to emit `reauthenticate` event when unauthenticated
+
+test.only('signIn with same username', function (t) {
+  t.plan(2)
+
+  var state = {
+    url: 'http://example.com',
+    cacheKey: 'cacheKey123',
+    emitter: {
+      emit: simple.stub()
+    },
+    account: {
+      username: 'pat',
+      session: {
+        id: 'session123'
+      }
+    }
+  }
+
+  simple.mock(signIn.internals, 'request').resolveWith({
+    body: 'response body'
+  })
+  simple.mock(signIn.internals, 'serialise').returnWith('serialised')
+  simple.mock(signIn.internals, 'deserialise').returnWith({
+    id: 'session123',
+    account: {
+      id: 'deserialise id',
+      username: 'deserialise username'
+    }
+  })
+  simple.mock(signIn.internals, 'saveAccount').callFn(function () {})
+
+  signIn(state, {
+    username: 'pat',
+    password: 'secret'
+  })
+
+  .then(function (accountProperties) {
+    t.is(state.emitter.emit.callCount, 1, '1 Event emitted')
+    t.is(state.emitter.emit.lastCall.arg, 'reauthenticate', 'Correct event emitted')
+    simple.restore()
+  })
+
+  .catch(t.error)
+})
