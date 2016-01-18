@@ -1,6 +1,6 @@
 # hoodie-client-account
 
-> Account client for the browser
+> Account client API for the browser
 
 [![Build Status](https://travis-ci.org/hoodiehq/hoodie-client-account.svg?branch=master)](https://travis-ci.org/hoodiehq/hoodie-client-account)
 [![Coverage Status](https://coveralls.io/repos/hoodiehq/hoodie-client-account/badge.svg?branch=master)](https://coveralls.io/r/hoodiehq/hoodie-client-account?branch=master)
