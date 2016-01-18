@@ -1,0 +1,40 @@
+{
+  "links": {
+    "self": "https://example.com/session"
+  },
+  "data": {
+    "id": "sessionid123",
+    "type": "session",
+    "relationships": {
+      "account": {
+        "links": {
+          "related": "https://example.com/session/account"
+        },
+        "data": {
+          "id": "abc4567",
+          "type": "account"
+        }
+      }
+    }
+  },
+  "included": [
+    {
+      "id": "abc4567",
+      "type": "account",
+      "attributes": {
+        "username": "newchicken@docs.com"
+      },
+      "relationships": {
+        "profile": {
+          "links": {
+            "related": "https://example.com/session/account/profile"
+          },
+          "data": {
+            "id": "abc4567-profile",
+            "type": "profile"
+          }
+        }
+      }
+    }
+  ]
+}
