@@ -41,6 +41,7 @@ account.on('signout', redirectToHome)
 - [account.signOut](#accountsignout)
 - [account.get](#accountget)
 - [account.fetch](#accountfetch)
+- [account.update](#accountupdate)
 - [account.profile.get](#accountprofileget)
 - [account.profile.fetch](#accountprofilefetch)
 - [account.profile.update](#accountprofileupdate)
@@ -509,6 +510,74 @@ account.fetch(['createdAt', 'updatedAt']).then(function (properties) {
 })
 ```
 
+### account.update
+
+Update account properties on server and local cache
+
+```js
+account.update(changedProperties)
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>changedProperties</code></th>
+    <td>Object</td>
+    <td>
+      Object of properties & values that changed.
+      Other properties remain unchanged.
+    </td>
+    <td>No</td>
+  </tr>
+</table>
+
+Resolves with `accountProperties`:
+
+```json
+{
+  "id": "account123",
+  "username": "pat",
+  "createdAt": "2016-01-01T00:00.000Z",
+  "updatedAt": "2016-01-01T00:00.000Z"
+}
+```
+
+Rejects with:
+
+<table>
+  <tr>
+    <th align="left"><code>UnauthenticatedError</code></th>
+    <td>Session is invalid</td>
+  </tr>
+  <tr>
+    <th align="left"><code>InvalidError</code></th>
+    <td><em>Custom validation error</em></td>
+  </tr>
+  <tr>
+    <th align="left"><code>ConflictError</code></th>
+    <td>Username <strong>&lt;username&gt;</strong> already exists</td>
+  </tr>
+  <tr>
+    <th align="left"><code>ConnectionError</code></th>
+    <td>Could not connect to server</td>
+  </tr>
+</table>
+
+Example
+
+```js
+account.update({username: 'treetrunks'}).then(function (properties) {
+  alert('You are now known as ' + properties.username)
+})
+```
+
 ### account.profile.get
 
 ```js
@@ -858,7 +927,6 @@ hoodie.off('connectionstatus:disconnected', showNotification)
     <td><code>accountProperties</code> with <code>.session</code> property</td>
   </tr>
 </table>
-
 
 ### Requests
 
