@@ -26,6 +26,7 @@ function Account (options) {
     isSignedIn: require('./lib/is-signed-in').bind(this, state),
     get: require('./lib/get').bind(this, state),
     fetch: require('./lib/fetch').bind(this, state, 'account'),
+    update: require('./lib/update').bind(this, state),
     profile: {
       get: require('./lib/profile-get').bind(this, state),
       fetch: require('./lib/fetch').bind(this, state, 'account.profile'),
