@@ -39,6 +39,7 @@ account.on('signout', redirectToHome)
 - [account.signUp](#accountsignup)
 - [account.signIn](#accountsignin)
 - [account.signOut](#accountsignout)
+- [account.destroy](#accountdestroy)
 - [account.get](#accountget)
 - [account.fetch](#accountfetch)
 - [account.update](#accountupdate)
@@ -396,6 +397,50 @@ Example
 
 ```js
 account.signOut().then(function (sessionProperties) {
+  alert('Bye, ' + sessionProperties.account.username)
+}).catch(function (error) {
+  alert(error)
+})
+```
+
+### account.destroy
+
+Destroys the account of the currently signed in user.
+
+```js
+account.destroy()
+```
+
+Resolves with `sessionProperties` like [account.signin](#accountsignin),
+but without the session id:
+
+```json
+{
+  "account": {
+    "id": "account123",
+    "username": "pat",
+    "createdAt": "2016-01-01T00:00.000Z",
+    "updatedAt": "2016-01-02T00:00.000Z",
+    "profile": {
+      "fullname": "Dr. Pat Hook"
+    }
+  }
+}
+```
+
+Rejects with:
+
+<table>
+  <tr>
+    <th align="left"><code>Error</code></th>
+    <td><em>A custom error thrown in a <code>before:destroy</code> hook</em></td>
+  </tr>
+</table>
+
+Example
+
+```js
+account.destroy().then(function (sessionProperties) {
   alert('Bye, ' + sessionProperties.account.username)
 }).catch(function (error) {
   alert(error)
