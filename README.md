@@ -435,6 +435,10 @@ Rejects with:
     <th align="left"><code>Error</code></th>
     <td><em>A custom error thrown in a <code>before:destroy</code> hook</em></td>
   </tr>
+  <tr>
+    <th align="left"><code>ConnectionError</code></th>
+    <td>Could not connect to server</td>
+  </tr>
 </table>
 
 Example
