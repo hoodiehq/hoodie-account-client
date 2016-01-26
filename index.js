@@ -23,6 +23,7 @@ function Account (options) {
     signUp: require('./lib/sign-up').bind(this, state),
     signIn: require('./lib/sign-in').bind(this, state),
     signOut: require('./lib/sign-out').bind(this, state),
+    destroy: require('./lib/destroy').bind(this, state),
     isSignedIn: require('./lib/is-signed-in').bind(this, state),
     get: require('./lib/get').bind(this, state),
     fetch: require('./lib/fetch').bind(this, state, 'account'),
