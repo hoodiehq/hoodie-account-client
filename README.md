@@ -975,6 +975,13 @@ hoodie.off('connectionstatus:disconnected', showNotification)
     </td>
     <td><code>accountProperties</code> with <code>.session</code> property</td>
   </tr>
+  <tr>
+    <th align="left"><code>update</code></th>
+    <td>
+      Successfully updated an account's properties
+    </td>
+    <td><code>accountProperties</code> with <code>.session</code> property</td>
+  </tr>
 </table>
 
 ### Requests
