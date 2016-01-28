@@ -12,7 +12,7 @@ test('update without change', function (t) {
 })
 
 test('update with change', function (t) {
-  t.plan(3)
+  t.plan(5)
 
   simple.mock(update.internals, 'request').resolveWith({
     statusCode: 204,
@@ -24,6 +24,9 @@ test('update with change', function (t) {
   var state = {
     cacheKey: 'cacheKey123',
     url: 'http://example.com',
+    emitter: {
+      emit: simple.stub()
+    },
     account: {
       username: 'bakingpies',
       session: {
@@ -56,6 +59,9 @@ test('update with change', function (t) {
     })
 
     t.equal(account.username, 'treetrunks', 'returns new property')
+
+    t.is(state.emitter.emit.callCount, 1, '1 Event emitted')
+    t.is(state.emitter.emit.lastCall.arg, 'update', 'Correct event emitted')
     simple.restore()
   })
 
