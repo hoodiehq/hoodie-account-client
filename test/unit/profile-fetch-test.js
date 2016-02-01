@@ -8,7 +8,7 @@ test('profileFetch', function (t) {
   simple.mock(internals, 'fetchProperties').resolveWith({})
 
   fetch({
-    baseUrl: 'http://example.com',
+    url: 'http://example.com',
     account: {
       session: {
         id: 'abc4567'

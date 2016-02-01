@@ -1,3 +1,4 @@
+/*
 var nock = require('nock')
 var store = require('humble-localstorage')
 var test = require('tape')
@@ -39,3 +40,4 @@ test('account.fetch() and account.profil.fetch()', function (t) {
 
   .catch(t.fail)
 })
+*/

@@ -8,7 +8,7 @@ test('fetch', function (t) {
   simple.mock(internals, 'fetchProperties').resolveWith({})
 
   fetch({
-    baseUrl: 'http://example.com',
+    url: 'http://example.com',
     account: {
       session: {
         id: 'abc4567'
@@ -30,7 +30,7 @@ test('fetch without state', function (t) {
   t.plan(1)
 
   fetch({
-    baseUrl: 'http://example.com'
+    url: 'http://example.com'
   }, 'path')
 
   .then(t.fail.bind(t, 'Must reject'))
