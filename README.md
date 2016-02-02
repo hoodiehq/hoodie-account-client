@@ -1023,4 +1023,4 @@ If you want to hang out you can join our [Hoodie Community Chat](http://hood.ie/
 
 ## License
 
-Appache 2.0
+[Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)

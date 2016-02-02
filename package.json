@@ -72,5 +72,6 @@
   "gh-pages-deploy": {
     "staticpath": "docs/build",
     "noprompt": true
-  }
+  },
+  "author": "The Hoodie Community and other contributors | http://hood.ie/"
 }
