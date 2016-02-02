@@ -24,7 +24,7 @@ test('events', function (t) {
   nock(baseURL)
     .put('/session/account')
     .reply(201, signUpResponse)
-    .put('/session').twice()
+    .put('/session').thrice()
     .reply(201, signInResponse)
     .patch('/session/account')
     .reply(201, updateResponse)

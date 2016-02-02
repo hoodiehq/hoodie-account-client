@@ -16,10 +16,12 @@ var options = {
   password: 'secret'
 }
 
+var uniqueId = 1
+
 test('sign in and change username', function (t) {
   store.clear()
 
-  t.plan(10)
+  t.plan(11)
 
   var account = new Account({
     url: baseURL,
@@ -41,12 +43,17 @@ test('sign in and change username', function (t) {
     .put('/session', function (body) {
       return body.data.attributes.password === 'newsecret'
     })
-    .reply(201, signInResponseAfterUpdate)
+    .thrice()
+    .reply(201, function () {
+      // Session is updated everytime a user puts
+      signInResponseAfterUpdate.data.id = 'session' + (uniqueId++)
+      return signInResponseAfterUpdate
+    })
 
   account.signIn(options)
 
   .then(function (signInResult) {
-    t.pass('signes in')
+    t.pass('signs in')
     t.is(signInResult.username, 'chicken@docs.com')
 
     return account.update({ username: 'newchicken@docs.com', password: 'newsecret' })
@@ -56,6 +63,7 @@ test('sign in and change username', function (t) {
     t.pass('update resultResult received')
     t.is(updateResult.username, 'newchicken@docs.com', 'new account name in result')
     t.is(account.username, 'newchicken@docs.com', 'account username set to new one')
+    t.is(updateResult.session.id, account.get('session.id'), 'account session should be the same as the result')
 
     return account.signOut()
   })

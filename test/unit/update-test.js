@@ -12,14 +12,7 @@ test('update without change', function (t) {
 })
 
 test('update with change', function (t) {
-  t.plan(5)
-
-  simple.mock(update.internals, 'request').resolveWith({
-    statusCode: 204,
-    body: null
-  })
-  simple.mock(update.internals, 'serialise').returnWith('jsonData')
-  simple.mock(update.internals, 'saveAccount').callFn(function () {})
+  t.plan(6)
 
   var state = {
     cacheKey: 'cacheKey123',
@@ -35,17 +28,30 @@ test('update with change', function (t) {
     }
   }
 
+  simple.mock(update.internals, 'request').resolveWith({
+    statusCode: 204,
+    body: null
+  })
+  simple.mock(update.internals, 'deserialise').returnWith(state.account.session)
+  simple.mock(update.internals, 'serialise').returnWith('jsonData')
+  simple.mock(update.internals, 'saveAccount').callFn(function () {})
+
   update(state, {
     username: 'treetrunks'
   })
 
   .then(function (account) {
-    t.deepEqual(update.internals.request.lastCall.arg, {
+    t.deepEqual(update.internals.request.calls[0].arg, {
       method: 'PATCH',
       url: 'http://example.com/session/account',
       headers: {
         authorization: 'Bearer abc1234'
       },
+      body: 'jsonData'
+    })
+    t.deepEqual(update.internals.request.calls[1].arg, {
+      method: 'PUT',
+      url: 'http://example.com/session',
       body: 'jsonData'
     })
     t.deepEqual(update.internals.saveAccount.lastCall.arg, {
