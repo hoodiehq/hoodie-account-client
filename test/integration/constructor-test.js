@@ -1,8 +1,7 @@
+var store = require('humble-localstorage')
 var test = require('tape')
 
 var Account = require('../../index')
-
-var store = require('humble-localstorage')
 
 test('new Account(options)', function (t) {
   store.clear()
@@ -24,6 +23,7 @@ test('new Account(options)', function (t) {
   t.is(typeof account.signOut, 'function', 'has "signOut()"')
   t.is(typeof account.signUp, 'function', 'has "signUp()"')
   t.is(typeof account.request, 'function', 'has "request()"')
+  t.is(typeof account.hasInvalidSession, 'function', 'has "hasInvalidSession()"')
   t.is(typeof account.on, 'function', 'has "on()"')
   t.is(typeof account.one, 'function', 'has "one()"')
   t.is(typeof account.off, 'function', 'has "off()"')

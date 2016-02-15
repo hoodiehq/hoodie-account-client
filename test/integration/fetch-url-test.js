@@ -1,4 +1,3 @@
-/*
 var nock = require('nock')
 var store = require('humble-localstorage')
 var test = require('tape')
@@ -8,7 +7,6 @@ var Account = require('../../index')
 test('account.fetch() and account.profil.fetch()', function (t) {
   t.plan(1)
 
-  // simulate signed in state
   store.setObject('account', {
     username: 'john-doe',
     id: 'abc4567',
@@ -40,4 +38,3 @@ test('account.fetch() and account.profil.fetch()', function (t) {
 
   .catch(t.fail)
 })
-*/

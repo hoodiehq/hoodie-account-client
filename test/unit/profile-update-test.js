@@ -1,7 +1,7 @@
 var simple = require('simple-mock')
 var test = require('tape')
 
-var updateProfile = require('../../lib/update-profile')
+var updateProfile = require('../../lib/profile-update')
 
 test('updateProfile without change', function (t) {
   t.plan(1)
