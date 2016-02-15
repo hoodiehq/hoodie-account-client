@@ -25,13 +25,14 @@ function Account (options) {
     signOut: require('./lib/sign-out').bind(this, state),
     destroy: require('./lib/destroy').bind(this, state),
     isSignedIn: require('./lib/is-signed-in').bind(this, state),
+    hasInvalidSession: require('./lib/has-invalid-session').bind(this, state),
     get: require('./lib/get').bind(this, state),
     fetch: require('./lib/fetch').bind(this, state, 'account'),
     update: require('./lib/update').bind(this, state),
     profile: {
       get: require('./lib/profile-get').bind(this, state),
-      fetch: require('./lib/fetch').bind(this, state, 'account.profile'),
-      update: require('./lib/update-profile').bind(this, state)
+      fetch: require('./lib/profile-fetch').bind(this, state, 'account.profile'),
+      update: require('./lib/profile-update').bind(this, state)
     },
     request: require('./lib/request').bind(this, state),
     on: events.on.bind(this, state),
