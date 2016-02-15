@@ -36,6 +36,7 @@ account.on('signout', redirectToHome)
 - [account.username](#accountusername)
 - [account.validate](#accountvalidate)
 - [account.isSignedIn](#accountissignedin)
+- [account.hasInvalidSession](#hasInvalidSession)
 - [account.signUp](#accountsignup)
 - [account.signIn](#accountsignin)
 - [account.signOut](#accountsignout)
@@ -199,6 +200,15 @@ Returns `true` if user is currently signed in, otherwise `false`.
 
 ```js
 account.isSignedIn()
+```
+
+### account.hasInvalidSession
+
+Checks `account.session.invalid` property.
+Returns `true` if user has invalid session, otherwise `undefined`.
+
+```js
+account.hasInvalidSession()
 ```
 
 ### account.signUp
@@ -960,13 +970,14 @@ hoodie.off('connectionstatus:disconnected', showNotification)
   <tr>
     <th align="left"><code>passwordreset</code></th>
     <td>Email with password reset token sent</td>
+    <td></td>
   </tr>
   <tr>
     <th align="left"><code>unauthenticate</code></th>
     <td>
-      Server responded with "unauthenticated" when checking session<br>
-      🐕 <strong>TO BE DONE</strong> <a href="https://github.com/hoodiehq/hoodie-client-account/issues/56">#56</a>
+      Server responded with "unauthenticated" when checking session
     </td>
+    <td></td>
   </tr>
   <tr>
     <th align="left"><code>reauthenticate</code></th>
