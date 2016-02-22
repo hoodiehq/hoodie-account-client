@@ -56,6 +56,9 @@ test('signOut() with request error', function (t) {
   signOut({
     account: {
       session: {}
+    },
+    emitter: {
+      emit: simple.stub()
     }
   })
 
