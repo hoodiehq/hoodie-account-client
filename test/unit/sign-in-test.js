@@ -141,8 +141,8 @@ test('signIn with same username', function (t) {
   })
 
   .then(function (accountProperties) {
-    t.is(state.emitter.emit.callCount, 1, '1 Event emitted')
-    t.is(state.emitter.emit.lastCall.arg, 'reauthenticate', 'Correct event emitted')
+    t.is(state.emitter.emit.callCount, 3, '3 Events emitted')
+    t.is(state.emitter.emit.calls[1].arg, 'reauthenticate', 'Correct event emitted')
     simple.restore()
   })
 
