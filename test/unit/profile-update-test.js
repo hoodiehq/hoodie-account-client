@@ -66,3 +66,27 @@ test('updateProfile with change', function (t) {
 
   .catch(t.error)
 })
+
+test('server side error', function (t) {
+  t.plan(1)
+
+  simple.mock(updateProfile.internals, 'request').rejectWith(new Error())
+
+  updateProfile({
+    cacheKey: 'cacheKey123',
+    url: 'http://example.com',
+    account: {
+      session: {
+        id: 'abc1234'
+      },
+      profile: {
+        foo: 'bar'
+      }
+    }
+  }, {
+    fullName: 'Docs Chicken'
+  })
+
+  .then(t.fail.bind(t, 'must reject'))
+  .catch(t.pass.bind(t, 'rejects with error'))
+})

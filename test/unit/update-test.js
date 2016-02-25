@@ -73,3 +73,34 @@ test('update with change', function (t) {
 
   .catch(t.error)
 })
+
+test('server side error', function (t) {
+  t.plan(1)
+
+  var state = {
+    cacheKey: 'cacheKey123',
+    url: 'http://example.com',
+    emitter: {
+      emit: simple.stub()
+    },
+    account: {
+      username: 'bakingpies',
+      session: {
+        id: 'abc1234'
+      }
+    }
+  }
+
+  simple.mock(update.internals, 'request').rejectWith(new Error())
+
+  update(state, {
+    username: 'treetrunks'
+  })
+
+  .then(function (account) {
+    t.fail.bind(t, 'must reject')
+    simple.restore()
+  })
+  .catch(t.pass.bind(t, 'rejects with error'))
+})
+

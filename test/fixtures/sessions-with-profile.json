@@ -1,0 +1,51 @@
+{
+  "links": {
+    "self": "http://localhost:80/session"
+  },
+  "data": {
+    "id": "cGF0LWRvZToxMjc1MDA6zEZsQ1BuO-W8SthDSrg8KXQ8OlQ",
+    "type": "session",
+    "relationships": {
+      "account": {
+        "links": {
+          "related": "http://localhost:80/session/account"
+        },
+        "data": {
+          "id": "userid123",
+          "type": "account"
+        }
+      }
+    }
+  },
+  "included": [
+    {
+      "id": "userid123",
+      "type": "account",
+      "attributes": {
+        "username": "pat-doe",
+        "roles": [
+          "mycustomrole"
+        ]
+      },
+      "relationships": {
+        "profile": {
+          "links": {
+            "related": "http://localhost:80/session/account/profile"
+          },
+          "data": {
+            "id": "userid123-profile",
+            "type": "profile"
+          }
+        }
+      }
+    },
+    {
+      "id": "userid123-profile",
+      "type": "profile",
+      "attributes": {
+        "fullName": "pat Doe",
+        "email": "pat@example.com"
+      }
+    }
+  ]
+}
