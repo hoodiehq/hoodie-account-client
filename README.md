@@ -744,7 +744,7 @@ Examples
 account.fetch().then(function (properties) {
   alert('Hey there ' + properties.fullname)
 })
-account.fetch('fullname').then(function (createdAt) {
+account.fetch('fullname').then(function (fullname) {
   alert('Hey there ' + fullname)
 })
 account.fetch(['fullname', 'address.city']).then(function (properties) {
