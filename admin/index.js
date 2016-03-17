@@ -15,6 +15,8 @@ var accountsFindAll = require('./lib/accounts/find-all')
 var accountsUpdate = require('./lib/accounts/update')
 var accountsRemove = require('./lib/accounts/remove')
 
+var sessionsAdd = require('./lib/sessions/add')
+
 var events = require('../lib/events')
 
 function AccountAdmin (options) {
@@ -38,7 +40,7 @@ function AccountAdmin (options) {
     validate: options.validate || function () {}
   }
 
-  return {
+  var admin = {
     get username () {
       return getUsername(state)
     },
@@ -69,4 +71,11 @@ function AccountAdmin (options) {
     one: events.one.bind(this, state),
     off: events.off.bind(this, state)
   }
+
+  // sessions.add can use accounts.find to lookup user id by username
+  admin.sessions = {
+    add: sessionsAdd.bind(admin, state)
+  }
+
+  return admin
 }

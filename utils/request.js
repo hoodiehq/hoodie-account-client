@@ -18,6 +18,7 @@ function request (options) {
     }
     nets(options, function (error, response) {
       if (error) {
+        error.name = 'ConnectionError'
         return reject(error)
       }
 
