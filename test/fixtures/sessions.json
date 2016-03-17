@@ -1,0 +1,40 @@
+{
+  "links": {
+    "self": "https://example.com/accounts/abc4567/sessions/sessionid456"
+  },
+  "data": {
+    "id": "sessionid456",
+    "type": "session",
+    "relationships": {
+      "account": {
+        "links": {
+          "related": "https://example.com/accounts/abc4567"
+        },
+        "data": {
+          "id": "abc4567",
+          "type": "account"
+        }
+      }
+    }
+  },
+  "included": [
+    {
+      "id": "abc4567",
+      "type": "account",
+      "attributes": {
+        "username": "pat"
+      },
+      "relationships": {
+        "profile": {
+          "links": {
+            "related": "https://example.com/session/account/profile"
+          },
+          "data": {
+            "id": "abc4567-profile",
+            "type": "profile"
+          }
+        }
+      }
+    }
+  ]
+}
