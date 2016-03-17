@@ -225,8 +225,6 @@ admin.signOut().then(function (sessionProperties) {
 
 ---
 
-🐕 **TO BE DONE**: [#19](https://github.com/hoodiehq/hoodie-client-account/issues/19)
-
 ---
 
 Admins can create a session for any user.
@@ -271,10 +269,6 @@ Rejects with:
   <tr>
     <th align="left"><code>UnauthenticatedError</code></th>
     <td>Session is invalid</td>
-  </tr>
-  <tr>
-    <th align="left"><code>UnconfirmedError</code></th>
-    <td>Account has not been confirmed yet</td>
   </tr>
   <tr>
     <th align="left"><code>NotFoundError</code></th>
