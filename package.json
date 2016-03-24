@@ -1,5 +1,5 @@
 {
-  "name": "hoodie-client-account",
+  "name": "@hoodie/account-client",
   "version": "0.0.0-semantically-released",
   "description": "Account client API for the browser",
   "main": "index.js",
@@ -73,5 +73,8 @@
     "staticpath": "docs/build",
     "noprompt": true
   },
-  "author": "The Hoodie Community and other contributors | http://hood.ie/"
+  "author": "The Hoodie Community and other contributors | http://hood.ie/",
+  "publishConfig": {
+    "access": "public"
+  }
 }
