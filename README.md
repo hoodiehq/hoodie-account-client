@@ -1,13 +1,13 @@
-# hoodie-client-account
+# hoodie-account-client
 
 > Account client API for the browser
 
-[![Build Status](https://travis-ci.org/hoodiehq/hoodie-client-account.svg?branch=master)](https://travis-ci.org/hoodiehq/hoodie-client-account)
-[![Coverage Status](https://coveralls.io/repos/hoodiehq/hoodie-client-account/badge.svg?branch=master)](https://coveralls.io/r/hoodiehq/hoodie-client-account?branch=master)
-[![Dependency Status](https://david-dm.org/hoodiehq/hoodie-client-account.svg)](https://david-dm.org/hoodiehq/hoodie-client-account)
-[![devDependency Status](https://david-dm.org/hoodiehq/hoodie-client-account/dev-status.svg)](https://david-dm.org/hoodiehq/hoodie-client-account#info=devDependencies)
+[![Build Status](https://travis-ci.org/hoodiehq/hoodie-account-client.svg?branch=master)](https://travis-ci.org/hoodiehq/hoodie-account-client)
+[![Coverage Status](https://coveralls.io/repos/hoodiehq/hoodie-account-client/badge.svg?branch=master)](https://coveralls.io/r/hoodiehq/hoodie-account-client?branch=master)
+[![Dependency Status](https://david-dm.org/hoodiehq/hoodie-account-client.svg)](https://david-dm.org/hoodiehq/hoodie-account-client)
+[![devDependency Status](https://david-dm.org/hoodiehq/hoodie-account-client/dev-status.svg)](https://david-dm.org/hoodiehq/hoodie-account-client#info=devDependencies)
 
-`hoodie-client-account` is a JavaScript front-end client for
+`hoodie-account-client` is a JavaScript front-end client for
 the [Account JSON API](http://docs.accountjsonapi.apiary.io).
 It persists session information in localStorage and provides
 front-end friendly APIs for things like creating a user account,
@@ -19,7 +19,7 @@ There is also an [admin-specific account client](admin)
 ## Example
 
 ```js
-// Account loaded via <script> or require('hoodie-client-account')
+// Account loaded via <script> or require('@hoodie/account-client')
 var account = new Account('https://example.com/account/api')
 
 if (account.isSignedIn()) {
@@ -286,7 +286,7 @@ account.signUp({
 
 ---
 
-🐕 **Implement account.signUp with profile: {...} option**: [#11](https://github.com/hoodiehq/hoodie-client-account/issues/11)
+🐕 **Implement account.signUp with profile: {...} option**: [#11](https://github.com/hoodiehq/hoodie-account-client/issues/11)
 
 ---
 

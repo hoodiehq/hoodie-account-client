@@ -1,8 +1,8 @@
-[back to hoodie-client-account](../README.md)
+[back to hoodie-account-client](../README.md)
 
-# hoodie-client-account/admin
+# @hoodie/account-client/admin
 
-`hoodie-client-account/admin` is a JavaScript front-end client for
+`@hoodie/account-client/admin` is a JavaScript front-end client for
 the admin routes of the [Account JSON API](http://docs.accountjsonapi.apiary.io).
 
 It persists the admin’s session information in localStorage and provides
@@ -16,7 +16,7 @@ specifications.
 ## Example
 
 ```js
-// Account loaded via <script> or require('hoodie-client-account/admin')
+// Account loaded via <script> or require('@hoodie/account-client/admin')
 var admin = new AccountAdmin('https://example.com/account/api')
 
 if (!account.isSignedIn()) {
@@ -301,7 +301,7 @@ admin.sessions.add({
 
 ---
 
-🐕 **TO BE DONE**: [#19](https://github.com/hoodiehq/hoodie-client-account/issues/19)
+🐕 **TO BE DONE**: [#19](https://github.com/hoodiehq/hoodie-account-client/issues/19)
 
 ---
 
@@ -377,7 +377,7 @@ admin.sessions.find('abc4567').then(function (sessionProperties) {
 
 ---
 
-🐕 **TO BE DONE**: [#19](https://github.com/hoodiehq/hoodie-client-account/issues/19)
+🐕 **TO BE DONE**: [#19](https://github.com/hoodiehq/hoodie-account-client/issues/19)
 
 ---
 
@@ -484,7 +484,7 @@ admin.sessions.findAll()
 
 ---
 
-🐕 **TO BE DONE**: [#19](https://github.com/hoodiehq/hoodie-client-account/issues/19)
+🐕 **TO BE DONE**: [#19](https://github.com/hoodiehq/hoodie-account-client/issues/19)
 
 ---
 
@@ -552,7 +552,7 @@ admin.sessions.remove('abc4567').then(function (sessionProperties) {
 
 ---
 
-🐕 **TO BE DONE**: [#19](https://github.com/hoodiehq/hoodie-client-account/issues/19)
+🐕 **TO BE DONE**: [#19](https://github.com/hoodiehq/hoodie-account-client/issues/19)
 
 ---
 
@@ -1067,7 +1067,7 @@ admin.accounts.update({ username: 'pat', foo: 'bar' })
 
 ---
 
-🐕 **TO BE DONE**: [#30](https://github.com/hoodiehq/hoodie-client-account/issues/30)
+🐕 **TO BE DONE**: [#30](https://github.com/hoodiehq/hoodie-account-client/issues/30)
 
 ---
 
@@ -1206,7 +1206,7 @@ admin.accounts.remove({ username: 'pat', reason: 'foo bar' })
 
 ---
 
-🐕 **TO BE DONE**: [#31](https://github.com/hoodiehq/hoodie-client-account/issues/31)
+🐕 **TO BE DONE**: [#31](https://github.com/hoodiehq/hoodie-account-client/issues/31)
 
 ---
 
@@ -1214,7 +1214,7 @@ admin.accounts.remove({ username: 'pat', reason: 'foo bar' })
 
 ---
 
-🐕 **TO BE DONE**: [#8](https://github.com/hoodiehq/hoodie-client-account/issues/8)
+🐕 **TO BE DONE**: [#8](https://github.com/hoodiehq/hoodie-account-client/issues/8)
 
 ---
 
@@ -1239,7 +1239,7 @@ Resolves with
 
 ---
 
-🐕 **TO BE DONE**: [#8](https://github.com/hoodiehq/hoodie-client-account/issues/8)
+🐕 **TO BE DONE**: [#8](https://github.com/hoodiehq/hoodie-account-client/issues/8)
 
 ---
 
@@ -1252,7 +1252,7 @@ admin.requests.find({id: 'token123'})
 
 ---
 
-🐕 **TO BE DONE**: [#8](https://github.com/hoodiehq/hoodie-client-account/issues/8)
+🐕 **TO BE DONE**: [#8](https://github.com/hoodiehq/hoodie-account-client/issues/8)
 
 ---
 
@@ -1264,7 +1264,7 @@ admin.requests.findAll()
 
 ---
 
-🐕 **TO BE DONE**: [#8](https://github.com/hoodiehq/hoodie-client-account/issues/8)
+🐕 **TO BE DONE**: [#8](https://github.com/hoodiehq/hoodie-account-client/issues/8)
 
 ---
 
@@ -1277,7 +1277,7 @@ admin.requests.find({id: 'token123'})
 
 ---
 
-🐕 **TO BE DONE**: [#8](https://github.com/hoodiehq/hoodie-client-account/issues/8)
+🐕 **TO BE DONE**: [#8](https://github.com/hoodiehq/hoodie-account-client/issues/8)
 
 ---
 
@@ -1304,7 +1304,7 @@ admin.account({token: 'pat@example.com'})
 
 ---
 
-🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-account-client/issues/20)
 
 ---
 
@@ -1330,7 +1330,7 @@ resolves with `profileProperties`
 
 ---
 
-🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-account-client/issues/20)
 
 ---
 
@@ -1356,7 +1356,7 @@ resolves with `profileProperties`
 
 ---
 
-🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-account-client/issues/20)
 
 ---
 
@@ -1389,7 +1389,7 @@ admin.account('token123').account.tokens.add({
 
 ---
 
-🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-account-client/issues/20)
 
 ---
 
@@ -1420,7 +1420,7 @@ admin.account({username: 'pat'}).tokens.find('token123')
 
 ---
 
-🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-account-client/issues/20)
 
 ---
 
@@ -1460,7 +1460,7 @@ admin.account({username: 'pat'}).tokens.findAll()
 
 ---
 
-🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-account-client/issues/20)
 
 ---
 
@@ -1491,7 +1491,7 @@ admin.account({username: 'pat'}).tokens.removes('token123')
 
 ---
 
-🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-account-client/issues/20)
 
 ---
 
@@ -1516,7 +1516,7 @@ admin.account({username: 'pat'}).roles.add('mycustomrole')
 
 ---
 
-🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-account-client/issues/20)
 
 ---
 
@@ -1545,7 +1545,7 @@ admin.account({username: 'pat'}).roles.findAll()
 
 ---
 
-🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-client-account/issues/20)
+🐕 **TO BE DONE**: [#20](https://github.com/hoodiehq/hoodie-account-client/issues/20)
 
 ---
 
@@ -1569,7 +1569,7 @@ admin.account({username: 'pat'}).roles.remove('mycustomrole')
 
 ---
 
-🐕 **WORK IN PROGRESS**: [#21](https://github.com/hoodiehq/hoodie-client-account/issues/21)
+🐕 **WORK IN PROGRESS**: [#21](https://github.com/hoodiehq/hoodie-account-client/issues/21)
 
 ---
 
