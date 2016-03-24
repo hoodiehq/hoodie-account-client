@@ -49,7 +49,7 @@ function AccountAdmin (options) {
 
       .then(function (session) {
         // TODO: reject if user is not admin
-        // depends on https://github.com/hoodiehq/hoodie-client-account/issues/26
+        // depends on https://github.com/hoodiehq/hoodie-account-client/issues/26
         return session
       })
     },

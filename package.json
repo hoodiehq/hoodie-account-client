@@ -6,10 +6,10 @@
   "scripts": {
     "prebuild": "rimraf dist && mkdirp dist",
     "build": "npm-run-all -p build:*",
-    "build:client": "browserify -s Account index.js > dist/hoodie-client-account.js",
-    "postbuild:client": "uglifyjs dist/hoodie-client-account.js -mc > dist/hoodie-client-account.min.js",
-    "build:client-admin": "browserify -s AccountAdmin admin/index.js > dist/hoodie-client-account-admin.js",
-    "postbuild:client-admin": "uglifyjs dist/hoodie-client-account-admin.js -mc > dist/hoodie-client-account-admin.min.js",
+    "build:client": "browserify -s Account index.js > dist/hoodie-account-client.js",
+    "postbuild:client": "uglifyjs dist/hoodie-account-client.js -mc > dist/hoodie-account-client.min.js",
+    "build:client-admin": "browserify -s AccountAdmin admin/index.js > dist/hoodie-account-client-admin.js",
+    "postbuild:client-admin": "uglifyjs dist/hoodie-account-client-admin.js -mc > dist/hoodie-account-client-admin.min.js",
     "predeploydocs": "./bin/authorize-push.js",
     "deploydocs": "gh-pages-deploy",
     "predocs": "rimraf docs/build",
@@ -27,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hoodiehq/hoodie-client-account.git"
+    "url": "https://github.com/hoodiehq/hoodie-account-client.git"
   },
   "keywords": [
     "account",
@@ -36,9 +36,9 @@
   ],
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/hoodiehq/hoodie-client-account/issues"
+    "url": "https://github.com/hoodiehq/hoodie-account-client/issues"
   },
-  "homepage": "https://github.com/hoodiehq/hoodie-client-account#readme",
+  "homepage": "https://github.com/hoodiehq/hoodie-account-client#readme",
   "devDependencies": {
     "browserify": "^11.0.1",
     "doxx": "1.5.0",
