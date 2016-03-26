@@ -1,0 +1,40 @@
+{
+  "links": {
+    "self": "https://example.com/accounts",
+    "first": "https://example.com/accounts",
+    "last": "https://example.com/accounts"
+  },
+  "data": [
+    {
+      "id": "abc4567",
+      "type": "account",
+      "links": {
+        "self": "https://example.com/accounts/pat"
+      },
+      "attributes": {
+        "username": "pat"
+      }
+    },
+    {
+      "id": "def678",
+      "type": "account",
+      "links": {
+        "self": "https://example.com/accounts/sam"
+      },
+      "attributes": {
+        "username": "sam"
+      },
+      "relationships": {
+        "profile": {
+          "links": {
+            "related": "https://example.com/accounts/sam/profile"
+          },
+          "data": {
+            "id": "def678-profile",
+            "type": "profile"
+          }
+        }
+      }
+    }
+  ]
+}

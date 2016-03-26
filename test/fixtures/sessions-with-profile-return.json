@@ -1,0 +1,14 @@
+{
+    "account": {
+        "id": "userid123",
+        "profile": {
+            "email": "pat@example.com",
+            "fullName": "pat Doe"
+        },
+            "roles": [
+                "mycustomrole"
+            ],
+            "username": "pat-doe"
+    },
+    "id": "cGF0LWRvZToxMjc1MDA6zEZsQ1BuO-W8SthDSrg8KXQ8OlQ"
+}

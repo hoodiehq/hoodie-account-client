@@ -36,8 +36,7 @@ function AccountAdmin (options) {
     cacheKey: cacheKey,
     emitter: emitter,
     account: getAccount({cacheKey: cacheKey}),
-    url: options.url,
-    validate: options.validate || function () {}
+    url: options.url
   }
 
   var admin = {

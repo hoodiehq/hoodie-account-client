@@ -38,3 +38,43 @@ test('fetch without state', function (t) {
     t.equal(error.name, 'UnauthenticatedError', 'rejects with UnauthenticatedError error')
   })
 })
+
+test('fetch with undefined path', function (t) {
+  simple.mock(internals, 'fetchProperties').resolveWith({})
+
+  fetch({
+    url: 'http://example.com',
+    account: {
+      session: {
+        id: 'abc45678'
+      }
+    }
+  })
+
+  t.deepEqual(internals.fetchProperties.lastCall.arg, {
+    url: 'http://example.com/session/account',
+    bearerToken: 'abc45678',
+    path: undefined
+  }, 'calls fetchProperties with account url and non-string path')
+
+  simple.restore()
+  t.end()
+})
+
+test('fetch when no internal state available', function (t) {
+  t.plan(1)
+
+  fetch({
+    url: 'example.com',
+    account: {
+      session: {
+        id: 'abc4567'
+      }
+    }
+  }, 'path')
+
+  .then(t.fail.bind(t, 'Must reject'))
+  .catch(function (error) {
+    t.equal(error.name, 'ConnectionError', 'rejects with ConnectionError error')
+  })
+})
