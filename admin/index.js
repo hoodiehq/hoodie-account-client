@@ -52,23 +52,23 @@ function AccountAdmin (options) {
         return session
       })
     },
-    signOut: signOut.bind(this, state),
-    isSignedIn: isSignedIn.bind(this, state),
+    signOut: signOut.bind(null, state),
+    isSignedIn: isSignedIn.bind(null, state),
 
     accounts: {
-      add: accountsAdd.bind(this, state),
-      find: accountsFind.bind(this, state),
-      findAll: accountsFindAll.bind(this, state),
-      update: accountsUpdate.bind(this, state),
-      remove: accountsRemove.bind(this, state),
-      on: events.on.bind(this, {emitter: accountsEmitter}),
-      one: events.one.bind(this, {emitter: accountsEmitter}),
-      off: events.off.bind(this, {emitter: accountsEmitter})
+      add: accountsAdd.bind(null, state),
+      find: accountsFind.bind(null, state),
+      findAll: accountsFindAll.bind(null, state),
+      update: accountsUpdate.bind(null, state),
+      remove: accountsRemove.bind(null, state),
+      on: events.on.bind(null, {emitter: accountsEmitter}),
+      one: events.one.bind(null, {emitter: accountsEmitter}),
+      off: events.off.bind(null, {emitter: accountsEmitter})
     },
 
-    on: events.on.bind(this, state),
-    one: events.one.bind(this, state),
-    off: events.off.bind(this, state)
+    on: events.on.bind(null, state),
+    one: events.one.bind(null, state),
+    off: events.off.bind(null, state)
   }
 
   // sessions.add can use accounts.find to lookup user id by username
