@@ -20,24 +20,24 @@ function Account (options) {
     get id () {
       return getId(state)
     },
-    signUp: require('./lib/sign-up').bind(this, state),
-    signIn: require('./lib/sign-in').bind(this, state),
-    signOut: require('./lib/sign-out').bind(this, state),
-    destroy: require('./lib/destroy').bind(this, state),
-    isSignedIn: require('./lib/is-signed-in').bind(this, state),
-    hasInvalidSession: require('./lib/has-invalid-session').bind(this, state),
-    get: require('./lib/get').bind(this, state),
-    fetch: require('./lib/fetch').bind(this, state, 'account'),
-    update: require('./lib/update').bind(this, state),
+    signUp: require('./lib/sign-up').bind(null, state),
+    signIn: require('./lib/sign-in').bind(null, state),
+    signOut: require('./lib/sign-out').bind(null, state),
+    destroy: require('./lib/destroy').bind(null, state),
+    isSignedIn: require('./lib/is-signed-in').bind(null, state),
+    hasInvalidSession: require('./lib/has-invalid-session').bind(null, state),
+    get: require('./lib/get').bind(null, state),
+    fetch: require('./lib/fetch').bind(null, state, 'account'),
+    update: require('./lib/update').bind(null, state),
     profile: {
-      get: require('./lib/profile-get').bind(this, state),
-      fetch: require('./lib/profile-fetch').bind(this, state, 'account.profile'),
-      update: require('./lib/profile-update').bind(this, state)
+      get: require('./lib/profile-get').bind(null, state),
+      fetch: require('./lib/profile-fetch').bind(null, state, 'account.profile'),
+      update: require('./lib/profile-update').bind(null, state)
     },
-    request: require('./lib/request').bind(this, state),
-    on: events.on.bind(this, state),
-    one: events.one.bind(this, state),
-    off: events.off.bind(this, state),
-    validate: require('./lib/validate').bind(this, state)
+    request: require('./lib/request').bind(null, state),
+    on: events.on.bind(null, state),
+    one: events.one.bind(null, state),
+    off: events.off.bind(null, state),
+    validate: require('./lib/validate').bind(null, state)
   }
 }
