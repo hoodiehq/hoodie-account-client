@@ -1013,6 +1013,14 @@ triggers a `passwordreset` event, with the `requestProperties` passed as argumen
 
 ## Testing
 
+Local setup
+
+```
+git clone https://github.com/hoodiehq/hoodie-account-client.git
+cd hoodie-account-client
+npm install
+```
+
 In Node.js
 
 Run all tests and validate JavaScript Code Style using [standard](https://www.npmjs.com/package/standard)
