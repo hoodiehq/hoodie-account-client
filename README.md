@@ -917,7 +917,7 @@ account.one(event, handler)
 Example
 
 ```js
-account.on('signin', function (accountProperties) {
+account.one('signin', function (accountProperties) {
   alert('Hello there, ' + accountProperties.username)
 })
 ```
