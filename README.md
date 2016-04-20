@@ -36,7 +36,7 @@ account.on('signout', redirectToHome)
 - [account.username](#accountusername)
 - [account.validate](#accountvalidate)
 - [account.isSignedIn](#accountissignedin)
-- [account.hasInvalidSession](#hasInvalidSession)
+- [account.hasInvalidSession](#accounthasinvalidsession)
 - [account.signUp](#accountsignup)
 - [account.signIn](#accountsignin)
 - [account.signOut](#accountsignout)
@@ -917,7 +917,7 @@ account.one(event, handler)
 Example
 
 ```js
-account.on('signin', function (accountProperties) {
+account.one('signin', function (accountProperties) {
   alert('Hello there, ' + accountProperties.username)
 })
 ```
