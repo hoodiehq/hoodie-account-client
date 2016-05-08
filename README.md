@@ -7,12 +7,10 @@
 [![Dependency Status](https://david-dm.org/hoodiehq/hoodie-account-client.svg)](https://david-dm.org/hoodiehq/hoodie-account-client)
 [![devDependency Status](https://david-dm.org/hoodiehq/hoodie-account-client/dev-status.svg)](https://david-dm.org/hoodiehq/hoodie-account-client#info=devDependencies)
 
-`hoodie-account-client` is a JavaScript front-end client for
-the [Account JSON API](http://docs.accountjsonapi.apiary.io).
-It persists session information in localStorage and provides
-front-end friendly APIs for things like creating a user account,
-confirming, resetting a password, changing profile information,
-or closing the account.
+`hoodie-account-client` is a JavaScript client for the [Account JSON API](http://docs.accountjsonapi.apiary.io).
+It persists session information in localStorage and provides front-end friendly
+APIs for things like creating a user account, confirming, resetting a password,
+changing profile information, or closing the account.
 
 There is also an [admin-specific account client](admin)
 
