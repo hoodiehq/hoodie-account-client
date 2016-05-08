@@ -996,7 +996,7 @@ hoodie.off('connectionstatus:disconnected', showNotification)
 ### Requests
 
 Hoodie comes with a list of built-in account requests, which can be disabled,
-overwritten or extended in [hoodie-server-account](https://github.com/hoodiehq/hoodie-server-account/tree/master/plugin#optionsrequests)
+overwritten or extended in [hoodie-account-server](https://github.com/hoodiehq/hoodie-account-server/tree/master/plugin#optionsrequests)
 
 When a request succeeds, an event with the same name as the request type gets
 emitted. For example, `account.request({type: 'passwordreset', contact: 'pat@example.com')`
