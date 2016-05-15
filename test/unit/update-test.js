@@ -12,7 +12,7 @@ test('update without change', function (t) {
 })
 
 test('update with change', function (t) {
-  t.plan(6)
+  t.plan(4)
 
   var state = {
     cacheKey: 'cacheKey123',
@@ -30,7 +30,67 @@ test('update with change', function (t) {
 
   simple.mock(update.internals, 'request').resolveWith({
     statusCode: 204,
-    body: null
+    body: null,
+    headers: {}
+  })
+  simple.mock(update.internals, 'deserialise').returnWith(state.account.session)
+  simple.mock(update.internals, 'serialise').returnWith('jsonData')
+  simple.mock(update.internals, 'saveAccount').callFn(function () {})
+
+  update(state, {
+    password: 'newsecret'
+  })
+
+  .then(function (account) {
+    t.deepEqual(update.internals.request.calls[0].arg, {
+      method: 'PATCH',
+      url: 'http://example.com/session/account',
+      headers: {
+        authorization: 'Bearer abc1234'
+      },
+      body: 'jsonData'
+    })
+    t.deepEqual(update.internals.saveAccount.lastCall.arg, {
+      cacheKey: 'cacheKey123',
+      account: {
+        username: 'bakingpies',
+        session: {
+          id: 'abc1234'
+        }
+      }
+    })
+
+    t.is(state.emitter.emit.callCount, 1, '1 Event emitted')
+    t.is(state.emitter.emit.lastCall.arg, 'update', 'Correct event emitted')
+    simple.restore()
+  })
+
+  .catch(t.error)
+})
+
+test('update with change causing new session', function (t) {
+  t.plan(5)
+
+  var state = {
+    cacheKey: 'cacheKey123',
+    url: 'http://example.com',
+    emitter: {
+      emit: simple.stub()
+    },
+    account: {
+      username: 'bakingpies',
+      session: {
+        id: 'abc1234'
+      }
+    }
+  }
+
+  simple.mock(update.internals, 'request').resolveWith({
+    statusCode: 204,
+    body: null,
+    headers: {
+      'x-set-session': 'newsession5678'
+    }
   })
   simple.mock(update.internals, 'deserialise').returnWith(state.account.session)
   simple.mock(update.internals, 'serialise').returnWith('jsonData')
@@ -49,17 +109,12 @@ test('update with change', function (t) {
       },
       body: 'jsonData'
     })
-    t.deepEqual(update.internals.request.calls[1].arg, {
-      method: 'PUT',
-      url: 'http://example.com/session',
-      body: 'jsonData'
-    })
     t.deepEqual(update.internals.saveAccount.lastCall.arg, {
       cacheKey: 'cacheKey123',
       account: {
         username: 'treetrunks',
         session: {
-          id: 'abc1234'
+          id: 'newsession5678'
         }
       }
     })
@@ -103,4 +158,3 @@ test('server side error', function (t) {
   })
   .catch(t.pass.bind(t, 'rejects with error'))
 })
-
