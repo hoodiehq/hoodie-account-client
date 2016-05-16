@@ -17,7 +17,7 @@ specifications.
 
 ```js
 // Account loaded via <script> or require('@hoodie/account-client/admin')
-var admin = new AccountAdmin('https://example.com/account/api')
+var admin = new AccountAdmin({url: 'https://example.com/account/api'})
 
 if (!account.isSignedIn()) {
   renderLogin()
