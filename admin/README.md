@@ -90,9 +90,9 @@ admin.isSignedIn()
 
 ### admin.signIn
 
-Creates a user session. If successful, the session bearer token will be stored
+Creates a user session. If successful, the session id will be stored
 and used as default to authenticate all further requests. In the browser, the
-bearer token and admin username is persisted in localStorage. Where localStorage
+session id and admin username is persisted in localStorage. Where localStorage
 is not supported, it’s stored in memory.
 
 ```js
@@ -254,7 +254,7 @@ Resolves with `sessionProperties`
 
 ```js
 {
-  id: 'session123',
+  id: 'Session123',
   // account is always included
   account: {
     id: 'account456',
@@ -290,7 +290,7 @@ Example
 admin.sessions.add({
   username: 'pat'
 }).then(function (sessionProperties) {
-  var bearer = sessionProperties.id
+  var sessionId = sessionProperties.id
   var username = sessionProperties.account.username
 }).catch(function (error) {
   console.error(error)
@@ -330,7 +330,7 @@ Resolves with `sessionProperties`
 
 ```js
 {
-  id: 'session123',
+  id: 'Session123',
   // account is always included
   account: {
     id: 'account456',
@@ -443,13 +443,13 @@ Resolves with Array of `sessionProperties`
 
 ```js
 [{
-  id: 'session123',
+  id: 'Session123',
   account: {
     id: 'account456',
     username: 'pat@example.com'
   }
 }, {
-  id: 'session456',
+  id: 'Session456',
   account: {
     id: 'account789',
     username: 'sam@example.com'
@@ -513,7 +513,7 @@ Resolves with `sessionProperties`
 
 ```js
 {
-  id: 'session123',
+  id: 'Session123',
   account: {
     id: 'account456',
     username: 'pat@example.com'
@@ -609,13 +609,13 @@ Resolves with Array of `sessionProperties`
 
 ```js
 [{
-  id: 'session123',
+  id: 'Session123',
   account: {
     id: 'account456',
     username: 'pat@example.com'
   }
 }, {
-  id: 'session456',
+  id: 'Session456',
   account: {
     id: 'account789',
     username: 'sam@example.com'
