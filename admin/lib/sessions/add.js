@@ -6,7 +6,6 @@ var accountsFindAll = require('../accounts/find-all')
 var internals = {}
 internals.request = require('../../../utils/request')
 internals.deserialise = require('../../../utils/deserialise')
-internals.serialise = require('../../../utils/serialise')
 
 function add (state, options) {
   if (!options || !options.username) {
