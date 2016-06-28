@@ -30,7 +30,7 @@ function add (state, options) {
         url: state.url + '/accounts/' + accountInfo.id + '/sessions',
         method: 'POST',
         headers: {
-          authorization: 'Bearer ' + state.account.session.id
+          authorization: 'Session ' + state.account.session.id
         }
       })
     }).then(function (response) {

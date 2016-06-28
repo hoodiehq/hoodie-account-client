@@ -18,7 +18,7 @@ function remove (state, id, options) {
       url: state.url + '/accounts/' + id,
       method: 'DELETE',
       headers: {
-        authorization: 'Bearer ' + state.account.session.id
+        authorization: 'Session ' + state.account.session.id
       }
     })
   })

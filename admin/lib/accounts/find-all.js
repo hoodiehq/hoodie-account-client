@@ -9,7 +9,7 @@ function findAll (state, options) {
     method: 'GET',
     url: state.url + '/accounts' + query(options),
     headers: {
-      authorization: 'Bearer ' + state.account.session.id
+      authorization: 'Session ' + state.account.session.id
     }
   })
 

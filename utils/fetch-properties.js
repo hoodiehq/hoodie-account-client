@@ -9,7 +9,7 @@ function fetchProperties (options) {
     url: options.url,
     method: 'GET',
     headers: {
-      authorization: 'Bearer ' + options.bearerToken
+      authorization: 'Session ' + options.sessionId
     }
   })
 

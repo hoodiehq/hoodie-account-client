@@ -19,7 +19,7 @@ function update (state, id, change, options) {
       url: state.url + '/accounts/' + id + query(options),
       method: 'PATCH',
       headers: {
-        authorization: 'Bearer ' + state.account.session.id
+        authorization: 'Session ' + state.account.session.id
       },
       body: internals.serialise('account', change)
     })

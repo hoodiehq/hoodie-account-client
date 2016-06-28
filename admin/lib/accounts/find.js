@@ -9,7 +9,7 @@ function find (state, id, options) {
     url: state.url + '/accounts/' + id + query(options),
     method: 'GET',
     headers: {
-      authorization: 'Bearer ' + state.account.session.id
+      authorization: 'Session ' + state.account.session.id
     }
   })
 
