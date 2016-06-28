@@ -33,7 +33,7 @@ test('destroy()', function (t) {
       method: 'DELETE',
       url: 'http://example.com/session/account',
       headers: {
-        authorization: 'Bearer abc4567'
+        authorization: 'Session abc4567'
       }
     })
     t.deepEqual(destroy.internals.clearSession.lastCall.arg, {

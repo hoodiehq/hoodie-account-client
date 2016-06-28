@@ -18,7 +18,7 @@ test('fetch', function (t) {
 
   t.deepEqual(internals.fetchProperties.lastCall.arg, {
     url: 'http://example.com/session/account',
-    bearerToken: 'abc4567',
+    sessionId: 'abc4567',
     path: 'path'
   }, 'calls fetchProperties with account url')
 
@@ -53,7 +53,7 @@ test('fetch with undefined path', function (t) {
 
   t.deepEqual(internals.fetchProperties.lastCall.arg, {
     url: 'http://example.com/session/account',
-    bearerToken: 'abc45678',
+    sessionId: 'abc45678',
     path: undefined
   }, 'calls fetchProperties with account url and non-string path')
 

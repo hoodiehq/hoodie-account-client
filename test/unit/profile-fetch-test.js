@@ -18,7 +18,7 @@ test('profileFetch', function (t) {
 
   t.deepEqual(internals.fetchProperties.lastCall.arg, {
     url: 'http://example.com/session/account/profile',
-    bearerToken: 'abc4567',
+    sessionId: 'abc4567',
     path: 'path'
   }, 'calls fetchProperties with profile url')
 
@@ -40,7 +40,7 @@ test('profileFetch with bogus path', function (t) {
 
   t.deepEqual(internals.fetchProperties.lastCall.arg, {
     url: 'http://example.com/session/account/profile',
-    bearerToken: 'abc4567',
+    sessionId: 'abc4567',
     path: undefined
   }, 'calls fetchProperties with profile url')
 

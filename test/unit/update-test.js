@@ -46,7 +46,7 @@ test('update with change', function (t) {
       method: 'PATCH',
       url: 'http://example.com/session/account',
       headers: {
-        authorization: 'Bearer abc1234'
+        authorization: 'Session abc1234'
       },
       body: 'jsonData'
     })
@@ -105,7 +105,7 @@ test('update with change causing new session', function (t) {
       method: 'PATCH',
       url: 'http://example.com/session/account',
       headers: {
-        authorization: 'Bearer abc1234'
+        authorization: 'Session abc1234'
       },
       body: 'jsonData'
     })

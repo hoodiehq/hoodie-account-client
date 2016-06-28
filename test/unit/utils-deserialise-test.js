@@ -59,7 +59,7 @@ test('accounts with profile response', function (t) {
   t.end()
 })
 
-test('session with account->profile', function (t) {
+test('Session with account->profile', function (t) {
   var data = deserialise(sessionsWithProfile, {
     include: 'account.profile'
   })

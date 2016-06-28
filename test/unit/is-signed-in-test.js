@@ -12,7 +12,7 @@ test('isSignedIn with session', function (t) {
   t.is(isSignedIn({
     account: {
       session: {
-        id: 'session123'
+        id: 'Session123'
       }
     }
   }), true, 'returns true')

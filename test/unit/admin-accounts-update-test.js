@@ -40,7 +40,7 @@ test('acconuntsUpdate', function (t) {
       method: 'PATCH',
       url: 'http://localhost:3000/accounts/abc1234',
       headers: {
-        authorization: 'Bearer sessionId123'
+        authorization: 'Session sessionId123'
       },
       body: {
         data: {
@@ -98,7 +98,7 @@ test('acconuntsUpdate', function (t) {
       method: 'PATCH',
       url: 'http://localhost:3000/accounts/abc1234?include=profile',
       headers: {
-        authorization: 'Bearer sessionId123'
+        authorization: 'Session sessionId123'
       },
       body: {
         data: {

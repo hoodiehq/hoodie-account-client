@@ -121,7 +121,7 @@ var makeAddOkTest = function (admin) {
       username: 'pat'
     }).then(function (sessionProperties) {
       t.ok(sessionProperties, 'got sessionProperties response')
-      t.ok(sessionProperties.account, 'sessionProperties has account')
+      t.ok(sessionProperties.account, 'SessionProperties has account')
       t.deepEqual({
         id: sessionProperties.id,
         account: {
@@ -143,9 +143,9 @@ var makeAddOkTest = function (admin) {
 
 var makeAddTest = function (admin) {
   return function (t) {
-    t.ok(admin.sessions.add, 'sessions.add exists')
+    t.ok(admin.sessions.add, 'Sessions.add exists')
     t.is(typeof admin.sessions.add, 'function',
-         'sessions.add is a function')
+         'Sessions.add is a function')
     t.test('admin unauthenticated', makeAddUnauthenticatedTest(admin))
     t.test('no username', makeAddNoUsernameTest(admin))
     t.skip('unconfirmed', makeAddUnconfirmedTest(admin))

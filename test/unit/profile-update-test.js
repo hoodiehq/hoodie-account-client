@@ -41,7 +41,7 @@ test('updateProfile with change', function (t) {
       method: 'PATCH',
       url: 'http://example.com/session/account/profile',
       headers: {
-        authorization: 'Bearer abc1234'
+        authorization: 'Session abc1234'
       },
       body: 'profileJsonData'
     })

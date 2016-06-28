@@ -46,7 +46,7 @@ test('sign in and change username', function (t) {
     .thrice()
     .reply(201, function () {
       // Session is updated everytime a user puts
-      signInResponseAfterUpdate.data.id = 'session' + (uniqueId++)
+      signInResponseAfterUpdate.data.id = 'Session' + (uniqueId++)
       return signInResponseAfterUpdate
     })
 

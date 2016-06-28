@@ -9,7 +9,7 @@ test('get', function (t) {
   var state = {
     account: {
       session: {
-        id: 'session123'
+        id: 'Session123'
       },
       username: 'username'
     }

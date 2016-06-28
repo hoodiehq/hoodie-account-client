@@ -37,7 +37,7 @@ test('acconuntsRemove', function (t) {
       method: 'DELETE',
       url: 'http://localhost:3000/accounts/abc1234',
       headers: {
-        authorization: 'Bearer sessionId123'
+        authorization: 'Session sessionId123'
       }
     })
 

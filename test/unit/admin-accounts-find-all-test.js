@@ -30,7 +30,7 @@ test('acconuntsFindAll', function (t) {
       method: 'GET',
       url: 'http://localhost:3000/accounts',
       headers: {
-        authorization: 'Bearer sessionId123'
+        authorization: 'Session sessionId123'
       }
     })
     t.deepEqual(findAll.internals.deserialise.lastCall.args, [
@@ -72,7 +72,7 @@ test('acconuntsFindAll with {include: "profile"}', function (t) {
       method: 'GET',
       url: 'http://localhost:3000/accounts?include=profile',
       headers: {
-        authorization: 'Bearer sessionId123'
+        authorization: 'Session sessionId123'
       }
     })
     t.deepEqual(findAll.internals.deserialise.lastCall.args, [

@@ -125,7 +125,7 @@ test('sign out with pre & post hooks', function (t) {
   store.setObject('account', {
     username: 'chicken@docs.com',
     session: {
-      id: 'session'
+      id: 'Session'
     },
     id: 'abc4567'
   })
@@ -178,7 +178,7 @@ test('sign out with throw in pre hook', function (t) {
   store.setObject('account', {
     username: 'chicken@docs.com',
     session: {
-      id: 'session'
+      id: 'Session'
     },
     id: 'abc4567'
   })
@@ -212,7 +212,7 @@ test('sign out with throw in post hook', function (t) {
   store.setObject('account', {
     username: 'chicken@docs.com',
     session: {
-      id: 'session'
+      id: 'Session'
     },
     id: 'abc4567'
   })

@@ -19,7 +19,7 @@ test('test if invalid property is not present in session', function (t) {
   t.is(hasInvalidSession({
     account: {
       session: {
-        id: 'session123'
+        id: 'Session123'
       }
     }
   }), undefined, 'returns undefined')

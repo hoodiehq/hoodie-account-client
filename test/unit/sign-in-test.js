@@ -51,7 +51,7 @@ test('successful account.signIn(options)', function (t) {
   })
   simple.mock(signIn.internals, 'serialise').returnWith('serialised')
   simple.mock(signIn.internals, 'deserialise').returnWith({
-    id: 'session123',
+    id: 'Session123',
     account: {
       id: 'deserialise id',
       username: 'deserialise username'
@@ -75,7 +75,7 @@ test('successful account.signIn(options)', function (t) {
       cacheKey: 'cacheKey123',
       account: {
         session: {
-          id: 'session123'
+          id: 'Session123'
         },
         id: 'deserialise id',
         username: 'deserialise username'
@@ -121,7 +121,7 @@ test('signIn with same username', function (t) {
     account: {
       username: 'pat',
       session: {
-        id: 'session123'
+        id: 'Session123'
       }
     }
   }
@@ -131,7 +131,7 @@ test('signIn with same username', function (t) {
   })
   simple.mock(signIn.internals, 'serialise').returnWith('serialised')
   simple.mock(signIn.internals, 'deserialise').returnWith({
-    id: 'session123'
+    id: 'Session123'
   })
   simple.mock(signIn.internals, 'saveAccount').callFn(function () {})
 

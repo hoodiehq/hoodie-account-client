@@ -33,7 +33,7 @@ test('signOut()', function (t) {
       method: 'DELETE',
       url: 'http://example.com/session',
       headers: {
-        authorization: 'Bearer abc4567'
+        authorization: 'Session abc4567'
       }
     })
     t.deepEqual(signOut.internals.clearSession.lastCall.arg, {
