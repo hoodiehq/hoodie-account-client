@@ -27,7 +27,7 @@ function Account (options) {
     isSignedIn: require('./lib/is-signed-in').bind(null, state),
     hasInvalidSession: require('./lib/has-invalid-session').bind(null, state),
     get: require('./lib/get').bind(null, state),
-    fetch: require('./lib/fetch').bind(null, state, 'account'),
+    fetch: require('./lib/fetch').bind(null, state),
     update: require('./lib/update').bind(null, state),
     profile: {
       get: require('./lib/profile-get').bind(null, state),
