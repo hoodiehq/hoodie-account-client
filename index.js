@@ -31,7 +31,7 @@ function Account (options) {
     update: require('./lib/update').bind(null, state),
     profile: {
       get: require('./lib/profile-get').bind(null, state),
-      fetch: require('./lib/profile-fetch').bind(null, state, 'account.profile'),
+      fetch: require('./lib/profile-fetch').bind(null, state),
       update: require('./lib/profile-update').bind(null, state)
     },
     request: require('./lib/request').bind(null, state),
