@@ -5,7 +5,7 @@ var test = require('tape')
 var Account = require('../../index')
 
 test('account.fetch() and account.profil.fetch()', function (t) {
-  t.plan(1)
+  t.plan(2)
 
   store.setObject('account', {
     username: 'john-doe',
@@ -28,7 +28,8 @@ test('account.fetch() and account.profil.fetch()', function (t) {
 
   account.fetch()
 
-  .then(function () {
+  .then(function (accountProperties) {
+    t.same(accountProperties, {id: 'abc4567', username: 'john-doe'})
     return account.profile.fetch()
   })
 
