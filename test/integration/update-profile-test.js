@@ -18,7 +18,7 @@ var options = {
 test('sign in and change username', function (t) {
   store.clear()
 
-  t.plan(4)
+  t.plan(5)
 
   var account = new Account({
     url: baseURL,
@@ -50,6 +50,11 @@ test('sign in and change username', function (t) {
 
   .then(function (profileProperties) {
     t.is(profileProperties.fullName, 'Docs Chicken', 'profile.update() resolves with profile properties')
+  })
+
+  .then(function () {
+    var profileProperties = account.profile.get()
+    t.is(profileProperties.fullName, 'Docs Chicken', 'profile.get() returns profile properties')
   })
 
   .catch(t.error)
