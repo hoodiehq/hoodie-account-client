@@ -21,3 +21,19 @@ test('profileGet', function (t) {
   simple.restore()
   t.end()
 })
+
+test('profileGet with empty profile', function (t) {
+  simple.mock(internals, 'getProperties').returnWith(undefined)
+  var result = get({
+    account: {}
+  })
+
+  t.deepEqual(internals.getProperties.lastCall.args, [
+    undefined,
+    undefined
+  ], 'calls utils.getProperties with "profile" basepath')
+  t.same(result, {}, 'returns result of fetchProperties')
+
+  simple.restore()
+  t.end()
+})
