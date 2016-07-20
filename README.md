@@ -1033,6 +1033,18 @@ To run only the tests
 npm run test:node
 ```
 
+To test hoodie-account-client in a browser you can link it into [hoodie-account](https://github.com/hoodiehq/hoodie-account), which provides a dev-server:
+
+```
+git clone https://github.com/hoodiehq/hoodie-account.git
+cd hoodie-account
+npm install
+npm link /path/to/hoodie-account-client
+npm start
+```
+
+hoodie-account bundles hoodie-account-client on `npm start`, so you need to restart hoodie-account to see your changes. 
+
 ## Contributing
 
 Have a look at the Hoodie project's [contribution guidelines](https://github.com/hoodiehq/hoodie/blob/master/CONTRIBUTING.md).
