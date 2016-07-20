@@ -668,7 +668,8 @@ account.profile.get(properties)
   </tr>
 </table>
 
-Returns object with profile properties, or `undefined` if not signed in.
+Returns object with profile properties, falls back to empty object `{}`.
+Returns `undefined` if not signed in.
 
 Examples
 
@@ -1043,7 +1044,7 @@ npm link /path/to/hoodie-account-client
 npm start
 ```
 
-hoodie-account bundles hoodie-account-client on `npm start`, so you need to restart hoodie-account to see your changes. 
+hoodie-account bundles hoodie-account-client on `npm start`, so you need to restart hoodie-account to see your changes.
 
 ## Contributing
 
