@@ -27,25 +27,39 @@ test('profileFetch', function (t) {
 })
 
 test('profileFetch with bogus path', function (t) {
-  simple.mock(internals, 'fetchProperties').resolveWith({})
-
-  fetch({
+  var state = {
     url: 'http://example.com',
     account: {
       session: {
         id: 'abc4567'
       }
     }
+  }
+
+  simple.mock(internals, 'fetchProperties').resolveWith({foo: 'bar'})
+  simple.mock(internals, 'saveAccount')
+
+  fetch(state)
+
+  .then(function (profileProperties) {
+    t.deepEqual(internals.fetchProperties.lastCall.arg, {
+      url: 'http://example.com/session/account/profile',
+      sessionId: 'abc4567',
+      path: undefined
+    }, 'calls fetchProperties with profile url')
+
+    t.deepEqual(state.account.profile, {foo: 'bar'}, 'sets state.account.profile')
+    t.deepEqual(internals.saveAccount.lastCall.arg.account.profile, {foo: 'bar'}, 'update profile in local store')
+
+    simple.restore()
+    t.end()
   })
 
-  t.deepEqual(internals.fetchProperties.lastCall.arg, {
-    url: 'http://example.com/session/account/profile',
-    sessionId: 'abc4567',
-    path: undefined
-  }, 'calls fetchProperties with profile url')
-
-  simple.restore()
-  t.end()
+  .catch(function (error) {
+    simple.restore()
+    t.error(error)
+    t.end()
+  })
 })
 
 test('server side error', function (t) {
