@@ -14,7 +14,7 @@ function fetchProperties (options) {
   })
 
   .then(function (response) {
-    var data = deserialise(response.body)
+    var data = deserialise(response.body, options)
 
     return getProperties(data, options.path)
   })
