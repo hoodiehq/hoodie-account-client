@@ -44,6 +44,9 @@ function AccountAdmin (options) {
       return getUsername(state)
     },
     signIn: function (options) {
+      // include defaults to account.profile, but admins have neither
+      options.include = ''
+
       return signIn(state, options)
 
       .then(function (session) {
