@@ -12,7 +12,7 @@ test('updateProfile without change', function (t) {
 })
 
 test('updateProfile with change', function (t) {
-  t.plan(4)
+  t.plan(7)
 
   simple.mock(updateProfile.internals, 'request').resolveWith({
     statusCode: 204,
@@ -21,9 +21,12 @@ test('updateProfile with change', function (t) {
   simple.mock(updateProfile.internals, 'serialise').returnWith('profileJsonData')
   simple.mock(updateProfile.internals, 'saveAccount').callFn(function () {})
 
-  updateProfile({
+  var state = {
     cacheKey: 'cacheKey123',
     url: 'http://example.com',
+    emitter: {
+      emit: simple.stub()
+    },
     account: {
       session: {
         id: 'abc1234'
@@ -32,7 +35,9 @@ test('updateProfile with change', function (t) {
         foo: 'bar'
       }
     }
-  }, {
+  }
+
+  updateProfile(state, {
     fullName: 'Docs Chicken'
   })
 
@@ -60,6 +65,10 @@ test('updateProfile with change', function (t) {
 
     t.equal(profile.foo, 'bar', 'returns old property')
     t.equal(profile.fullName, 'Docs Chicken', 'returns new property')
+
+    t.equal(state.emitter.emit.callCount, 1, '1 Event emitted')
+    t.equal(state.emitter.emit.lastCall.arg, 'update', 'Correct event emitted')
+    t.deepEqual(state.emitter.emit.lastCall.args[1].profile, { foo: 'bar', fullName: 'Docs Chicken' })
 
     simple.restore()
   })
