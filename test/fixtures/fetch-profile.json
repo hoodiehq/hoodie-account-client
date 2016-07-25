@@ -6,8 +6,8 @@
     "id": "abc123-profile",
     "type": "profile",
     "attributes": {
-     "fullName": "Docs Chicken",
-     "favoriteClothing": "Hoodie"
+      "fullName": "Docs Chicken",
+      "favoriteClothing": "Hoodie"
     }
   }
 }
