@@ -19,5 +19,15 @@
         }
       }
     }
-  }
+  },
+  "included": [
+    {
+      "id": "abc4567-profile",
+      "type": "profile",
+      "attributes": {
+        "fullName": "Docs Chicken",
+        "favoriteClothing": "Hoodie"
+      }
+    }
+  ]
 }

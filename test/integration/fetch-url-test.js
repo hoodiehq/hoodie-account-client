@@ -21,7 +21,7 @@ test('account.fetch() and account.profil.fetch()', function (t) {
   })
 
   var apiMock = nock('http://localhost:3000')
-    .get('/session/account')
+    .get('/session/account?include=profile')
     .reply(200, require('../fixtures/fetch.json'))
     .get('/session/account/profile')
     .reply(200, require('../fixtures/fetch-profile.json'))
@@ -29,7 +29,14 @@ test('account.fetch() and account.profil.fetch()', function (t) {
   account.fetch()
 
   .then(function (accountProperties) {
-    t.same(accountProperties, {id: 'abc4567', username: 'john-doe'})
+    t.same(accountProperties, {
+      id: 'abc4567',
+      username: 'john-doe',
+      profile: {
+        fullName: 'Docs Chicken',
+        favoriteClothing: 'Hoodie'
+      }
+    })
 
     return account.profile.fetch()
   })

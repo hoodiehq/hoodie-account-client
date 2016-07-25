@@ -25,7 +25,7 @@ test('unauthenticate state within account.fetch()', function (t) {
   })
 
   nock('http://example.de')
-    .get('/session/account')
+    .get('/session/account?include=profile')
     .reply(401, errorMessage)
 
   var account = new Account({url: 'http://example.de'})

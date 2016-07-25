@@ -17,9 +17,10 @@ test('fetch', function (t) {
   }, 'path')
 
   t.deepEqual(internals.fetchProperties.lastCall.arg, {
-    url: 'http://example.com/session/account',
+    url: 'http://example.com/session/account?include=profile',
     sessionId: 'abc4567',
-    path: 'path'
+    path: 'path',
+    include: 'profile'
   }, 'calls fetchProperties with account url')
 
   simple.restore()
@@ -52,9 +53,10 @@ test('fetch with undefined path', function (t) {
   })
 
   t.deepEqual(internals.fetchProperties.lastCall.arg, {
-    url: 'http://example.com/session/account',
+    url: 'http://example.com/session/account?include=profile',
     sessionId: 'abc45678',
-    path: undefined
+    path: undefined,
+    include: 'profile'
   }, 'calls fetchProperties with account url and non-string path')
 
   simple.restore()
