@@ -19,7 +19,7 @@ test('sign in with pre & post hooks', function (t) {
   t.plan(2)
 
   nock(baseURL)
-    .put('/session')
+    .put('/session?include=account.profile')
     .reply(201, signInResponse)
 
   var callOrder = []
@@ -94,7 +94,7 @@ test('sign in with throw in post hook', function (t) {
   t.plan(2)
 
   nock(baseURL)
-    .put('/session')
+    .put('/session?include=account.profile')
     .reply(201, signInResponse)
 
   var account = new Account({

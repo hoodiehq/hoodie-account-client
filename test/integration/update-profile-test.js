@@ -26,7 +26,7 @@ test('sign in and change username', function (t) {
   })
 
   nock(baseURL)
-    .put('/session', function (body) {
+    .put('/session?include=account.profile', function (body) {
       return body.data.attributes.password === 'secret'
     })
     .reply(201, signInResponse)

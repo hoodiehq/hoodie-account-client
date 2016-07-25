@@ -15,7 +15,7 @@ test('account.signIn() with invalid credentials', function (t) {
   })
 
   nock('http://localhost:3000')
-    .put('/session')
+    .put('/session?include=account.profile')
     .reply(401, sessionUnauthorizedResponse)
 
   account.signIn({

@@ -23,7 +23,7 @@ test('destroy account', function (t) {
   })
 
   nock(baseURL)
-  .put('/session')
+  .put('/session?include=account.profile')
   .reply(201, signInResponse)
   .delete('/session/account')
   .reply(204)
@@ -46,13 +46,15 @@ test('destroy account', function (t) {
     t.deepEqual(signOutHandler.lastCall.arg, {
       id: 'abc4567',
       username: 'chicken@docs.com',
-      session: { id: 'sessionid123' }
+      session: { id: 'sessionid123' },
+      profile: { favoriteClothing: 'Hoodie', fullName: 'Docs Chicken' }
     }, '"signout" event emitted with account object')
 
     t.deepEqual(destroyHandler.lastCall.arg, {
       id: 'abc4567',
       username: 'chicken@docs.com',
-      session: { id: 'sessionid123' }
+      session: { id: 'sessionid123' },
+      profile: { favoriteClothing: 'Hoodie', fullName: 'Docs Chicken' }
     }, '"destroy" event emitted with account object')
 
     t.is(signOutHandler.callCount, 1, '"signout" event emitted once')

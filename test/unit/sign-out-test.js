@@ -4,7 +4,7 @@ var test = require('tape')
 var signOut = require('../../lib/sign-out')
 
 test('signOut()', function (t) {
-  t.plan(3)
+  t.plan(4)
 
   simple.mock(signOut.internals, 'request').resolveWith({
     statusCode: 204,
@@ -19,7 +19,10 @@ test('signOut()', function (t) {
       session: {
         id: 'abc4567'
       },
-      username: 'pat'
+      username: 'pat',
+      profile: {
+        foo: 'bar'
+      }
     },
     emitter: {
       emit: simple.stub()
@@ -41,6 +44,7 @@ test('signOut()', function (t) {
     })
 
     t.is(state.account, undefined, 'unsets account')
+    t.is(result.profile.foo, 'bar', 'resolves with .profile')
 
     simple.restore()
   })

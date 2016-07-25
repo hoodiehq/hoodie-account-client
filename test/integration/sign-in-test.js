@@ -16,7 +16,7 @@ var options = {
 
 test('sign in', function (t) {
   store.clear()
-  t.plan(11)
+  t.plan(12)
 
   var account = new Account({
     url: baseURL,
@@ -24,7 +24,7 @@ test('sign in', function (t) {
   })
 
   nock(baseURL)
-    .put('/session')
+    .put('/session?include=account.profile')
     .reply(201, signInResponse)
 
     .delete('/session')
@@ -43,6 +43,10 @@ test('sign in', function (t) {
       username: 'chicken@docs.com',
       session: {
         id: 'sessionid123'
+      },
+      profile: {
+        fullName: 'Docs Chicken',
+        favoriteClothing: 'Hoodie'
       }
     }, 'stores account with id with session')
     t.deepEqual(account.get(), {
@@ -50,6 +54,10 @@ test('sign in', function (t) {
       username: 'chicken@docs.com',
       session: {
         id: 'sessionid123'
+      },
+      profile: {
+        fullName: 'Docs Chicken',
+        favoriteClothing: 'Hoodie'
       }
     }, '.get() returns account with session')
 
@@ -60,6 +68,7 @@ test('sign in', function (t) {
     t.pass('signes out')
 
     t.is(signOutResult.username, 'chicken@docs.com')
+    t.is(signOutResult.profile.fullName, 'Docs Chicken')
 
     var storeAccount = store.getObject('account')
 

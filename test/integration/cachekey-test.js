@@ -13,7 +13,7 @@ test('new Account(options) defaults to "account" cacheKey', function (t) {
   })
 
   nock('http://localhost:3000')
-    .put('/session')
+    .put('/session?include=account.profile')
     .reply(201, JSON.stringify(signInResponse))
 
   return account.signIn({

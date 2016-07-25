@@ -67,7 +67,7 @@ test('successful account.signIn(options)', function (t) {
   .then(function (accountProperties) {
     t.deepEqual(signIn.internals.request.lastCall.arg, {
       method: 'PUT',
-      url: 'http://example.com/session',
+      url: 'http://example.com/session?include=account.profile',
       body: 'serialised'
     })
     t.deepEqual(signIn.internals.deserialise.lastCall.arg, 'response body')

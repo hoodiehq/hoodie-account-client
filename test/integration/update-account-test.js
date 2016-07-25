@@ -29,7 +29,7 @@ test('sign in and change username', function (t) {
   })
 
   nock(baseURL)
-    .put('/session', function (body) {
+    .put('/session?include=account.profile', function (body) {
       return body.data.attributes.password === 'secret'
     })
     .reply(201, signInResponse)
@@ -40,7 +40,7 @@ test('sign in and change username', function (t) {
       return true
     })
     .reply(200, updateResponse)
-    .put('/session', function (body) {
+    .put('/session?include=account.profile', function (body) {
       return body.data.attributes.password === 'newsecret'
     })
     .thrice()
