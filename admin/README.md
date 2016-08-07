@@ -206,6 +206,10 @@ Rejects with:
 
 <table>
   <tr>
+    <th align="left"><code>UnauthenticatedError</code></th>
+    <td>Not signed in</td>
+  </tr>
+  <tr>
     <th align="left"><code>Error</code></th>
     <td><em>A custom error thrown in a <code>before:signout</code> hook</em></td>
   </tr>

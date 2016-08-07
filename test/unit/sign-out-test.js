@@ -68,3 +68,25 @@ test('signOut() with request error', function (t) {
     t.pass('rejects with error')
   })
 })
+
+test('signOut() without being signed in', function (t) {
+  t.plan(2)
+
+  signOut({
+    account: {},
+    emitter: {
+      emit: simple.stub()
+    }
+  })
+
+  .then(t.fail.bind(t, 'must reject'))
+
+  .catch(function (error) {
+    t.is(typeof error, 'object', 'rejects with error object')
+    t.equal(
+      error.message,
+      'UnauthenticatedError: Not signed in',
+      'error not an UnauthenticatedError'
+    )
+  })
+})
