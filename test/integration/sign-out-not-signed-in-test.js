@@ -10,11 +10,9 @@ test('sign out without being signed in', function (t) {
 
   // simulate user who has not yet signed in
   store.clear()
-  store.setObject('account', {})
 
   var account = new Account({
-    url: baseURL,
-    id: 'abc4567'
+    url: baseURL
   })
 
   account.signOut().catch(function (error) {
