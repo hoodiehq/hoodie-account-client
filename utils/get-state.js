@@ -12,6 +12,10 @@ function getState (options) {
     options = {}
   }
 
+  if (typeof options === 'string') {
+    options = {url: options}
+  }
+
   if (!options.url) {
     throw new Error('options.url is required')
   }
