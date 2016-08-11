@@ -1,3 +1,4 @@
+var nock = require('nock')
 var store = require('humble-localstorage')
 var test = require('tape')
 
@@ -51,4 +52,32 @@ test('new Account() w/o options.url', function (t) {
   t.throws(Account.bind(null, { validate: function () {} }), 'throws error')
 
   t.end()
+})
+
+test('new Account() w/o url object', function (t) {
+  t.plan(2)
+
+  store.setObject('account', {
+    username: 'john-doe',
+    id: 'abc4567',
+    session: {
+      id: 'sessionid123'
+    }
+  })
+
+  var account = new Account('http://localhost:3000')
+
+  var apiMock = nock('http://localhost:3000')
+    .get('/session/account')
+    .reply(200, require('../fixtures/fetch.json'))
+
+  account.fetch()
+
+  .then(function (accountProperties) {
+    t.same(accountProperties, {id: 'abc4567', username: 'john-doe'})
+
+    t.is(apiMock.pendingMocks()[0], undefined, 'all mocks satisfied')
+  })
+
+  .catch(t.error)
 })
