@@ -1,6 +1,7 @@
 var nock = require('nock')
 var store = require('humble-localstorage')
 var test = require('tape')
+var lolex = require('lolex')
 
 var Account = require('../../index')
 
@@ -15,8 +16,10 @@ var options = {
 
 test('sign up with id', function (t) {
   store.clear()
-  t.plan(5)
+  t.plan(6)
 
+  // mock the Date object to always return Jan 1, 2017 0:00:00 UTC
+  var clock = lolex.install(0)
   var account = new Account({
     url: baseURL,
     id: 'abc4567'
@@ -25,6 +28,8 @@ test('sign up with id', function (t) {
   var mock = nock(baseURL)
     .put('/session/account', function (body) {
       t.is(body.data.id, 'abc4567', 'sends correct account id')
+      t.is(body.data.attributes.createdAt, '1970-01-01T00:00:00.000Z', 'sends correct createdAt timestamp')
+
       return true
     })
     .reply(201, signUpResponse)
@@ -32,6 +37,7 @@ test('sign up with id', function (t) {
   account.signUp(options)
 
   .then(function () {
+    clock.uninstall()
     t.pass('signs up')
 
     mock.put('/session').reply(201, signInResponse)
