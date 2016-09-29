@@ -40,7 +40,8 @@ function getState (options) {
 
   if (!state.account) {
     state.account = {
-      id: options.id || generateId()
+      id: options.id || generateId(),
+      createdAt: new Date().toISOString()
     }
 
     saveAccount({
