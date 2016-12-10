@@ -38,6 +38,7 @@ function Account (options) {
     on: events.on.bind(null, state),
     one: events.one.bind(null, state),
     off: events.off.bind(null, state),
+    hook: state.hook.api,
     validate: require('./lib/validate').bind(null, state)
   }
 }
