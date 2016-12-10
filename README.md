@@ -995,6 +995,42 @@ account.off('singin', showNotification)
   </tr>
 </table>
 
+### Hooks
+
+```js
+// clear user’s local store signin and after signout
+account.hook.before('signin', function (options) {
+  return localUserStore.clear()
+})
+account.hook.after('signout', function (options) {
+  return localUserStore.clear()
+})
+```
+
+<table>
+  <thead>
+    <tr>
+      <th align="left">
+        Hook
+      </th>
+      <th align="left">
+        Arguments
+      </th>
+    </tr>
+  </thead>
+  <tr>
+    <th align="left"><code>signin</code></th>
+    <td><code>options</code> as they were passed into <code>account.signIn(options)</code></td>
+  </tr>
+  <tr>
+    <th align="left"><code>signout</code></th>
+    <td><code>{}</code></td>
+  </tr>
+</table>
+
+See [before-after-hook](https://www.npmjs.com/package/before-after-hook) for
+more information.
+
 ### Requests
 
 Hoodie comes with a list of built-in account requests, which can be disabled,
