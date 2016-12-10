@@ -2,11 +2,16 @@ var simple = require('simple-mock')
 var test = require('tape')
 
 var signIn = require('../../lib/sign-in')
+var hookMock = simple.stub().callFn(function (name, options, callback) {
+  return callback(options)
+})
 
 test('signIn without options', function (t) {
   t.plan(1)
 
-  signIn({})
+  signIn({
+    hook: hookMock
+  })
     .then(t.fail.bind(t, 'must reject'))
     .catch(t.pass.bind(t, 'rejects with error'))
 })
@@ -14,7 +19,9 @@ test('signIn without options', function (t) {
 test('signIn without password', function (t) {
   t.plan(1)
 
-  signIn({}, {
+  signIn({
+    hook: hookMock
+  }, {
     username: 'username'
   })
 
@@ -26,7 +33,9 @@ test('signIn without password', function (t) {
 test('signIn without username', function (t) {
   t.plan(1)
 
-  signIn({}, {
+  signIn({
+    hook: hookMock
+  }, {
     password: 'password'
   })
 
@@ -39,6 +48,7 @@ test('successful account.signIn(options)', function (t) {
   t.plan(6)
 
   var state = {
+    hook: hookMock,
     url: 'http://example.com',
     cacheKey: 'cacheKey123',
     emitter: {
@@ -96,7 +106,9 @@ test('signIn with request error', function (t) {
 
   simple.mock(signIn.internals, 'request').rejectWith(new Error('Ooops'))
 
-  signIn({})
+  signIn({
+    hook: hookMock
+  })
 
   .then(t.fail.bind(t, 'must reject'))
 
@@ -112,6 +124,7 @@ test('signIn with same username', function (t) {
   t.plan(2)
 
   var state = {
+    hook: hookMock,
     url: 'http://example.com',
     cacheKey: 'cacheKey123',
     emitter: {
@@ -142,8 +155,8 @@ test('signIn with same username', function (t) {
   })
 
   .then(function (accountProperties) {
-    t.is(state.emitter.emit.callCount, 3, '3 Events emitted')
-    t.is(state.emitter.emit.calls[1].arg, 'reauthenticate', 'Correct event emitted')
+    t.is(state.emitter.emit.callCount, 1, '1 Event emitted')
+    t.is(state.emitter.emit.calls[0].arg, 'reauthenticate', 'Correct event emitted')
     simple.restore()
   })
 
