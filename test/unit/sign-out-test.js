@@ -2,6 +2,7 @@ var simple = require('simple-mock')
 var test = require('tape')
 
 var signOut = require('../../lib/sign-out')
+var hookMock = simple.stub().callbackWith()
 
 test('signOut()', function (t) {
   t.plan(3)
@@ -12,6 +13,7 @@ test('signOut()', function (t) {
   })
 
   var state = {
+    hook: hookMock,
     url: 'http://example.com',
     cacheKey: 'cacheKey123',
     account: {
@@ -54,6 +56,7 @@ test('signOut() with request error', function (t) {
   simple.mock(signOut.internals, 'request').rejectWith(new Error('Ooops'))
 
   signOut({
+    hook: hookMock,
     account: {
       session: {}
     },
@@ -73,6 +76,7 @@ test('signOut() without being signed in', function (t) {
   t.plan(2)
 
   signOut({
+    hook: hookMock,
     account: {},
     emitter: {
       emit: simple.stub()

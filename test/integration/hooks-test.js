@@ -16,7 +16,7 @@ var options = {
 
 test('sign in with pre & post hooks', function (t) {
   store.clear()
-  t.plan(2)
+  t.plan(5)
 
   nock(baseURL)
     .put('/session')
@@ -28,21 +28,20 @@ test('sign in with pre & post hooks', function (t) {
     id: 'abc4567'
   })
 
-  account.on('pre:signin', function (options) {
-    options.hooks.push(function () {
-      return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-          callOrder.push(1)
-          resolve()
-        }, 100)
-      })
+  account.hook.before('signin', function (signInOptions) {
+    t.deepEqual(signInOptions, options, 'before signin hook receives options')
+    return new Promise(function (resolve) {
+      setTimeout(function () {
+        callOrder.push(1)
+        resolve()
+      }, 100)
     })
   })
 
-  account.on('post:signin', function (options) {
-    options.hooks.push(function () {
-      callOrder.push(3)
-    })
+  account.hook.after('signin', function (session, signInOptions) {
+    t.deepEqual(session, {id: 'abc4567', username: 'chicken@docs.com'}, 'after signin hook receives session')
+    t.deepEqual(signInOptions, options, 'after signin hook receives options')
+    callOrder.push(3)
   })
 
   account.on('signin', function () {
@@ -70,10 +69,8 @@ test('sign in with throw in pre hook', function (t) {
     id: 'abc4567'
   })
 
-  account.on('pre:signin', function (options) {
-    options.hooks.push(function () {
-      throw new Error('signin aborted')
-    })
+  account.hook.before('signin', function () {
+    throw new Error('signin aborted')
   })
 
   account.on('signin', function () {
@@ -102,10 +99,8 @@ test('sign in with throw in post hook', function (t) {
     id: 'abc4567'
   })
 
-  account.on('post:signin', function (options) {
-    options.hooks.push(function () {
-      throw new Error('post:signin ooops')
-    })
+  account.hook.after('signin', function (options) {
+    throw new Error('post:signin ooops')
   })
 
   account.on('signin', function () {
@@ -141,21 +136,17 @@ test('sign out with pre & post hooks', function (t) {
     id: 'abc4567'
   })
 
-  account.on('pre:signout', function (options) {
-    options.hooks.push(function () {
-      return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-          callOrder.push(1)
-          resolve()
-        }, 100)
-      })
+  account.hook.before('signout', function () {
+    return new Promise(function (resolve, reject) {
+      setTimeout(function () {
+        callOrder.push(1)
+        resolve()
+      }, 100)
     })
   })
 
-  account.on('post:signout', function (options) {
-    options.hooks.push(function () {
-      callOrder.push(3)
-    })
+  account.hook.after('signout', function () {
+    callOrder.push(3)
   })
 
   account.on('signout', function () {
@@ -189,10 +180,8 @@ test('sign out with throw in pre hook', function (t) {
     id: 'abc4567'
   })
 
-  account.on('pre:signout', function (options) {
-    options.hooks.push(function () {
-      throw new Error('signout aborted')
-    })
+  account.hook.before('signout', function () {
+    throw new Error('signout aborted')
   })
 
   account.on('signout', function () {
@@ -227,10 +216,8 @@ test('sign out with throw in post hook', function (t) {
     id: 'abc4567'
   })
 
-  account.on('post:signout', function (options) {
-    options.hooks.push(function () {
-      throw new Error('post:signout ooops')
-    })
+  account.hook.after('signout', function () {
+    throw new Error('post:signout ooops')
   })
 
   account.on('signout', function () {
