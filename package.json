@@ -62,6 +62,7 @@
     "uglify-js": "^2.4.24"
   },
   "dependencies": {
+    "before-after-hook": "^1.0.1",
     "humble-localstorage": "^1.4.2",
     "lie": "^3.0.1",
     "lodash": "^4.0.0",
