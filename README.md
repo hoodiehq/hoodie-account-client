@@ -50,6 +50,7 @@ account.on('signout', redirectToHome)
 - [account.one](#accountone)
 - [account.off](#accountoff)
 - [Events](#events)
+- [Hooks](#hooks)
 - [Requests](#requests)
 
 ### Constructor
@@ -932,7 +933,7 @@ account.off(event, handler)
 Example
 
 ```js
-hoodie.off('connectionstatus:disconnected', showNotification)
+account.off('singin', showNotification)
 ```
 
 ### Events
