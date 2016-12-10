@@ -19,7 +19,6 @@ test('updateProfile with change', function (t) {
     body: null
   })
   simple.mock(updateProfile.internals, 'serialise').returnWith('profileJsonData')
-  simple.mock(updateProfile.internals, 'saveAccount').callFn(function () {})
 
   var state = {
     cacheKey: 'cacheKey123',
@@ -34,6 +33,9 @@ test('updateProfile with change', function (t) {
       profile: {
         foo: 'bar'
       }
+    },
+    store: {
+      set: simple.stub()
     }
   }
 
@@ -50,16 +52,13 @@ test('updateProfile with change', function (t) {
       },
       body: 'profileJsonData'
     })
-    t.deepEqual(updateProfile.internals.saveAccount.lastCall.arg, {
-      cacheKey: 'cacheKey123',
-      account: {
-        session: {
-          id: 'abc1234'
-        },
-        profile: {
-          foo: 'bar',
-          fullName: 'Docs Chicken'
-        }
+    t.deepEqual(state.store.set.lastCall.arg, {
+      session: {
+        id: 'abc1234'
+      },
+      profile: {
+        foo: 'bar',
+        fullName: 'Docs Chicken'
       }
     })
 

@@ -10,7 +10,6 @@ test('destroy()', function (t) {
     statusCode: 204,
     body: null
   })
-  simple.mock(destroy.internals, 'clearSession').callFn(function () {})
 
   var state = {
     url: 'http://example.com',
@@ -23,6 +22,9 @@ test('destroy()', function (t) {
     },
     emitter: {
       emit: simple.stub()
+    },
+    store: {
+      unset: simple.stub()
     }
   }
 
@@ -36,9 +38,7 @@ test('destroy()', function (t) {
         authorization: 'Session abc4567'
       }
     })
-    t.deepEqual(destroy.internals.clearSession.lastCall.arg, {
-      cacheKey: 'cacheKey123'
-    })
+    t.deepEqual(state.store.unset.callCount, 1)
 
     t.is(state.account, undefined, 'unsets account')
 

@@ -43,6 +43,9 @@ test('successful account.signIn(options)', function (t) {
     cacheKey: 'cacheKey123',
     emitter: {
       emit: simple.stub()
+    },
+    store: {
+      set: simple.stub()
     }
   }
 
@@ -57,7 +60,6 @@ test('successful account.signIn(options)', function (t) {
       username: 'deserialise username'
     }
   })
-  simple.mock(signIn.internals, 'saveAccount').callFn(function () {})
 
   signIn(state, {
     username: 'pat',
@@ -71,15 +73,12 @@ test('successful account.signIn(options)', function (t) {
       body: 'serialised'
     })
     t.deepEqual(signIn.internals.deserialise.lastCall.arg, 'response body')
-    t.deepEqual(signIn.internals.saveAccount.lastCall.arg, {
-      cacheKey: 'cacheKey123',
-      account: {
-        session: {
-          id: 'Session123'
-        },
-        id: 'deserialise id',
-        username: 'deserialise username'
-      }
+    t.deepEqual(state.store.set.lastCall.arg, {
+      session: {
+        id: 'Session123'
+      },
+      id: 'deserialise id',
+      username: 'deserialise username'
     })
 
     t.assert(accountProperties, 'resolves with account object')
@@ -123,6 +122,9 @@ test('signIn with same username', function (t) {
       session: {
         id: 'Session123'
       }
+    },
+    store: {
+      set: simple.stub()
     }
   }
 
@@ -133,7 +135,6 @@ test('signIn with same username', function (t) {
   simple.mock(signIn.internals, 'deserialise').returnWith({
     id: 'Session123'
   })
-  simple.mock(signIn.internals, 'saveAccount').callFn(function () {})
 
   signIn(state, {
     username: 'pat',

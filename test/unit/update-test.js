@@ -25,6 +25,9 @@ test('update with change', function (t) {
       session: {
         id: 'abc1234'
       }
+    },
+    store: {
+      set: simple.stub()
     }
   }
 
@@ -35,7 +38,6 @@ test('update with change', function (t) {
   })
   simple.mock(update.internals, 'deserialise').returnWith(state.account.session)
   simple.mock(update.internals, 'serialise').returnWith('jsonData')
-  simple.mock(update.internals, 'saveAccount').callFn(function () {})
 
   update(state, {
     password: 'newsecret'
@@ -50,13 +52,10 @@ test('update with change', function (t) {
       },
       body: 'jsonData'
     })
-    t.deepEqual(update.internals.saveAccount.lastCall.arg, {
-      cacheKey: 'cacheKey123',
-      account: {
-        username: 'bakingpies',
-        session: {
-          id: 'abc1234'
-        }
+    t.deepEqual(state.store.set.lastCall.arg, {
+      username: 'bakingpies',
+      session: {
+        id: 'abc1234'
       }
     })
 
@@ -82,6 +81,9 @@ test('update with change causing new session', function (t) {
       session: {
         id: 'abc1234'
       }
+    },
+    store: {
+      set: simple.stub()
     }
   }
 
@@ -94,7 +96,6 @@ test('update with change causing new session', function (t) {
   })
   simple.mock(update.internals, 'deserialise').returnWith(state.account.session)
   simple.mock(update.internals, 'serialise').returnWith('jsonData')
-  simple.mock(update.internals, 'saveAccount').callFn(function () {})
 
   update(state, {
     username: 'treetrunks'
@@ -109,13 +110,10 @@ test('update with change causing new session', function (t) {
       },
       body: 'jsonData'
     })
-    t.deepEqual(update.internals.saveAccount.lastCall.arg, {
-      cacheKey: 'cacheKey123',
-      account: {
-        username: 'treetrunks',
-        session: {
-          id: 'newsession5678'
-        }
+    t.deepEqual(state.store.set.lastCall.arg, {
+      username: 'treetrunks',
+      session: {
+        id: 'newsession5678'
       }
     })
 
