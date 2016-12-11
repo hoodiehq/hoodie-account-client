@@ -66,12 +66,16 @@ admin.accounts.on('change', renderAccounts)
 ### Constructor
 
 ```js
-new AccountAdmin({
+var admin = new AccountAdmin({
   // required. Path or full URL to root location of the account JSON API
   url: '/api',
   // name of localStorage key where to persist the session state.
   // Defaults to "account_admin"
   cacheKey: 'myapp.admin.session'
+})
+
+admin.ready.then(function () {
+  // admin API is now ready
 })
 ```
 

@@ -8,9 +8,9 @@
 [![devDependency Status](https://david-dm.org/hoodiehq/hoodie-account-client/dev-status.svg)](https://david-dm.org/hoodiehq/hoodie-account-client#info=devDependencies)
 
 `hoodie-account-client` is a JavaScript client for the [Account JSON API](http://docs.accountjsonapi.apiary.io).
-It persists session information in localStorage and provides front-end friendly
-APIs for things like creating a user account, confirming, resetting a password,
-changing profile information, or closing the account.
+It persists session information in localStorage (or your own store API) and
+provides front-end friendly APIs for things like creating a user account,
+confirming, resetting a password, changing profile information, or closing the account.
 
 There is also an [admin-specific account client](admin)
 
@@ -30,6 +30,7 @@ account.on('signout', redirectToHome)
 ## API
 
 - [Constructor](#constructor)
+- [account.ready](#accountready)
 - [account.id](#accountid)
 - [account.username](#accountusername)
 - [account.validate](#accountvalidate)
@@ -87,9 +88,21 @@ new Account(options)
     <th align="left"><code>options.cacheKey</code></th>
     <td>String</td>
     <td>
-      Name of localStorage key where to persist the session state.
+      Name of localStorage key where to persist the session cache. Not used
+      if <code>options.cache</code> is passed.
     </td>
-    <td>Defaults to <code>\account</code></td>
+    <td>Defaults to <code>account</code></td>
+  </tr>
+  <tr>
+    <th align="left"><code>options.cache</code></th>
+    <td>Object</td>
+    <td>
+      Object with <code>.get()</code>, <code>.set(properties)</code> and
+      <code>.unset()</code> methods to persist the account status. Each method
+      must return a promise, <code>.get()</code> resolves with the account’s
+      properties or an empty object.
+    </td>
+    <td>Defaults to a <a href="https://github.com/gr2m/async-get-set-store">localStorage-based API</a>, see also <code>options.cacheKey</code></td>
   </tr>
   <tr>
     <th align="left"><code>options.validate</code></th>
@@ -119,14 +132,20 @@ new Account({
 })
 ```
 
+### account.ready
+
+_Read-only_. Promise that resolves once the account instance loaded its current
+state from the store.
+
 ### account.id
 
-_Read-only_. Returns the account id. If accessed for the first time, a
-new id gets generated and persisted in localStorage.
+_Read-only_. Returns the account id. Cannot be accessed until the [account.ready](#accountready)
+promise resolved.
 
 ### account.username
 
-_Read-only_. Returns the username if signed in, otherwise `undefined`.
+_Read-only_. Returns the username if signed in, otherwise `undefined`. Cannot be
+accessed until the [account.ready](#accountready) promise resolved.
 
 ### account.validate
 
@@ -196,6 +215,7 @@ account.validate({
 ### account.isSignedIn
 
 Returns `true` if user is currently signed in, otherwise `false`.
+Cannot be accessed until the [account.ready](#accountready) promise resolved.
 
 ```js
 account.isSignedIn()
@@ -205,6 +225,7 @@ account.isSignedIn()
 
 Checks `account.session.invalid` property.
 Returns `true` if user has invalid session, otherwise `undefined`.
+Cannot be accessed until the [account.ready](#accountready) promise resolved.
 
 ```js
 account.hasInvalidSession()
@@ -463,6 +484,7 @@ account.destroy().then(function (sessionProperties) {
 ### account.get
 
 Returns account properties from local cache.
+Cannot be accessed until the [account.ready](#accountready) promise resolved.
 
 ```js
 account.get(properties)
@@ -638,11 +660,8 @@ account.update({username: 'treetrunks'}).then(function (properties) {
 
 ### account.profile.get
 
-```js
-account.profile.get()
-```
-
 Returns profile properties from local cache.
+Cannot be accessed until the [account.ready](#accountready) promise resolved.
 
 ```js
 account.profile.get(properties)
