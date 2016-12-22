@@ -2,8 +2,6 @@ module.exports = AccountAdmin
 
 var EventEmitter = require('events').EventEmitter
 
-var getAccount = require('../utils/get-account')
-
 var getUsername = require('../lib/username')
 var signIn = require('../lib/sign-in')
 var signOut = require('../lib/sign-out')
@@ -18,6 +16,7 @@ var accountsRemove = require('./lib/accounts/remove')
 var sessionsAdd = require('./lib/sessions/add')
 
 var events = require('../lib/events')
+var LocalStorageStore = require('../utils/localstorage-store')
 
 function AccountAdmin (options) {
   if (!(this instanceof AccountAdmin)) {
@@ -31,11 +30,14 @@ function AccountAdmin (options) {
   var cacheKey = options.cacheKey || 'account_admin'
   var emitter = options.emitter || new EventEmitter()
   var accountsEmitter = new EventEmitter()
+  var store = new LocalStorageStore(cacheKey)
+
   var state = {
     accountsEmitter: accountsEmitter,
     cacheKey: cacheKey,
     emitter: emitter,
-    account: getAccount({cacheKey: cacheKey}),
+    account: store.get(),
+    store: store,
     url: options.url
   }
 

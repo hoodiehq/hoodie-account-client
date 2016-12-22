@@ -4,8 +4,7 @@ var EventEmitter = require('events').EventEmitter
 var get = require('lodash/get')
 
 var generateId = require('./generate-id')
-var getAccount = require('./get-account')
-var saveAccount = require('./save-account')
+var LocalStorageStore = require('./localstorage-store')
 
 function getState (options) {
   if (!options) {
@@ -21,16 +20,16 @@ function getState (options) {
   }
 
   var cacheKey = options.cacheKey || 'account'
-  var storedAccount = getAccount({
-    cacheKey: cacheKey
-  })
+  var store = new LocalStorageStore(cacheKey)
+  var storedAccount = store.get()
 
   var state = {
     cacheKey: cacheKey,
     emitter: options.emitter || new EventEmitter(),
     account: storedAccount,
     url: options.url,
-    validate: options.validate || function () {}
+    validate: options.validate || function () {},
+    store: store
   }
 
   var storedAccountId = get(storedAccount, 'id')
@@ -44,10 +43,7 @@ function getState (options) {
       createdAt: new Date().toISOString()
     }
 
-    saveAccount({
-      cacheKey: cacheKey,
-      account: state.account
-    })
+    store.set(state.account)
   }
 
   return state

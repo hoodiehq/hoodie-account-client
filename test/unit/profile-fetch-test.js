@@ -33,11 +33,13 @@ test('profileFetch with bogus path', function (t) {
       session: {
         id: 'abc4567'
       }
+    },
+    store: {
+      set: simple.stub()
     }
   }
 
   simple.mock(internals, 'fetchProperties').resolveWith({foo: 'bar'})
-  simple.mock(internals, 'saveAccount')
 
   fetch(state)
 
@@ -49,7 +51,7 @@ test('profileFetch with bogus path', function (t) {
     }, 'calls fetchProperties with profile url')
 
     t.deepEqual(state.account.profile, {foo: 'bar'}, 'sets state.account.profile')
-    t.deepEqual(internals.saveAccount.lastCall.arg.account.profile, {foo: 'bar'}, 'update profile in local store')
+    t.deepEqual(state.store.set.lastCall.arg.profile, {foo: 'bar'}, 'update profile in local store')
 
     simple.restore()
     t.end()
