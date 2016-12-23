@@ -5,12 +5,16 @@ internals.request = require('../../../utils/request')
 internals.deserialise = require('../../../utils/deserialise')
 
 function find (state, id, options) {
-  return internals.request({
-    url: state.url + '/accounts/' + id + query(options),
-    method: 'GET',
-    headers: {
-      authorization: 'Session ' + state.account.session.id
-    }
+  return state.ready
+
+  .then(function () {
+    return internals.request({
+      url: state.url + '/accounts/' + id + query(options),
+      method: 'GET',
+      headers: {
+        authorization: 'Session ' + state.account.session.id
+      }
+    })
   })
 
   .then(function (response) {

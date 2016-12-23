@@ -13,7 +13,7 @@ function Account (options) {
 
   var state = getState(options)
 
-  return {
+  var api = {
     get username () {
       return getUsername(state)
     },
@@ -39,6 +39,9 @@ function Account (options) {
     one: events.one.bind(null, state),
     off: events.off.bind(null, state),
     hook: state.hook.api,
-    validate: require('./lib/validate').bind(null, state)
+    validate: require('./lib/validate').bind(null, state),
+    ready: state.ready.then(function () { return api })
   }
+
+  return api
 }

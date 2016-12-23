@@ -10,7 +10,11 @@ internals.serialise = require('../../../utils/serialise')
 function update (state, id, change, options) {
   var account
 
-  return internals.find(state, id, options)
+  return state.ready
+
+  .then(function () {
+    return internals.find(state, id, options)
+  })
 
   .then(function (_account) {
     account = _account

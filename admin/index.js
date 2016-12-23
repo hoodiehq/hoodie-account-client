@@ -2,6 +2,7 @@ module.exports = AccountAdmin
 
 var EventEmitter = require('events').EventEmitter
 var Hook = require('before-after-hook')
+var LocalStorageStore = require('async-get-set-store')
 
 var getUsername = require('../lib/username')
 var signIn = require('../lib/sign-in')
@@ -17,7 +18,6 @@ var accountsRemove = require('./lib/accounts/remove')
 var sessionsAdd = require('./lib/sessions/add')
 
 var events = require('../lib/events')
-var LocalStorageStore = require('../utils/localstorage-store')
 
 function AccountAdmin (options) {
   if (!(this instanceof AccountAdmin)) {
@@ -31,16 +31,19 @@ function AccountAdmin (options) {
   var cacheKey = options.cacheKey || 'account_admin'
   var emitter = options.emitter || new EventEmitter()
   var accountsEmitter = new EventEmitter()
-  var store = new LocalStorageStore(cacheKey)
+  var cache = options.cache || new LocalStorageStore(cacheKey)
 
   var state = {
     accountsEmitter: accountsEmitter,
     cacheKey: cacheKey,
     emitter: emitter,
-    account: store.get(),
-    store: store,
+    account: undefined,
+    cache: cache,
     url: options.url,
-    hook: new Hook()
+    hook: new Hook(),
+    ready: cache.get().then(function (storedAccount) {
+      state.account = storedAccount
+    })
   }
 
   var admin = {
@@ -73,7 +76,10 @@ function AccountAdmin (options) {
     on: events.on.bind(null, state),
     one: events.one.bind(null, state),
     off: events.off.bind(null, state),
-    hook: state.hook.api
+    hook: state.hook.api,
+    ready: state.ready.then(function () {
+      return admin
+    })
   }
 
   // sessions.add can use accounts.find to lookup user id by username

@@ -12,29 +12,33 @@ function add (state, options) {
     return Promise.reject(new Error('options.username is required'))
   }
 
-  // TODO: use accountsFind instead of accountsFindAll
-  //       after updating accountsFind to match admin README doc
-  // return accountsFind(state, {username: options.username})
-  return accountsFindAll(state)
-    .then(function (response) {
-      var accountInfo = _.filter(
-        response, {username: options.username})[0]
-      if (!accountInfo) {
-        var notFoundErr = new Error('account not found')
-        notFoundErr.name = 'NotFoundError'
-        throw notFoundErr
-      }
+  return state.ready
 
-      return internals.request({
-        url: state.url + '/accounts/' + accountInfo.id + '/sessions',
-        method: 'POST',
-        headers: {
-          authorization: 'Session ' + state.account.session.id
+  .then(function () {
+    // TODO: use accountsFind instead of accountsFindAll
+    //       after updating accountsFind to match admin README doc
+    // return accountsFind(state, {username: options.username})
+    return accountsFindAll(state)
+      .then(function (response) {
+        var accountInfo = _.filter(
+          response, {username: options.username})[0]
+        if (!accountInfo) {
+          var notFoundErr = new Error('account not found')
+          notFoundErr.name = 'NotFoundError'
+          throw notFoundErr
         }
+
+        return internals.request({
+          url: state.url + '/accounts/' + accountInfo.id + '/sessions',
+          method: 'POST',
+          headers: {
+            authorization: 'Session ' + state.account.session.id
+          }
+        })
+      }).then(function (response) {
+        return internals.deserialise(response.body, {
+          include: 'account'
+        })
       })
-    }).then(function (response) {
-      return internals.deserialise(response.body, {
-        include: 'account'
-      })
-    })
+  })
 }
