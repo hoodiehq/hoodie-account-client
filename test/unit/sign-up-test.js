@@ -7,7 +7,9 @@ var signUp = require('../../lib/sign-up')
 test('signUp without options', function (t) {
   t.plan(1)
 
-  signUp({})
+  signUp({
+    ready: Promise.resolve()
+  })
 
   .catch(t.pass.bind(t, 'rejects'))
 })
@@ -15,7 +17,9 @@ test('signUp without options', function (t) {
 test('signUp without password', function (t) {
   t.plan(1)
 
-  signUp({}, {
+  signUp({
+    ready: Promise.resolve()
+  }, {
     username: 'pat'
   })
 
@@ -25,7 +29,9 @@ test('signUp without password', function (t) {
 test('signUp without username', function (t) {
   t.plan(1)
 
-  signUp({}, {
+  signUp({
+    ready: Promise.resolve()
+  }, {
     password: 'secret'
   })
 
@@ -35,8 +41,9 @@ test('signUp without username', function (t) {
 test('signUp with username & password', function (t) {
   t.plan(6)
 
-  var clock = lolex.install(0)
+  var clock = lolex.install(0, ['Date'])
   var state = {
+    ready: Promise.resolve(),
     url: 'http://example.com',
     validate: simple.stub(),
     emitter: {
@@ -97,6 +104,7 @@ test('signUp with profile', function (t) {
   t.plan(1)
 
   var state = {
+    ready: Promise.resolve(),
     validate: function () {}
   }
 
@@ -115,6 +123,7 @@ test('account.signUp with invalid options', function (t) {
   t.plan(1)
 
   var state = {
+    ready: Promise.resolve(),
     validate: function (options) {
       throw new Error('Not funky enough!')
     }
@@ -136,6 +145,7 @@ test('signUp with request error', function (t) {
   t.plan(1)
 
   var state = {
+    ready: Promise.resolve(),
     validate: function () {}
   }
 

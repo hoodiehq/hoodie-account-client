@@ -3,7 +3,9 @@ var test = require('tape')
 var isSignedIn = require('../../lib/is-signed-in')
 
 test('isSignedIn without session', function (t) {
-  t.is(isSignedIn({}), false, 'returns false')
+  t.is(isSignedIn({
+    account: {}
+  }), false, 'returns false')
 
   t.end()
 })

@@ -9,9 +9,6 @@ test('new AccountAdmin(options)', function (t) {
 
   t.is(typeof accountAdmin, 'object', 'AccountAdmin is a constructor')
 
-  t.ok(accountAdmin.hasOwnProperty('username'), 'accountAdmin.username exists')
-  t.is(accountAdmin.username, undefined, 'accountAdmin.username is undefined')
-
   t.is(typeof accountAdmin.signUp, 'undefined', 'accountAdmin.signIn is undefined')
   t.is(typeof accountAdmin.signIn, 'function', 'accountAdmin.signIn is a function')
   t.is(typeof accountAdmin.signOut, 'function', 'accountAdmin.signOut is a function')
@@ -29,7 +26,12 @@ test('new AccountAdmin(options)', function (t) {
   t.is(typeof accountAdmin.one, 'function', 'has "one()"')
   t.is(typeof accountAdmin.off, 'function', 'has "off()"')
 
-  t.end()
+  accountAdmin.ready.then(function () {
+    t.ok(accountAdmin.hasOwnProperty('username'), 'accountAdmin.username exists')
+    t.is(accountAdmin.username, undefined, 'accountAdmin.username is undefined')
+
+    t.end()
+  })
 })
 
 test('AccountAdmin(options) w/o new', function (t) {

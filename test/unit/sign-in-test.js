@@ -10,7 +10,8 @@ test('signIn without options', function (t) {
   t.plan(1)
 
   signIn({
-    hook: hookMock
+    hook: hookMock,
+    ready: Promise.resolve()
   })
     .then(t.fail.bind(t, 'must reject'))
     .catch(t.pass.bind(t, 'rejects with error'))
@@ -20,7 +21,8 @@ test('signIn without password', function (t) {
   t.plan(1)
 
   signIn({
-    hook: hookMock
+    hook: hookMock,
+    ready: Promise.resolve()
   }, {
     username: 'username'
   })
@@ -34,7 +36,8 @@ test('signIn without username', function (t) {
   t.plan(1)
 
   signIn({
-    hook: hookMock
+    hook: hookMock,
+    ready: Promise.resolve()
   }, {
     password: 'password'
   })
@@ -49,12 +52,13 @@ test('successful account.signIn(options)', function (t) {
 
   var state = {
     hook: hookMock,
+    ready: Promise.resolve(),
     url: 'http://example.com',
     cacheKey: 'cacheKey123',
     emitter: {
       emit: simple.stub()
     },
-    store: {
+    cache: {
       set: simple.stub()
     }
   }
@@ -83,7 +87,7 @@ test('successful account.signIn(options)', function (t) {
       body: 'serialised'
     })
     t.deepEqual(signIn.internals.deserialise.lastCall.arg, 'response body')
-    t.deepEqual(state.store.set.lastCall.arg, {
+    t.deepEqual(state.cache.set.lastCall.arg, {
       session: {
         id: 'Session123'
       },
@@ -107,7 +111,8 @@ test('signIn with request error', function (t) {
   simple.mock(signIn.internals, 'request').rejectWith(new Error('Ooops'))
 
   signIn({
-    hook: hookMock
+    hook: hookMock,
+    ready: Promise.resolve()
   })
 
   .then(t.fail.bind(t, 'must reject'))
@@ -125,6 +130,7 @@ test('signIn with same username', function (t) {
 
   var state = {
     hook: hookMock,
+    ready: Promise.resolve(),
     url: 'http://example.com',
     cacheKey: 'cacheKey123',
     emitter: {
@@ -136,7 +142,7 @@ test('signIn with same username', function (t) {
         id: 'Session123'
       }
     },
-    store: {
+    cache: {
       set: simple.stub()
     }
   }

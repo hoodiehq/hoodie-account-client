@@ -1,16 +1,25 @@
+var simple = require('simple-mock')
 var test = require('tape')
 
 var getState = require('../../utils/get-state.js')
 
 test('throws error on account.id conflict', function (t) {
-  t.plan(1)
-
   var options = {
     url: 'example.com',
-    id: '567xyz'
+    id: '567xyz',
+    cache: {
+      get: simple.stub().resolveWith({
+        id: 'otherid'
+      })
+    }
   }
 
-  t.throws(function () {
-    getState(options)
-  }, 'Must reject')
+  getState(options).ready
+
+  .then(t.fail.bind(null, 'should not resolve'))
+
+  .catch(function (error) {
+    t.is(error.message, 'Error while initialising: account.id conflict')
+    t.end()
+  })
 })

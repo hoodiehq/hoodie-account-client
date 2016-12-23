@@ -7,6 +7,7 @@ test('accountsFind', function (t) {
   t.plan(3)
 
   var state = {
+    ready: Promise.resolve(),
     url: 'http://localhost:3000',
     account: {
       session: {
@@ -48,6 +49,7 @@ test('accountsFind with profile option included', function (t) {
   t.plan(3)
 
   var state = {
+    ready: Promise.resolve(),
     url: 'http://localhost:3000',
     account: {
       session: {

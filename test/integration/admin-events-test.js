@@ -40,7 +40,11 @@ test('admin events', function (t) {
   admin.accounts.on('remove', removeHandler)
   admin.accounts.on('change', changeHandler)
 
-  t.ok(admin.isSignedIn(), 'pre condition: signed in')
+  admin.ready
+
+  .then(function () {
+    t.ok(admin.isSignedIn(), 'pre condition: signed in')
+  })
 
   admin.accounts.add({
     username: 'sam',
