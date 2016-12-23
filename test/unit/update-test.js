@@ -6,7 +6,9 @@ var update = require('../../lib/update')
 test('update without change', function (t) {
   t.plan(1)
 
-  update()
+  update({
+    ready: Promise.resolve()
+  })
     .then(t.fail.bind(t, 'must reject'))
     .catch(t.pass.bind(t, 'rejects with error'))
 })
@@ -15,6 +17,7 @@ test('update with change', function (t) {
   t.plan(4)
 
   var state = {
+    ready: Promise.resolve(),
     cacheKey: 'cacheKey123',
     url: 'http://example.com',
     emitter: {
@@ -26,7 +29,7 @@ test('update with change', function (t) {
         id: 'abc1234'
       }
     },
-    store: {
+    cache: {
       set: simple.stub()
     }
   }
@@ -52,7 +55,7 @@ test('update with change', function (t) {
       },
       body: 'jsonData'
     })
-    t.deepEqual(state.store.set.lastCall.arg, {
+    t.deepEqual(state.cache.set.lastCall.arg, {
       username: 'bakingpies',
       session: {
         id: 'abc1234'
@@ -71,6 +74,7 @@ test('update with change causing new session', function (t) {
   t.plan(5)
 
   var state = {
+    ready: Promise.resolve(),
     cacheKey: 'cacheKey123',
     url: 'http://example.com',
     emitter: {
@@ -82,7 +86,7 @@ test('update with change causing new session', function (t) {
         id: 'abc1234'
       }
     },
-    store: {
+    cache: {
       set: simple.stub()
     }
   }
@@ -110,7 +114,7 @@ test('update with change causing new session', function (t) {
       },
       body: 'jsonData'
     })
-    t.deepEqual(state.store.set.lastCall.arg, {
+    t.deepEqual(state.cache.set.lastCall.arg, {
       username: 'treetrunks',
       session: {
         id: 'newsession5678'
@@ -131,6 +135,7 @@ test('server side error', function (t) {
   t.plan(1)
 
   var state = {
+    ready: Promise.resolve(),
     cacheKey: 'cacheKey123',
     url: 'http://example.com',
     emitter: {

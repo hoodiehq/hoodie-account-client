@@ -21,6 +21,7 @@ test('updateProfile with change', function (t) {
   simple.mock(updateProfile.internals, 'serialise').returnWith('profileJsonData')
 
   var state = {
+    ready: Promise.resolve(),
     cacheKey: 'cacheKey123',
     url: 'http://example.com',
     emitter: {
@@ -34,7 +35,7 @@ test('updateProfile with change', function (t) {
         foo: 'bar'
       }
     },
-    store: {
+    cache: {
       set: simple.stub()
     }
   }
@@ -52,7 +53,7 @@ test('updateProfile with change', function (t) {
       },
       body: 'profileJsonData'
     })
-    t.deepEqual(state.store.set.lastCall.arg, {
+    t.deepEqual(state.cache.set.lastCall.arg, {
       session: {
         id: 'abc1234'
       },
@@ -81,6 +82,7 @@ test('server side error', function (t) {
   simple.mock(updateProfile.internals, 'request').rejectWith(new Error())
 
   updateProfile({
+    ready: Promise.resolve(),
     cacheKey: 'cacheKey123',
     url: 'http://example.com',
     account: {

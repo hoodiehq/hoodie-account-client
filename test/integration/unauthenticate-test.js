@@ -19,6 +19,7 @@ test('unauthenticate state within account.fetch()', function (t) {
   store.clear()
   store.setObject('account', {
     username: 'sam',
+    id: 'user1234',
     session: {
       id: 'abc4567'
     }
@@ -29,12 +30,17 @@ test('unauthenticate state within account.fetch()', function (t) {
     .reply(401, errorMessage)
 
   var account = new Account({url: 'http://example.de'})
-  t.equal(account.hasInvalidSession(), undefined, '.hasInvalidSession() returns undefined')
-
   var unauthenticateHandler = simple.stub()
-  account.on('unauthenticate', unauthenticateHandler)
 
-  account.fetch()
+  account.ready
+
+  .then(function () {
+    t.equal(account.hasInvalidSession(), undefined, '.hasInvalidSession() returns undefined')
+
+    account.on('unauthenticate', unauthenticateHandler)
+
+    return account.fetch()
+  })
 
   .then(function () {
     t.fail('account.fetch should fail')
@@ -56,6 +62,7 @@ test('unauthenticate state within account.update()', function (t) {
   store.clear()
   store.setObject('account', {
     username: 'sam',
+    id: 'user1234',
     session: {
       id: 'abc4567'
     }
@@ -66,12 +73,17 @@ test('unauthenticate state within account.update()', function (t) {
     .reply(401, errorMessage)
 
   var account = new Account({url: 'http://example.de'})
-  t.equal(account.hasInvalidSession(), undefined, '.hasInvalidSession() returns undefined')
-
   var unauthenticateHandler = simple.stub()
-  account.on('unauthenticate', unauthenticateHandler)
 
-  account.update({username: 'newsam'})
+  account.ready
+
+  .then(function () {
+    t.equal(account.hasInvalidSession(), undefined, '.hasInvalidSession() returns undefined')
+
+    account.on('unauthenticate', unauthenticateHandler)
+
+    return account.update({username: 'newsam'})
+  })
 
   .then(function () {
     t.fail('account.update should fail')
@@ -93,6 +105,7 @@ test('unauthenticate state within account.profile.update()', function (t) {
   store.clear()
   store.setObject('account', {
     username: 'sam',
+    id: 'user1234',
     session: {
       id: 'abc4567'
     },
@@ -106,25 +119,30 @@ test('unauthenticate state within account.profile.update()', function (t) {
     .reply(401, errorMessage)
 
   var account = new Account({url: 'http://example.de'})
-  t.equal(account.hasInvalidSession(), undefined, '.hasInvalidSession() returns undefined')
-
   var unauthenticateHandler = simple.stub()
-  account.on('unauthenticate', unauthenticateHandler)
 
-  account.profile.update({username: 'newsam'})
+  account.ready
 
-    .then(function () {
-      t.fail('account.profile.fetch should fail')
-    })
+  .then(function () {
+    t.equal(account.hasInvalidSession(), undefined, '.hasInvalidSession() returns undefined')
 
-    .catch(function (error) {
-      t.equal(error.name, 'UnauthorizedError', 'rejects with "UnauthenticatedError" error')
-      t.equal(account.hasInvalidSession(), true, 'account has invalid session')
-      t.is(unauthenticateHandler.callCount, 1, '"unauthenticate" event triggered once')
+    account.on('unauthenticate', unauthenticateHandler)
 
-      var localStorageAccount = store.getObject('account')
-      t.equal(localStorageAccount.session.invalid, true, 'account.session.invalid true in local storage')
-    })
+    return account.profile.update({username: 'newsam'})
+  })
+
+  .then(function () {
+    t.fail('account.profile.fetch should fail')
+  })
+
+  .catch(function (error) {
+    t.equal(error.name, 'UnauthorizedError', 'rejects with "UnauthenticatedError" error')
+    t.equal(account.hasInvalidSession(), true, 'account has invalid session')
+    t.is(unauthenticateHandler.callCount, 1, '"unauthenticate" event triggered once')
+
+    var localStorageAccount = store.getObject('account')
+    t.equal(localStorageAccount.session.invalid, true, 'account.session.invalid true in local storage')
+  })
 })
 
 test('unauthenticate state within account.profile.fetch()', function (t) {
@@ -132,6 +150,7 @@ test('unauthenticate state within account.profile.fetch()', function (t) {
 
   store.clear()
   store.setObject('account', {
+    id: 'user1234',
     session: {
       id: 'abc4567'
     }
@@ -142,12 +161,17 @@ test('unauthenticate state within account.profile.fetch()', function (t) {
     .reply(401, errorMessage)
 
   var account = new Account({url: 'http://example.de'})
-  t.equal(account.hasInvalidSession(), undefined, '.hasInvalidSession() returns undefined')
-
   var unauthenticateHandler = simple.stub()
-  account.on('unauthenticate', unauthenticateHandler)
 
-  account.profile.fetch()
+  account.ready
+
+  .then(function () {
+    t.equal(account.hasInvalidSession(), undefined, '.hasInvalidSession() returns undefined')
+
+    account.on('unauthenticate', unauthenticateHandler)
+
+    return account.profile.fetch()
+  })
 
   .then(function () {
     t.fail('account.profile.fetch should fail')

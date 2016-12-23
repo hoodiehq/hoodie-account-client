@@ -13,6 +13,7 @@ test('sign out', function (t) {
   store.clear()
   store.setObject('account', {
     username: 'sam',
+    id: 'user1234',
     session: {
       id: 'abc4567'
     }
@@ -25,7 +26,7 @@ test('sign out', function (t) {
 
   var account = new Account({
     url: baseURL,
-    id: 'abc4567'
+    id: 'user1234'
   })
 
   account.on('signout', function () {

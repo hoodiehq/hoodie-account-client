@@ -15,7 +15,7 @@ var options = {
 
 test('sign in', function (t) {
   store.clear()
-  t.plan(6)
+  t.plan(5)
 
   var account = new AccountAdmin({
     url: baseURL,
@@ -51,10 +51,6 @@ test('sign in', function (t) {
     t.pass('signs out')
 
     t.is(signOutResult.username, 'chicken@docs.com')
-
-    var storeAccount = store.getObject('account_admin')
-
-    t.is(storeAccount, null, 'removes account from store')
   })
 
   .catch(t.error)

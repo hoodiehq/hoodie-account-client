@@ -12,7 +12,6 @@ test('new Account(options)', function (t) {
 
   t.is(typeof account, 'object', 'Account is a constructor')
   t.ok(account.hasOwnProperty('username'), 'has account.username')
-  t.is(account.username, undefined, 'account.username is undefined')
   t.is(typeof account.validate, 'function', 'has "validate()"')
   t.is(typeof account.fetch, 'function', 'has "fetch()"')
   t.is(typeof account.get, 'function', 'has "get()"')
@@ -29,7 +28,12 @@ test('new Account(options)', function (t) {
   t.is(typeof account.one, 'function', 'has "one()"')
   t.is(typeof account.off, 'function', 'has "off()"')
 
-  t.end()
+  account.ready.then(function () {
+    t.is(account.username, undefined, 'account.username is undefined')
+    t.ok(account.id, 'account.id is set')
+
+    t.end()
+  })
 })
 
 test('Account(options) w/o new', function (t) {

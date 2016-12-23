@@ -42,9 +42,12 @@ test('profileGet with empty profile', function (t) {
 
 test('profileGet when signed out', function (t) {
   simple.mock(internals, 'isSignedIn').returnWith(false)
-  var result = get('internal state')
+  var state = {
+    account: {}
+  }
+  var result = get(state)
 
-  t.deepEqual(internals.isSignedIn.lastCall.args, ['internal state'], 'calls utils.isSignedIn with internal state')
+  t.deepEqual(internals.isSignedIn.lastCall.arg, state, 'calls utils.isSignedIn with internal state')
   t.same(result, undefined, 'returns undefined')
 
   t.end()

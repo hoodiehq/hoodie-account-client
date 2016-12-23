@@ -7,6 +7,7 @@ test('acconuntsAdd', function (t) {
   t.plan(5)
 
   var state = {
+    ready: Promise.resolve(),
     url: 'http://localhost:3000',
     account: {
       session: {

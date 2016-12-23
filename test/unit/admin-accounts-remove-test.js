@@ -7,6 +7,7 @@ test('acconuntsRemove', function (t) {
   t.plan(3)
 
   var state = {
+    ready: Promise.resolve(),
     url: 'http://localhost:3000',
     account: {
       session: {

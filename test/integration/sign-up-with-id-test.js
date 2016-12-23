@@ -19,7 +19,7 @@ test('sign up with id', function (t) {
   t.plan(6)
 
   // mock the Date object to always return Jan 1, 2017 0:00:00 UTC
-  var clock = lolex.install(0)
+  var clock = lolex.install(0, ['Date'])
   var account = new Account({
     url: baseURL,
     id: 'abc4567'
@@ -44,6 +44,7 @@ test('sign up with id', function (t) {
 
     return account.signIn(options)
   })
+
   .then(function () {
     t.pass('signs in')
 

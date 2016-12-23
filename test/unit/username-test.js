@@ -3,7 +3,9 @@ var test = require('tape')
 var username = require('../../lib/username')
 
 test('.username with empty state', function (t) {
-  t.is(username({}), undefined, 'returns undefined')
+  t.is(username({
+    account: {}
+  }), undefined, 'returns undefined')
 
   t.end()
 })

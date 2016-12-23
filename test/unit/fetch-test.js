@@ -8,28 +8,36 @@ test('fetch', function (t) {
   simple.mock(internals, 'fetchProperties').resolveWith({})
 
   fetch({
+    ready: Promise.resolve(),
     url: 'http://example.com',
     account: {
       session: {
         id: 'abc4567'
       }
+    },
+    cache: {
+      set: simple.stub().resolveWith()
     }
   }, 'path')
 
-  t.deepEqual(internals.fetchProperties.lastCall.arg, {
-    url: 'http://example.com/session/account',
-    sessionId: 'abc4567',
-    path: 'path'
-  }, 'calls fetchProperties with account url')
+  .then(function () {
+    t.deepEqual(internals.fetchProperties.lastCall.arg, {
+      url: 'http://example.com/session/account',
+      sessionId: 'abc4567',
+      path: 'path'
+    }, 'calls fetchProperties with account url')
 
-  simple.restore()
-  t.end()
+    simple.restore()
+
+    t.end()
+  })
 })
 
 test('fetch without state', function (t) {
   t.plan(1)
 
   fetch({
+    ready: Promise.resolve(),
     url: 'http://example.com'
   }, 'path')
 
@@ -43,28 +51,35 @@ test('fetch with undefined path', function (t) {
   simple.mock(internals, 'fetchProperties').resolveWith({})
 
   fetch({
+    ready: Promise.resolve(),
     url: 'http://example.com',
     account: {
       session: {
         id: 'abc45678'
       }
+    },
+    cache: {
+      set: simple.stub().resolveWith()
     }
   })
 
-  t.deepEqual(internals.fetchProperties.lastCall.arg, {
-    url: 'http://example.com/session/account',
-    sessionId: 'abc45678',
-    path: undefined
-  }, 'calls fetchProperties with account url and non-string path')
+  .then(function () {
+    t.deepEqual(internals.fetchProperties.lastCall.arg, {
+      url: 'http://example.com/session/account',
+      sessionId: 'abc45678',
+      path: undefined
+    }, 'calls fetchProperties with account url and non-string path')
 
-  simple.restore()
-  t.end()
+    simple.restore()
+    t.end()
+  })
 })
 
 test('fetch when no internal state available', function (t) {
   t.plan(1)
 
   fetch({
+    ready: Promise.resolve(),
     url: 'example.com',
     account: {
       session: {

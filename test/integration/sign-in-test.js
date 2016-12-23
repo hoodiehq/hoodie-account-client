@@ -16,7 +16,7 @@ var options = {
 
 test('sign in', function (t) {
   store.clear()
-  t.plan(11)
+  t.plan(12)
 
   var account = new Account({
     url: baseURL,
@@ -63,7 +63,8 @@ test('sign in', function (t) {
 
     var storeAccount = store.getObject('account')
 
-    t.is(storeAccount, null, 'removes acocunt from store')
+    t.ok(storeAccount.id, 'sets new id in account store')
+    t.isNot(storeAccount.id, signOutResult.id, 'resets account in store')
 
     t.ok(/^[a-z0-9]{7}$/.test(account.id), 'generates new account.id')
     t.isNot(account.id, 'abc4567', 'new id is not same as old id')
