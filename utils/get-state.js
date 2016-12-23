@@ -2,10 +2,9 @@ module.exports = getState
 
 var Hook = require('before-after-hook')
 var EventEmitter = require('events').EventEmitter
-var get = require('lodash/get')
+var LocalStorageStore = require('async-get-set-store')
 
 var generateId = require('./generate-id')
-var LocalStorageStore = require('./localstorage-store')
 
 function getState (options) {
   if (!options) {
@@ -21,31 +20,41 @@ function getState (options) {
   }
 
   var cacheKey = options.cacheKey || 'account'
-  var store = new LocalStorageStore(cacheKey)
-  var storedAccount = store.get()
+  var cache = options.cache || new LocalStorageStore(cacheKey)
 
   var state = {
-    account: storedAccount,
     cacheKey: cacheKey,
     emitter: options.emitter || new EventEmitter(),
     hook: new Hook(),
+    account: undefined,
     url: options.url,
     validate: options.validate || function () {},
-    store: store
-  }
+    cache: cache,
+    ready: cache.get()
+      .then(function (storedAccount) {
+        if (storedAccount.id) {
+          state.account = storedAccount
 
-  var storedAccountId = get(storedAccount, 'id')
-  if (options.id && storedAccountId && options.id !== storedAccountId) {
-    throw new Error('account.id conflict')
-  }
+          var storedAccountId = storedAccount.id
+          if (options.id && storedAccountId && options.id !== storedAccountId) {
+            throw new Error('account.id conflict')
+          }
 
-  if (!state.account) {
-    state.account = {
-      id: options.id || generateId(),
-      createdAt: new Date().toISOString()
-    }
+          return
+        }
 
-    store.set(state.account)
+        state.account = {
+          id: options.id || generateId(),
+          createdAt: new Date().toISOString()
+        }
+
+        return cache.set(state.account)
+      })
+      .catch(function (error) {
+        error.name = 'SetupError'
+        error.message = 'Error while initialising: ' + error.message
+        throw error
+      })
   }
 
   return state

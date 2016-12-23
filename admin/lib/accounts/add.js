@@ -6,13 +6,17 @@ internals.deserialise = require('../../../utils/deserialise')
 internals.serialise = require('../../../utils/serialise')
 
 function add (state, account, options) {
-  return internals.request({
-    url: state.url + '/accounts' + query(options),
-    method: 'POST',
-    headers: {
-      authorization: 'Session ' + state.account.session.id
-    },
-    body: internals.serialise('account', account)
+  return state.ready
+
+  .then(function () {
+    return internals.request({
+      url: state.url + '/accounts' + query(options),
+      method: 'POST',
+      headers: {
+        authorization: 'Session ' + state.account.session.id
+      },
+      body: internals.serialise('account', account)
+    })
   })
 
   .then(function (response) {
