@@ -24,17 +24,29 @@ test('profileGet', function (t) {
 })
 
 test('profileGet with empty profile', function (t) {
-  simple.mock(internals, 'getProperties').returnWith(undefined)
   simple.mock(internals, 'isSignedIn').returnWith(true)
   var result = get({
     account: {}
   })
 
+  t.same(result, {}, 'returns result of getProperties')
+
+  simple.restore()
+  t.end()
+})
+
+test('profileGet with empty profile and path argument', function (t) {
+  simple.mock(internals, 'getProperties').returnWith(undefined)
+  simple.mock(internals, 'isSignedIn').returnWith(true)
+  var result = get({
+    account: {}
+  }, 'foo')
+
   t.deepEqual(internals.getProperties.lastCall.args, [
     undefined,
-    undefined
+    'foo'
   ], 'calls utils.getProperties with "profile" basepath')
-  t.same(result, {}, 'returns result of getProperties')
+  t.same(result, undefined, 'returns result of getProperties')
 
   simple.restore()
   t.end()
