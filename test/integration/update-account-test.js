@@ -62,7 +62,7 @@ test('sign in and change username', function (t) {
   .then(function (updateResult) {
     t.pass('update resultResult received')
     t.is(updateResult.username, 'newchicken@docs.com', 'new account name in result')
-    t.is(account.username, 'newchicken@docs.com', 'account username set to new one')
+    t.is(account.get('username'), 'newchicken@docs.com', 'account username set to new one')
     t.is(updateResult.session.id, account.get('session.id'), 'account session should be the same as the result')
 
     return account.signOut()
@@ -78,7 +78,7 @@ test('sign in and change username', function (t) {
     t.pass('signed in again')
 
     t.is(signInResult.username, 'newchicken@docs.com', 'results with new username')
-    t.is(account.username, 'newchicken@docs.com', 'account.username is set to new one')
+    t.is(account.get('username'), 'newchicken@docs.com', 'account.username is set to new one')
   })
 
   .catch(t.error)

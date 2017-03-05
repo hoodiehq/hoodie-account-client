@@ -12,10 +12,6 @@ test('account.ready', function (t) {
   })
 
   t.throws(function () {
-    account.username
-  }, 'account.username not accessible before account.ready resolves')
-
-  t.throws(function () {
     account.id
   }, 'account.id not accessible before account.ready resolves')
 
