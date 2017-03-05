@@ -19,8 +19,13 @@ confirming, resetting a password, changing profile information, or closing the a
 var account = new Account('https://example.com/account/api')
 
 // check if user is signed in
-if (account.get('session.id')) {
+if (account.get('session')) {
   renderWelcome(account)
+
+  // check if the current session is expired (or otherwise invalidated)
+  if (account.get('session.invalid')) {
+    showLoginModal(account)
+  }
 }
 
 account.on('signout', redirectToHome)
@@ -31,7 +36,6 @@ account.on('signout', redirectToHome)
 - [Constructor](#constructor)
 - [account.ready](#accountready)
 - [account.validate](#accountvalidate)
-- [account.hasInvalidSession](#accounthasinvalidsession)
 - [account.signUp](#accountsignup)
 - [account.signIn](#accountsignin)
 - [account.signOut](#accountsignout)
@@ -196,16 +200,6 @@ account.validate({
 .catch(function (error) {
   console.log(error) // should be an error about the password being too short
 })
-```
-
-### account.hasInvalidSession
-
-Checks `account.session.invalid` property.
-Returns `true` if user has invalid session, otherwise `undefined`.
-Cannot be accessed until the [account.ready](#accountready) promise resolved.
-
-```js
-account.hasInvalidSession()
 ```
 
 ### account.signUp
