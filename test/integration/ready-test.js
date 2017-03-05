@@ -12,10 +12,6 @@ test('account.ready', function (t) {
   })
 
   t.throws(function () {
-    account.id
-  }, 'account.id not accessible before account.ready resolves')
-
-  t.throws(function () {
     account.isSignedIn()
   }, 'account.isSignedIn() not accessible before account.ready resolves')
 
@@ -33,7 +29,7 @@ test('account.ready', function (t) {
 
   account.ready.then(function (account_) {
     t.equal(account, account_, 'resolves with account instance')
-    t.ok(account.id)
+    t.ok(account.get('id'))
 
     t.end()
   })

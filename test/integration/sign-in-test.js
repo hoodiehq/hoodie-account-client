@@ -66,7 +66,7 @@ test('sign in', function (t) {
     t.ok(storeAccount.id, 'sets new id in account store')
     t.isNot(storeAccount.id, signOutResult.id, 'resets account in store')
 
-    t.ok(/^[a-z0-9]{7}$/.test(account.id), 'generates new account.id')
+    t.ok(/^[a-z0-9]{7}$/.test(account.get('id')), 'generates new account.id')
     t.isNot(account.id, 'abc4567', 'new id is not same as old id')
 
     storeAccount = store.getObject('account')
