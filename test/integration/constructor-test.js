@@ -14,7 +14,6 @@ test('new Account(options)', function (t) {
   t.is(typeof account.validate, 'function', 'has "validate()"')
   t.is(typeof account.fetch, 'function', 'has "fetch()"')
   t.is(typeof account.get, 'function', 'has "get()"')
-  t.is(typeof account.isSignedIn, 'function', 'has "isSignedIn()"')
   t.is(typeof account.profile.fetch, 'function', 'has "profile.fetch()"')
   t.is(typeof account.profile.get, 'function', 'has "profile.get()"')
   t.is(typeof account.profile.update, 'function', 'has "profile.update()"')
