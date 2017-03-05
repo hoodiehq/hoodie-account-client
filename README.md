@@ -30,7 +30,6 @@ account.on('signout', redirectToHome)
 - [Constructor](#constructor)
 - [account.ready](#accountready)
 - [account.id](#accountid)
-- [account.username](#accountusername)
 - [account.validate](#accountvalidate)
 - [account.isSignedIn](#accountissignedin)
 - [account.hasInvalidSession](#accounthasinvalidsession)
@@ -139,11 +138,6 @@ state from the store.
 
 _Read-only_. Returns the account id. Cannot be accessed until the [account.ready](#accountready)
 promise resolved.
-
-### account.username
-
-_Read-only_. Returns the username if signed in, otherwise `undefined`. Cannot be
-accessed until the [account.ready](#accountready) promise resolved.
 
 ### account.validate
 
