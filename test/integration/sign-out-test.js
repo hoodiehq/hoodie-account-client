@@ -30,7 +30,7 @@ test('sign out', function (t) {
   })
 
   account.on('signout', function () {
-    t.is(account.isSignedIn(), false)
+    t.notOk(account.get('session'))
   })
   account.signOut().catch(t.error)
 })

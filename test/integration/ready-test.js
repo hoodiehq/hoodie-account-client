@@ -12,10 +12,6 @@ test('account.ready', function (t) {
   })
 
   t.throws(function () {
-    account.isSignedIn()
-  }, 'account.isSignedIn() not accessible before account.ready resolves')
-
-  t.throws(function () {
     account.hasInvalidSession()
   }, 'account.hasInvalidSession() not accessible before account.ready resolves')
 
@@ -56,7 +52,7 @@ test('async APIs before .ready resolves', function (t) {
   })
 
   account.on('signout', function () {
-    t.is(account.isSignedIn(), false)
+    t.notOk(account.get('session'))
     t.end()
   })
   account.signOut().catch(t.error)
