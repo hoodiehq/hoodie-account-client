@@ -18,7 +18,8 @@ confirming, resetting a password, changing profile information, or closing the a
 // Account loaded via <script> or require('@hoodie/account-client')
 var account = new Account('https://example.com/account/api')
 
-if (account.isSignedIn()) {
+// check if user is signed in
+if (account.get('session.id')) {
   renderWelcome(account)
 }
 
@@ -30,7 +31,6 @@ account.on('signout', redirectToHome)
 - [Constructor](#constructor)
 - [account.ready](#accountready)
 - [account.validate](#accountvalidate)
-- [account.isSignedIn](#accountissignedin)
 - [account.hasInvalidSession](#accounthasinvalidsession)
 - [account.signUp](#accountsignup)
 - [account.signIn](#accountsignin)
@@ -196,15 +196,6 @@ account.validate({
 .catch(function (error) {
   console.log(error) // should be an error about the password being too short
 })
-```
-
-### account.isSignedIn
-
-Returns `true` if user is currently signed in, otherwise `false`.
-Cannot be accessed until the [account.ready](#accountready) promise resolved.
-
-```js
-account.isSignedIn()
 ```
 
 ### account.hasInvalidSession
