@@ -1,9 +1,0 @@
-{
-  "links": {
-    "self": "https://example.com/session"
-  },
-  "data": {
-    "id": "sessionid123",
-    "type": "session"
-  }
-}

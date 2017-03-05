@@ -1,7 +1,0 @@
-{
-    "errors": [{
-        "status": "401",
-        "title": "Unauthorized",
-        "detail": "Invalid Credentials"
-    }]
-}
