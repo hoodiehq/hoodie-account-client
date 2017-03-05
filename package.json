@@ -8,8 +8,6 @@
     "build": "npm-run-all -p build:*",
     "build:client": "browserify -s Account index.js > dist/hoodie-account-client.js",
     "postbuild:client": "uglifyjs dist/hoodie-account-client.js -mc > dist/hoodie-account-client.min.js",
-    "build:client-admin": "browserify -s AccountAdmin admin/index.js > dist/hoodie-account-client-admin.js",
-    "postbuild:client-admin": "uglifyjs dist/hoodie-account-client-admin.js -mc > dist/hoodie-account-client-admin.min.js",
     "predeploydocs": "./bin/authorize-push.js",
     "deploydocs": "gh-pages-deploy",
     "predocs": "rimraf docs/build",
