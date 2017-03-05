@@ -1,6 +1,5 @@
 module.exports = Account
 
-var getId = require('./lib/id')
 var events = require('./lib/events')
 
 var getState = require('./utils/get-state')
@@ -13,9 +12,6 @@ function Account (options) {
   var state = getState(options)
 
   var api = {
-    get id () {
-      return getId(state)
-    },
     signUp: require('./lib/sign-up').bind(null, state),
     signIn: require('./lib/sign-in').bind(null, state),
     signOut: require('./lib/sign-out').bind(null, state),
