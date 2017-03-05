@@ -29,7 +29,6 @@ account.on('signout', redirectToHome)
 
 - [Constructor](#constructor)
 - [account.ready](#accountready)
-- [account.id](#accountid)
 - [account.validate](#accountvalidate)
 - [account.isSignedIn](#accountissignedin)
 - [account.hasInvalidSession](#accounthasinvalidsession)
@@ -133,11 +132,6 @@ new Account({
 
 _Read-only_. Promise that resolves once the account instance loaded its current
 state from the store.
-
-### account.id
-
-_Read-only_. Returns the account id. Cannot be accessed until the [account.ready](#accountready)
-promise resolved.
 
 ### account.validate
 
