@@ -1,6 +1,5 @@
 module.exports = Account
 
-var getUsername = require('./lib/username')
 var getId = require('./lib/id')
 var events = require('./lib/events')
 
@@ -14,9 +13,6 @@ function Account (options) {
   var state = getState(options)
 
   var api = {
-    get username () {
-      return getUsername(state)
-    },
     get id () {
       return getId(state)
     },
