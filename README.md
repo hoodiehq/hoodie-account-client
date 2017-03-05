@@ -12,8 +12,6 @@ It persists session information in localStorage (or your own store API) and
 provides front-end friendly APIs for things like creating a user account,
 confirming, resetting a password, changing profile information, or closing the account.
 
-There is also an [admin-specific account client](admin)
-
 ## Example
 
 ```js
