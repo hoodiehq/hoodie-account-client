@@ -16,7 +16,6 @@ function Account (options) {
     signIn: require('./lib/sign-in').bind(null, state),
     signOut: require('./lib/sign-out').bind(null, state),
     destroy: require('./lib/destroy').bind(null, state),
-    hasInvalidSession: require('./lib/has-invalid-session').bind(null, state),
     get: require('./lib/get').bind(null, state),
     fetch: require('./lib/fetch').bind(null, state),
     update: require('./lib/update').bind(null, state),
