@@ -12,10 +12,6 @@ test('account.ready', function (t) {
   })
 
   t.throws(function () {
-    account.hasInvalidSession()
-  }, 'account.hasInvalidSession() not accessible before account.ready resolves')
-
-  t.throws(function () {
     account.get()
   }, 'account.get() not accessible before account.ready resolves')
 
