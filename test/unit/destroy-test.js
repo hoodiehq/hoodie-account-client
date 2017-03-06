@@ -12,20 +12,20 @@ test('destroy()', function (t) {
   })
 
   var state = {
-    ready: Promise.resolve(),
+    setup: Promise.resolve(),
     url: 'http://example.com',
     cacheKey: 'cacheKey123',
-    account: {
-      session: {
-        id: 'abc4567'
-      },
-      username: 'pat'
-    },
     emitter: {
       emit: simple.stub()
     },
     cache: {
-      unset: simple.stub()
+      unset: simple.stub(),
+      get: simple.stub().resolveWith({
+        session: {
+          id: 'abc4567'
+        },
+        username: 'pat'
+      })
     }
   }
 
@@ -41,7 +41,7 @@ test('destroy()', function (t) {
     })
     t.deepEqual(state.cache.unset.callCount, 1)
 
-    t.is(state.account, undefined, 'unsets account')
+    t.is(state.cache.unset.callCount, 1, 'unsets account')
 
     simple.restore()
   })
@@ -55,9 +55,11 @@ test('destroy() with request error', function (t) {
   simple.mock(destroy.internals, 'request').rejectWith(new Error('Ooops'))
 
   destroy({
-    ready: Promise.resolve(),
-    account: {
-      session: {}
+    setup: Promise.resolve(),
+    cache: {
+      get: simple.stub().resolveWith({
+        session: {}
+      })
     }
   })
 

@@ -50,10 +50,10 @@ test('sign in and change username', function (t) {
 
   .then(function (profileProperties) {
     t.is(profileProperties.fullName, 'Docs Chicken', 'profile.update() resolves with profile properties')
+    return account.profile.get({local: true})
   })
 
-  .then(function () {
-    var profileProperties = account.profile.get()
+  .then(function (profileProperties) {
     t.is(profileProperties.fullName, 'Docs Chicken', 'profile.get() returns profile properties')
   })
 

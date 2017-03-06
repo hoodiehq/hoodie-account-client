@@ -16,7 +16,7 @@ var options = {
 
 test('sign in', function (t) {
   store.clear()
-  t.plan(12)
+  t.plan(11)
 
   var account = new Account({
     url: baseURL,
@@ -45,13 +45,18 @@ test('sign in', function (t) {
         id: 'sessionid123'
       }
     }, 'stores account with id with session')
-    t.deepEqual(account.get(), {
-      id: 'abc4567',
-      username: 'chicken@docs.com',
-      session: {
-        id: 'sessionid123'
-      }
-    }, '.get() returns account with session')
+
+    account.get({local: true})
+
+    .then(function (cache) {
+      t.deepEqual(cache, {
+        id: 'abc4567',
+        username: 'chicken@docs.com',
+        session: {
+          id: 'sessionid123'
+        }
+      }, 'session is cached')
+    })
 
     return account.signOut()
   })
@@ -66,13 +71,16 @@ test('sign in', function (t) {
     t.ok(storeAccount.id, 'sets new id in account store')
     t.isNot(storeAccount.id, signOutResult.id, 'resets account in store')
 
-    t.ok(/^[a-z0-9]{7}$/.test(account.get('id')), 'generates new account.id')
     t.isNot(account.id, 'abc4567', 'new id is not same as old id')
 
     storeAccount = store.getObject('account')
     t.ok(/^[a-z0-9]{7}$/.test(storeAccount.id), 'stores new id')
 
-    t.deepEqual(account.get(), {id: storeAccount.id}, '.get() returns new account id')
+    account.get('id')
+
+    .then(function (id) {
+      t.is(id, storeAccount.id, '.get("id") resolves with new account id')
+    })
   })
 
   .catch(t.error)

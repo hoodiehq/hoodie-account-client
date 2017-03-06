@@ -45,14 +45,12 @@ test('destroy account', function (t) {
 
     t.deepEqual(signOutHandler.lastCall.arg, {
       id: 'abc4567',
-      username: 'chicken@docs.com',
-      session: { id: 'sessionid123' }
+      username: 'chicken@docs.com'
     }, '"signout" event emitted with account object')
 
     t.deepEqual(destroyHandler.lastCall.arg, {
       id: 'abc4567',
-      username: 'chicken@docs.com',
-      session: { id: 'sessionid123' }
+      username: 'chicken@docs.com'
     }, '"destroy" event emitted with account object')
 
     t.is(signOutHandler.callCount, 1, '"signout" event emitted once')
@@ -63,7 +61,16 @@ test('destroy account', function (t) {
 })
 
 test('destroy account even when session is invalid', function (t) {
-  store.clear()
+  store.setObject('account', {
+    username: 'john-doe',
+    createdAt: '1970-01-01T00:00:00.000Z',
+    id: 'abc4567',
+    session: {
+      id: 'sessionid123',
+      invalid: true
+    }
+  })
+
   t.plan(5)
 
   // mock the Date object to always return 1970-01-01T00:00:00.000Z
@@ -86,12 +93,14 @@ test('destroy account even when session is invalid', function (t) {
 
     t.deepEqual(signOutHandler.lastCall.arg, {
       createdAt: '1970-01-01T00:00:00.000Z',
-      id: 'abc4567'
+      id: 'abc4567',
+      username: 'john-doe'
     }, '"signout" event emitted with account object')
 
     t.deepEqual(destroyHandler.lastCall.arg, {
       createdAt: '1970-01-01T00:00:00.000Z',
-      id: 'abc4567'
+      id: 'abc4567',
+      username: 'john-doe'
     }, '"destroy" event emitted with account object')
 
     t.is(signOutHandler.callCount, 1, '"signout" event emitted once')

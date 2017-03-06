@@ -7,7 +7,7 @@ test('request without options', function (t) {
   t.plan(1)
 
   request({
-    ready: Promise.resolve()
+    setup: Promise.resolve()
   })
     .then(t.fail.bind(t, 'must reject'))
     .catch(t.pass.bind(t, 'rejects with error'))
@@ -17,7 +17,7 @@ test('request without options.type', function (t) {
   t.plan(1)
 
   request({
-    ready: Promise.resolve()
+    setup: Promise.resolve()
   })
     .then(t.fail.bind(t, 'must reject'))
     .catch(t.pass.bind(t, 'rejects with error'))
@@ -27,7 +27,7 @@ test('successful account.request(options)', function (t) {
   t.plan(8)
 
   var state = {
-    ready: Promise.resolve(),
+    setup: Promise.resolve(),
     url: 'http://example.com',
     cacheKey: 'cacheKey123',
     emitter: {
@@ -76,7 +76,7 @@ test('request with request error', function (t) {
   simple.mock(request.internals, 'request').rejectWith(new Error('Ooops'))
 
   request({
-    ready: Promise.resolve()
+    setup: Promise.resolve()
   })
 
   .then(t.fail.bind(t, 'must reject'))

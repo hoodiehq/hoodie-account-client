@@ -14,22 +14,22 @@ test('signOut()', function (t) {
 
   var state = {
     hook: hookMock,
-    ready: Promise.resolve(),
+    setup: Promise.resolve(),
     url: 'http://example.com',
     cacheKey: 'cacheKey123',
-    account: {
-      id: 'user567',
-      session: {
-        id: 'abc4567'
-      },
-      username: 'pat'
-    },
     emitter: {
       emit: simple.stub()
     },
     cache: {
       set: simple.stub().resolveWith(),
-      unset: simple.stub().resolveWith()
+      unset: simple.stub().resolveWith(),
+      get: simple.stub().resolveWith({
+        id: 'user567',
+        session: {
+          id: 'abc4567'
+        },
+        username: 'pat'
+      })
     }
   }
 
@@ -45,7 +45,7 @@ test('signOut()', function (t) {
     })
 
     t.equal(state.cache.set.callCount, 1)
-    t.isNot(state.account.id, 'user567', 'resets account')
+    t.isNot(state.cache.set.lastCall.arg.id, 'user567', 'resets account')
 
     simple.restore()
   })
@@ -60,9 +60,11 @@ test('signOut() with request error', function (t) {
 
   signOut({
     hook: hookMock,
-    ready: Promise.resolve(),
-    account: {
-      session: {}
+    setup: Promise.resolve(),
+    cache: {
+      get: simple.stub().resolveWith({
+        session: {}
+      })
     },
     emitter: {
       emit: simple.stub()
@@ -81,8 +83,10 @@ test('signOut() without being signed in', function (t) {
 
   signOut({
     hook: hookMock,
-    ready: Promise.resolve(),
-    account: {},
+    setup: Promise.resolve(),
+    cache: {
+      get: simple.stub().resolveWith({})
+    },
     emitter: {
       emit: simple.stub()
     }

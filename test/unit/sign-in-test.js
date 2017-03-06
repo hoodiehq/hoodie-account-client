@@ -11,7 +11,7 @@ test('signIn without options', function (t) {
 
   signIn({
     hook: hookMock,
-    ready: Promise.resolve()
+    setup: Promise.resolve()
   })
     .then(t.fail.bind(t, 'must reject'))
     .catch(t.pass.bind(t, 'rejects with error'))
@@ -22,7 +22,7 @@ test('signIn without password', function (t) {
 
   signIn({
     hook: hookMock,
-    ready: Promise.resolve()
+    setup: Promise.resolve()
   }, {
     username: 'username'
   })
@@ -37,7 +37,7 @@ test('signIn without username', function (t) {
 
   signIn({
     hook: hookMock,
-    ready: Promise.resolve()
+    setup: Promise.resolve()
   }, {
     password: 'password'
   })
@@ -52,14 +52,15 @@ test('sgnIn with username & password', function (t) {
 
   var state = {
     hook: hookMock,
-    ready: Promise.resolve(),
+    setup: Promise.resolve(),
     url: 'http://example.com',
     cacheKey: 'cacheKey123',
     emitter: {
       emit: simple.stub()
     },
     cache: {
-      set: simple.stub()
+      set: simple.stub(),
+      get: simple.stub().resolveWith({})
     }
   }
 
@@ -110,14 +111,15 @@ test('signIn with token', function (t) {
 
   var state = {
     hook: hookMock,
-    ready: Promise.resolve(),
+    setup: Promise.resolve(),
     url: 'http://example.com',
     cacheKey: 'cacheKey123',
     emitter: {
       emit: simple.stub()
     },
     cache: {
-      set: simple.stub()
+      set: simple.stub(),
+      get: simple.stub().resolveWith({})
     }
   }
 
@@ -169,7 +171,13 @@ test('signIn with request error', function (t) {
 
   signIn({
     hook: hookMock,
-    ready: Promise.resolve()
+    setup: Promise.resolve(),
+    cache: {
+      get: simple.stub().resolveWith({})
+    }
+  }, {
+    username: 'foo',
+    password: 'secret'
   })
 
   .then(t.fail.bind(t, 'must reject'))
@@ -187,20 +195,20 @@ test('signIn with same username', function (t) {
 
   var state = {
     hook: hookMock,
-    ready: Promise.resolve(),
+    setup: Promise.resolve(),
     url: 'http://example.com',
     cacheKey: 'cacheKey123',
     emitter: {
       emit: simple.stub()
     },
-    account: {
-      username: 'pat',
-      session: {
-        id: 'Session123'
-      }
-    },
     cache: {
-      set: simple.stub()
+      set: simple.stub(),
+      get: simple.stub().resolveWith({
+        username: 'pat',
+        session: {
+          id: 'Session123'
+        }
+      })
     }
   }
 

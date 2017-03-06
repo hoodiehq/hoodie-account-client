@@ -1,17 +1,18 @@
 var simple = require('simple-mock')
 var test = require('tape')
 
-var get = require('../../lib/profile-get')
-var internals = get.internals
+var profileGet = require('../../lib/profile-get')
+var internals = profileGet.internals
 
-test('profileGet', function (t) {
-  simple.mock(internals, 'getProperties').returnWith('foo')
-  var result = get({
-    account: {
-      profile: 'profile',
-      session: {}
+test('profileGet() without session', function (t) {
+  var state = {
+    setup: Promise.resolve(),
+    cache: {
+      get: function () {
+        return Promise.resolve({})
+      }
     }
-  }, 'path')
+  }
 
   t.deepEqual(internals.getProperties.lastCall.args, [
     'profile',
