@@ -71,7 +71,9 @@ test('events', function (t) {
     t.deepEqual(signInHandler.lastCall.arg, {
       id: 'abc4567',
       username: 'chicken@docs.com',
-      session: { id: 'sessionid123' }
+      session: {
+        id: 'sessionid123'
+      }
     }, '"signin" event emitted with account object')
 
     return account.update({username: updateResponse.data.attributes.username})
@@ -85,8 +87,7 @@ test('events', function (t) {
 
     t.deepEqual(updateHandler.lastCall.arg, {
       id: 'abc4567',
-      username: 'newchicken@docs.com',
-      session: { id: 'sessionid123' }
+      username: 'newchicken@docs.com'
     }, '"update" event emitted with account object')
 
     return account.signOut()
@@ -95,8 +96,7 @@ test('events', function (t) {
   .then(function () {
     t.deepEqual(signOutHandler.lastCall.arg, {
       id: 'abc4567',
-      username: 'newchicken@docs.com',
-      session: { id: 'sessionid123' }
+      username: 'newchicken@docs.com'
     }, '"signout" event emitted with account object')
 
     t.is(signUpHandler.callCount, 1, '"signup" event emitted once')

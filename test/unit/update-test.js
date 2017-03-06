@@ -7,7 +7,7 @@ test('update without change', function (t) {
   t.plan(1)
 
   update({
-    ready: Promise.resolve()
+    setup: Promise.resolve()
   })
     .then(t.fail.bind(t, 'must reject'))
     .catch(t.pass.bind(t, 'rejects with error'))
@@ -16,21 +16,22 @@ test('update without change', function (t) {
 test('update with change', function (t) {
   t.plan(4)
 
+  var cache = {
+    username: 'bakingpies',
+    session: {
+      id: 'abc1234'
+    }
+  }
   var state = {
-    ready: Promise.resolve(),
+    setup: Promise.resolve(),
     cacheKey: 'cacheKey123',
     url: 'http://example.com',
     emitter: {
       emit: simple.stub()
     },
-    account: {
-      username: 'bakingpies',
-      session: {
-        id: 'abc1234'
-      }
-    },
     cache: {
-      set: simple.stub()
+      set: simple.stub(),
+      get: simple.stub().resolveWith(cache)
     }
   }
 
@@ -39,7 +40,7 @@ test('update with change', function (t) {
     body: null,
     headers: {}
   })
-  simple.mock(update.internals, 'deserialise').returnWith(state.account.session)
+  simple.mock(update.internals, 'deserialise').returnWith(cache.session)
   simple.mock(update.internals, 'serialise').returnWith('jsonData')
 
   update(state, {
@@ -73,21 +74,22 @@ test('update with change', function (t) {
 test('update with change causing new session', function (t) {
   t.plan(5)
 
+  var cache = {
+    username: 'bakingpies',
+    session: {
+      id: 'abc1234'
+    }
+  }
   var state = {
-    ready: Promise.resolve(),
+    setup: Promise.resolve(),
     cacheKey: 'cacheKey123',
     url: 'http://example.com',
     emitter: {
       emit: simple.stub()
     },
-    account: {
-      username: 'bakingpies',
-      session: {
-        id: 'abc1234'
-      }
-    },
     cache: {
-      set: simple.stub()
+      set: simple.stub(),
+      get: simple.stub().resolveWith(cache)
     }
   }
 
@@ -98,7 +100,7 @@ test('update with change causing new session', function (t) {
       'x-set-session': 'newsession5678'
     }
   })
-  simple.mock(update.internals, 'deserialise').returnWith(state.account.session)
+  simple.mock(update.internals, 'deserialise').returnWith(cache.session)
   simple.mock(update.internals, 'serialise').returnWith('jsonData')
 
   update(state, {
@@ -135,17 +137,19 @@ test('server side error', function (t) {
   t.plan(1)
 
   var state = {
-    ready: Promise.resolve(),
+    setup: Promise.resolve(),
     cacheKey: 'cacheKey123',
     url: 'http://example.com',
     emitter: {
       emit: simple.stub()
     },
-    account: {
-      username: 'bakingpies',
-      session: {
-        id: 'abc1234'
-      }
+    cache: {
+      get: simple.stub().resolveWith({
+        username: 'bakingpies',
+        session: {
+          id: 'abc1234'
+        }
+      })
     }
   }
 

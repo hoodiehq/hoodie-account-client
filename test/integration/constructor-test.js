@@ -12,9 +12,7 @@ test('new Account(options)', function (t) {
 
   t.is(typeof account, 'object', 'Account is a constructor')
   t.is(typeof account.validate, 'function', 'has "validate()"')
-  t.is(typeof account.fetch, 'function', 'has "fetch()"')
   t.is(typeof account.get, 'function', 'has "get()"')
-  t.is(typeof account.profile.fetch, 'function', 'has "profile.fetch()"')
   t.is(typeof account.profile.get, 'function', 'has "profile.get()"')
   t.is(typeof account.profile.update, 'function', 'has "profile.update()"')
   t.is(typeof account.signIn, 'function', 'has "signIn()"')
@@ -25,9 +23,14 @@ test('new Account(options)', function (t) {
   t.is(typeof account.one, 'function', 'has "one()"')
   t.is(typeof account.off, 'function', 'has "off()"')
 
-  account.ready.then(function () {
-    t.ok(account.get('id'), 'account.id is set')
+  account.ready
 
+  .then(function () {
+    return account.get('id')
+  })
+
+  .then(function (id) {
+    t.ok(id)
     t.end()
   })
 })
@@ -71,10 +74,10 @@ test('new Account() w/o url object', function (t) {
     .get('/session/account')
     .reply(200, require('../fixtures/fetch.json'))
 
-  account.fetch()
+  account.get()
 
   .then(function (accountProperties) {
-    t.same(accountProperties, {id: 'abc4567', username: 'john-doe'})
+    t.same(accountProperties, {id: 'abc4567', username: 'john-doe', session: { id: 'sessionid123' }})
 
     t.is(apiMock.pendingMocks()[0], undefined, 'all mocks satisfied')
   })

@@ -21,22 +21,22 @@ test('updateProfile with change', function (t) {
   simple.mock(updateProfile.internals, 'serialise').returnWith('profileJsonData')
 
   var state = {
-    ready: Promise.resolve(),
+    setup: Promise.resolve(),
     cacheKey: 'cacheKey123',
     url: 'http://example.com',
     emitter: {
       emit: simple.stub()
     },
-    account: {
-      session: {
-        id: 'abc1234'
-      },
-      profile: {
-        foo: 'bar'
-      }
-    },
     cache: {
-      set: simple.stub()
+      set: simple.stub(),
+      get: simple.stub().resolveWith({
+        session: {
+          id: 'abc1234'
+        },
+        profile: {
+          foo: 'bar'
+        }
+      })
     }
   }
 
@@ -82,16 +82,18 @@ test('server side error', function (t) {
   simple.mock(updateProfile.internals, 'request').rejectWith(new Error())
 
   updateProfile({
-    ready: Promise.resolve(),
+    setup: Promise.resolve(),
     cacheKey: 'cacheKey123',
     url: 'http://example.com',
-    account: {
-      session: {
-        id: 'abc1234'
-      },
-      profile: {
-        foo: 'bar'
-      }
+    cache: {
+      get: simple.stub().resolveWith({
+        session: {
+          id: 'abc1234'
+        },
+        profile: {
+          foo: 'bar'
+        }
+      })
     }
   }, {
     fullName: 'Docs Chicken'

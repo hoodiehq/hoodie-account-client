@@ -62,10 +62,15 @@ test('sign in and change username', function (t) {
   .then(function (updateResult) {
     t.pass('update resultResult received')
     t.is(updateResult.username, 'newchicken@docs.com', 'new account name in result')
-    t.is(account.get('username'), 'newchicken@docs.com', 'account username set to new one')
-    t.is(updateResult.session.id, account.get('session.id'), 'account session should be the same as the result')
 
-    return account.signOut()
+    return account.get(['username', 'session.id'], {local: true})
+
+    .then(function (properties) {
+      t.is(properties.username, 'newchicken@docs.com', 'account username set to new one')
+      t.is(store.getObject('account').session.id, properties.session.id, 'account session should be persisted')
+
+      return account.signOut()
+    })
   })
 
   .then(function () {
@@ -78,7 +83,12 @@ test('sign in and change username', function (t) {
     t.pass('signed in again')
 
     t.is(signInResult.username, 'newchicken@docs.com', 'results with new username')
-    t.is(account.get('username'), 'newchicken@docs.com', 'account.username is set to new one')
+
+    return account.get('username', {local: true})
+  })
+
+  .then(function (username) {
+    t.is(username, 'newchicken@docs.com', 'account.username is set to new one')
   })
 
   .catch(t.error)

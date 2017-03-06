@@ -8,7 +8,7 @@ test('signUp without options', function (t) {
   t.plan(1)
 
   signUp({
-    ready: Promise.resolve()
+    setup: Promise.resolve()
   })
 
   .catch(t.pass.bind(t, 'rejects'))
@@ -18,7 +18,7 @@ test('signUp without password', function (t) {
   t.plan(1)
 
   signUp({
-    ready: Promise.resolve()
+    setup: Promise.resolve()
   }, {
     username: 'pat'
   })
@@ -30,7 +30,7 @@ test('signUp without username', function (t) {
   t.plan(1)
 
   signUp({
-    ready: Promise.resolve()
+    setup: Promise.resolve()
   }, {
     password: 'secret'
   })
@@ -43,13 +43,15 @@ test('signUp with username & password', function (t) {
 
   var clock = lolex.install(0, ['Date'])
   var state = {
-    ready: Promise.resolve(),
+    setup: Promise.resolve(),
     url: 'http://example.com',
     validate: simple.stub(),
     emitter: {
       emit: simple.stub()
     },
-    account: {createdAt: new Date().toISOString()}
+    cache: {
+      get: simple.stub().resolveWith({createdAt: new Date().toISOString()})
+    }
   }
 
   simple.mock(signUp.internals, 'request').resolveWith({
@@ -79,7 +81,7 @@ test('signUp with username & password', function (t) {
         password: 'secret',
         createdAt: '1970-01-01T00:00:00.000Z'
       },
-      undefined // state.account.id, from `new Account({id: ...})`
+      undefined // account.id, from `new Account({id: ...})`
     ], 'passes username & password to serialise')
     t.deepEqual(signUp.internals.request.lastCall.arg, {
       method: 'PUT',
@@ -104,7 +106,7 @@ test('signUp with profile', function (t) {
   t.plan(1)
 
   var state = {
-    ready: Promise.resolve(),
+    setup: Promise.resolve(),
     validate: function () {}
   }
 
@@ -123,9 +125,12 @@ test('account.signUp with invalid options', function (t) {
   t.plan(1)
 
   var state = {
-    ready: Promise.resolve(),
+    setup: Promise.resolve(),
     validate: function (options) {
       throw new Error('Not funky enough!')
+    },
+    cache: {
+      get: simple.stub().resolveWith({})
     }
   }
 
@@ -145,8 +150,11 @@ test('signUp with request error', function (t) {
   t.plan(1)
 
   var state = {
-    ready: Promise.resolve(),
-    validate: function () {}
+    setup: Promise.resolve(),
+    validate: function () {},
+    cache: {
+      get: simple.stub().resolveWith({})
+    }
   }
 
   simple.mock(signUp.internals, 'request').rejectWith(new Error('Ooops'))

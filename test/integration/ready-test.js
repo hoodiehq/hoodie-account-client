@@ -11,18 +11,13 @@ test('account.ready', function (t) {
     url: 'http://localhost:3000'
   })
 
-  t.throws(function () {
-    account.get()
-  }, 'account.get() not accessible before account.ready resolves')
-
-  t.throws(function () {
-    account.profile.get()
-  }, 'account.profile.get() not accessible before account.ready resolves')
-
   account.ready.then(function (account_) {
     t.equal(account, account_, 'resolves with account instance')
-    t.ok(account.get('id'))
+    return account.get('id')
+  })
 
+  .then(function (id) {
+    t.ok(id)
     t.end()
   })
 })
@@ -48,8 +43,12 @@ test('async APIs before .ready resolves', function (t) {
   })
 
   account.on('signout', function () {
-    t.notOk(account.get('session'))
-    t.end()
+    account.get('session')
+
+    .then(function (session) {
+      t.notOk(session)
+      t.end()
+    })
   })
   account.signOut().catch(t.error)
 })
