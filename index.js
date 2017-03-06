@@ -27,8 +27,7 @@ function Account (options) {
     one: events.one.bind(null, state),
     off: events.off.bind(null, state),
     hook: state.hook.api,
-    validate: require('./lib/validate').bind(null, state),
-    ready: state.ready.then(function () { return api })
+    validate: require('./lib/validate').bind(null, state)
   }
 
   return api
