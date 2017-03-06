@@ -33,7 +33,6 @@ account.on('signout', redirectToHome)
 ## API
 
 - [Constructor](#constructor)
-- [account.ready](#accountready)
 - [account.validate](#accountvalidate)
 - [account.signUp](#accountsignup)
 - [account.signIn](#accountsignin)
@@ -129,11 +128,6 @@ new Account({
   }
 })
 ```
-
-### account.ready
-
-_Read-only_. Promise that resolves once the account instance loaded its current
-state from the store.
 
 ### account.validate
 
