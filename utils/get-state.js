@@ -52,8 +52,7 @@ function getState (options) {
     url: options.url,
     validate: options.validate || function () {},
     cache: cache,
-    setup: setup,
-    ready: setup
+    setup: setup
   }
 
   return state
