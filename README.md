@@ -661,8 +661,7 @@ account.update({username: 'treetrunks'}).then(function (properties) {
 
 ### account.profile.get
 
-Returns profile properties from local cache.
-Cannot be accessed until the [account.ready](#accountready) promise resolved.
+Returns account properties from local cache or fetches them from remote.
 
 ```js
 account.profile.get(properties)
@@ -687,20 +686,31 @@ account.profile.get(properties)
     </td>
     <td>No</td>
   </tr>
+  <tr>
+    <th align="left"><code>options.local</code></th>
+    <td>Boolean</td>
+    <td>
+      When set to true then only the properties from local cache are returned.
+    </td>
+    <td>No</td>
+  </tr>
 </table>
 
-Returns object with profile properties, falls back to empty object `{}`.
-Returns `undefined` if not signed in.
+Resolves with profile properties, falls back to empty object `{}`. If a single
+string is passed as `properties` then resolves with value for that property.
 
 Examples
 
 ```js
-var properties = account.profile.get()
-alert('Hey there ' + properties.fullname)
-var fullname = account.profile.get('fullname')
-alert('Hey there ' + fullname)
-var properties = account.profile.get(['fullname', 'address.city'])
-alert('Hey there ' + properties.fullname + '. How is ' + properties.address.city + '?')
+account.profile.get().then(function (properties) {
+  alert('Hey there ' + properties.fullname)
+})
+account.profile.get('fullname').then(function (fullname) {
+  alert('Hey there ' + fullname)
+})
+account.profile.get(['fullname', 'address.city'], {local: true}).then(function (properties) {
+  alert('Hey there ' + properties.fullname + '. How is ' + properties.address.city + '?')
+})
 ```
 
 ### account.profile.fetch
