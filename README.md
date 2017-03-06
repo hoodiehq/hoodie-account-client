@@ -19,14 +19,13 @@ confirming, resetting a password, changing profile information, or closing the a
 var account = new Account('https://example.com/account/api')
 
 // check if user is signed in
-if (account.get('session')) {
-  renderWelcome(account)
-
-  // check if the current session is expired (or otherwise invalidated)
-  if (account.get('session.invalid')) {
-    showLoginModal(account)
+account.get('session').then(function (session) {
+  if (session) {
+    renderDashboard()
+  } else {
+    renderWelcome()
   }
-}
+})
 
 account.on('signout', redirectToHome)
 ```
@@ -454,11 +453,15 @@ account.destroy().then(function (sessionProperties) {
 
 ### account.get
 
-Returns account properties from local cache.
-Cannot be accessed until the [account.ready](#accountready) promise resolved.
+Returns account properties from local cache or fetches them from remote.
+Fetches properties from remote unless
+
+1. User is signed out
+2. Only `id` and or `session` properties are requested
+3. `options.local` is set to true
 
 ```js
-account.get(properties)
+account.get(properties, options)
 ```
 
 <table>
@@ -479,19 +482,46 @@ account.get(properties)
     </td>
     <td>No</td>
   </tr>
+  <tr>
+    <th align="left"><code>options.local</code></th>
+    <td>Boolean</td>
+    <td>
+      When set to true then only the properties from local cache are returned.
+    </td>
+    <td>No</td>
+  </tr>
 </table>
 
-Returns object with account properties, or `undefined` if not signed in.
+Resolves with object with account properties or value of passed path, depending
+on the `properties` argument passed
 
 Examples
 
 ```js
-var properties = account.get()
-alert('You signed up at ' + properties.createdAt)
-var createdAt = account.get('createdAt')
-alert('You signed up at ' + createdAt)
-var properties = account.get(['createdAt', 'updatedAt'])
-alert('You signed up at ' + properties.createdAt)
+account.get().then(function (properties) {
+  alert('You signed up at ' + properties.createdAt)
+})
+account.get('createdAt').then(function (createdAt) {
+  alert('You signed up at ' + createdAt)
+})
+account.get(['username', 'createdAt']).then(function (properties) {
+  alert('Hello ' + properties.username + '! You signed up at ' + properties.createdAt)
+})
+account.get({local: true}).then(function (cachedProperties) {
+  // ...
+})
+account.get('session').then(function (session) {
+  if (session) {
+    // user is signed in
+  } else {
+    // user is signed out
+  }
+})
+account.get('session.invalid').then(function (hasInvalidSession) {
+  if (hasInvalidSession) {
+    // user is signed in but has an expired or otherwise invalidated session
+  }
+})
 ```
 
 ### account.fetch
