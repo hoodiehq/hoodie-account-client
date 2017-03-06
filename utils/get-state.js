@@ -21,40 +21,39 @@ function getState (options) {
 
   var cacheKey = options.cacheKey || 'account'
   var cache = options.cache || new LocalStorageStore(cacheKey)
+  var setup = cache.get()
+
+  .then(function (storedAccount) {
+    if (storedAccount.id) {
+      if (options.id && options.id !== storedAccount.id) {
+        throw new Error('account.id conflict')
+      }
+
+      return
+    }
+
+    storedAccount = {
+      id: options.id || generateId(),
+      createdAt: new Date().toISOString()
+    }
+
+    return cache.set(storedAccount)
+  })
+
+  .catch(function (error) {
+    error.message = 'Error while initialising: ' + error.message
+    throw error
+  })
 
   var state = {
     cacheKey: cacheKey,
     emitter: options.emitter || new EventEmitter(),
     hook: new Hook(),
-    account: undefined,
     url: options.url,
     validate: options.validate || function () {},
     cache: cache,
-    ready: cache.get()
-      .then(function (storedAccount) {
-        if (storedAccount.id) {
-          state.account = storedAccount
-
-          var storedAccountId = storedAccount.id
-          if (options.id && storedAccountId && options.id !== storedAccountId) {
-            throw new Error('account.id conflict')
-          }
-
-          return
-        }
-
-        state.account = {
-          id: options.id || generateId(),
-          createdAt: new Date().toISOString()
-        }
-
-        return cache.set(state.account)
-      })
-      .catch(function (error) {
-        error.name = 'SetupError'
-        error.message = 'Error while initialising: ' + error.message
-        throw error
-      })
+    setup: setup,
+    ready: setup
   }
 
   return state
