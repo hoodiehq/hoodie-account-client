@@ -17,11 +17,9 @@ function Account (options) {
     signOut: require('./lib/sign-out').bind(null, state),
     destroy: require('./lib/destroy').bind(null, state),
     get: require('./lib/get').bind(null, state),
-    fetch: require('./lib/fetch').bind(null, state),
     update: require('./lib/update').bind(null, state),
     profile: {
       get: require('./lib/profile-get').bind(null, state),
-      fetch: require('./lib/profile-fetch').bind(null, state),
       update: require('./lib/profile-update').bind(null, state)
     },
     request: require('./lib/request').bind(null, state),
