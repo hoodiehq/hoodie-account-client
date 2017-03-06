@@ -13,55 +13,156 @@ test('profileGet() without session', function (t) {
       }
     }
   }
+  profileGet(state)
 
-  t.deepEqual(internals.getProperties.lastCall.args, [
-    'profile',
-    'path'
-  ], 'calls utils.getProperties with "profile" basepath')
-  t.is(result, 'foo', 'returns result of getProperties')
-
-  simple.restore()
-  t.end()
-})
-
-test('profileGet with empty profile', function (t) {
-  var result = get({
-    account: {
-      session: {}
-    }
+  .then(function (result) {
+    t.deepEqual(result, {})
+    t.end()
   })
 
-  t.same(result, {}, 'returns result of getProperties')
-
-  simple.restore()
-  t.end()
+  .catch(t.error)
 })
 
-test('profileGet with empty profile and path argument', function (t) {
-  simple.mock(internals, 'getProperties').returnWith(undefined)
-  var result = get({
-    account: {
-      session: {}
-    }
-  }, 'foo')
-
-  t.deepEqual(internals.getProperties.lastCall.args, [
-    undefined,
-    'foo'
-  ], 'calls utils.getProperties with "profile" basepath')
-  t.same(result, undefined, 'returns result of getProperties')
-
-  simple.restore()
-  t.end()
-})
-
-test('profileGet when signed out', function (t) {
+test('profileGet() with session', function (t) {
+  simple.mock(internals, 'fetchProperties').resolveWith({
+    foo: 'bar'
+  })
   var state = {
-    account: {}
+    setup: Promise.resolve(),
+    cache: {
+      get: function () {
+        return Promise.resolve({
+          session: {
+            id: 'session123'
+          }
+        })
+      },
+      set: simple.stub().resolveWith()
+    }
   }
-  var result = get(state)
 
-  t.same(result, undefined, 'returns undefined')
+  profileGet(state)
 
-  t.end()
+  .then(function (result) {
+    t.deepEqual(result, {
+      foo: 'bar'
+    })
+    t.deepEqual(state.cache.set.lastCall.args[0], {
+      profile: {
+        foo: 'bar'
+      },
+      session: {
+        id: 'session123'
+      }
+    })
+
+    simple.restore()
+    t.end()
+  })
+
+  .catch(t.error)
+})
+
+test('profileGet() with session and server error', function (t) {
+  simple.mock(internals, 'fetchProperties').rejectWith(new Error('oops'))
+  var state = {
+    setup: Promise.resolve(),
+    cache: {
+      get: function () {
+        return Promise.resolve({
+          session: {
+            id: 'session123'
+          }
+        })
+      }
+    }
+  }
+
+  profileGet(state)
+
+  .then(function () {
+    t.error('should reject')
+  })
+
+  .catch(function (error) {
+    t.is(error.message, 'oops')
+    t.end()
+  })
+})
+
+test('profileGet() with session and 401 error', function (t) {
+  var error = new Error('unauthenticated')
+  error.statusCode = 401
+  simple.mock(internals, 'fetchProperties').rejectWith(error)
+  var state = {
+    setup: Promise.resolve(),
+    cache: {
+      get: function () {
+        return Promise.resolve({
+          session: {
+            id: 'session123'
+          }
+        })
+      },
+      set: simple.stub().resolveWith()
+    },
+    emitter: {
+      emit: simple.stub()
+    }
+  }
+
+  profileGet(state)
+
+  .then(function () {
+    t.error('should reject')
+  })
+
+  .catch(function (error) {
+    t.is(error.message, 'unauthenticated')
+    t.deepEqual(state.cache.set.lastCall.arg, {
+      session: {
+        id: 'session123',
+        invalid: true
+      }
+    })
+    t.is(state.emitter.emit.callCount, 1)
+
+    t.deepEqual(state.emitter.emit.lastCall.args, ['unauthenticate'])
+    t.end()
+  })
+})
+
+test('profileGet({local: true}) with session', function (t) {
+  simple.mock(internals, 'fetchProperties').callFn(function () {
+    t.error('should not fetch from remote')
+  })
+  var state = {
+    setup: Promise.resolve(),
+    cache: {
+      get: function () {
+        return Promise.resolve({
+          session: {
+            id: 'session123'
+          },
+          profile: {
+            foo: 'bar'
+          }
+        })
+      },
+      set: simple.stub().resolveWith()
+    }
+  }
+
+  profileGet(state, {local: true})
+
+  .then(function (result) {
+    t.deepEqual(result, {
+      foo: 'bar'
+    })
+
+    simple.restore()
+    t.end()
+  })
+
+  .catch(t.error)
 })
