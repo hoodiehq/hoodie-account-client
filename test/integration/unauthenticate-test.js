@@ -32,11 +32,7 @@ test('unauthenticate state within account.get()', function (t) {
   var account = new Account({url: 'http://example.de'})
   var unauthenticateHandler = simple.stub()
 
-  account.ready
-
-  .then(function () {
-    return account.get('session.invalid')
-  })
+  return account.get('session.invalid')
 
   .then(function (hasInvalidSession) {
     t.equal(hasInvalidSession, undefined, '.get("session.invalid") returns undefined')
@@ -84,11 +80,7 @@ test('unauthenticate state within account.update()', function (t) {
   var account = new Account({url: 'http://example.de'})
   var unauthenticateHandler = simple.stub()
 
-  account.ready
-
-  .then(function () {
-    return account.get('session.invalid')
-  })
+  return account.get('session.invalid')
 
   .then(function (hasInvalidSession) {
     t.equal(hasInvalidSession, undefined, '.get("session.invalid") returns undefined')
@@ -139,11 +131,7 @@ test('unauthenticate state within account.profile.update()', function (t) {
   var account = new Account({url: 'http://example.de'})
   var unauthenticateHandler = simple.stub()
 
-  account.ready
-
-  .then(function () {
-    return account.get('session.invalid')
-  })
+  return account.get('session.invalid')
 
   .then(function (hasInvalidSession) {
     t.equal(hasInvalidSession, undefined, '.get("session.invalid") returns undefined')
@@ -190,11 +178,7 @@ test('unauthenticate state within account.profile.get()', function (t) {
   var account = new Account({url: 'http://example.de'})
   var unauthenticateHandler = simple.stub()
 
-  account.ready
-
-  .then(function () {
-    return account.get('session.invalid')
-  })
+  return account.get('session.invalid')
 
   .then(function (hasInvalidSession) {
     t.equal(hasInvalidSession, undefined, '.get("session.invalid") returns undefined')

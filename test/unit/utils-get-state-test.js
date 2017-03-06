@@ -14,7 +14,7 @@ test('throws error on account.id conflict', function (t) {
     }
   }
 
-  getState(options).ready
+  getState(options).setup
 
   .then(t.fail.bind(null, 'should not resolve'))
 

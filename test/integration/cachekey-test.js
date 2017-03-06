@@ -36,21 +36,13 @@ test('new Account(options) defaults to "account" cacheKey', function (t) {
       cacheKey: 'account'
     })
 
-    return Promise.all([account1.ready, account2.ready, account3.ready])
+    return Promise.all([account1.get('session'), account2.get('session'), account3.get('session')])
   })
 
-  .then(function (accounts) {
-    return Promise.all([
-      accounts[0].get('session'),
-      accounts[1].get('session'),
-      accounts[2].get('session')
-    ])
-
-    .then(function (results) {
-      t.ok(results[0], 'is signed in if no cacheKey set')
-      t.notOk(results[1], 'is signed out if cacheKey set to "foo"')
-      t.ok(results[2], 'is signed in if cacheKey set to "account"')
-    })
+  .then(function (results) {
+    t.ok(results[0], 'is signed in if no cacheKey set')
+    t.notOk(results[1], 'is signed out if cacheKey set to "foo"')
+    t.ok(results[2], 'is signed in if cacheKey set to "account"')
   })
 
   .catch(t.error)

@@ -23,11 +23,7 @@ test('new Account(options)', function (t) {
   t.is(typeof account.one, 'function', 'has "one()"')
   t.is(typeof account.off, 'function', 'has "off()"')
 
-  account.ready
-
-  .then(function () {
-    return account.get('id')
-  })
+  account.get('id')
 
   .then(function (id) {
     t.ok(id)
