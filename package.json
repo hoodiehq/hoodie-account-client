@@ -58,7 +58,7 @@
     "tap-min": "^1.0.0",
     "tap-spec": "^4.1.0",
     "tape": "^4.2.0",
-    "uglify-js": "^2.4.24"
+    "uglify-js": "2.8.8"
   },
   "dependencies": {
     "before-after-hook": "^1.0.1",
