@@ -63,6 +63,52 @@ test('profileGet() with session', function (t) {
   .catch(t.error)
 })
 
+test('profileGet() and reauthenticate on invalid session', function (t) {
+  simple.mock(internals, 'fetchProperties').resolveWith({
+    foo: 'bar'
+  })
+  var state = {
+    setup: Promise.resolve(),
+    cache: {
+      get: function () {
+        return Promise.resolve({
+          session: {
+            id: 'session123',
+            invalid: true
+          }
+        })
+      },
+      set: simple.stub().resolveWith()
+    },
+    emitter: {
+      emit: simple.stub()
+    }
+  }
+
+  profileGet(state)
+
+  .then(function (result) {
+    t.deepEqual(result, {
+      foo: 'bar'
+    })
+    t.deepEqual(state.cache.set.lastCall.arg, {
+      profile: {
+        foo: 'bar'
+      },
+      session: {
+        id: 'session123'
+      }
+    })
+    t.is(state.emitter.emit.callCount, 1)
+    t.deepEqual(state.emitter.emit.lastCall.arg, 'reauthenticate')
+
+    simple.restore()
+    t.end()
+  })
+
+  .catch(t.error)
+})
+
 test('profileGet() with session and server error', function (t) {
   simple.mock(internals, 'fetchProperties').rejectWith(new Error('oops'))
   var state = {

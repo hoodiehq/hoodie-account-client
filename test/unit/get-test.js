@@ -259,6 +259,53 @@ test('get(["id", "session.id"]) with session', function (t) {
   .catch(t.error)
 })
 
+test('get() and reauthenticate on invalid session', function (t) {
+  simple.mock(internals, 'fetchProperties').resolveWith({
+    foo: 'bar'
+  })
+  var state = {
+    setup: Promise.resolve(),
+    cache: {
+      get: function () {
+        return Promise.resolve({
+          session: {
+            id: 'session123',
+            invalid: true
+          }
+        })
+      },
+      set: simple.stub().resolveWith()
+    },
+    emitter: {
+      emit: simple.stub()
+    }
+  }
+
+  get(state)
+
+  .then(function (result) {
+    t.deepEqual(result, {
+      foo: 'bar',
+      session: {
+        id: 'session123'
+      }
+    })
+    t.deepEqual(state.cache.set.lastCall.arg, {
+      foo: 'bar',
+      session: {
+        id: 'session123'
+      }
+    })
+    t.is(state.emitter.emit.callCount, 1)
+    t.deepEqual(state.emitter.emit.lastCall.arg, 'reauthenticate')
+
+    simple.restore()
+    t.end()
+  })
+
+  .catch(t.error)
+})
+
 test('get() with session and server error', function (t) {
   simple.mock(internals, 'fetchProperties').rejectWith(new Error('oops'))
   var state = {
