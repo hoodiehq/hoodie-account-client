@@ -33,7 +33,7 @@ test('sign in', function (t) {
   account.signIn(options)
 
   .then(function (signInResult) {
-    t.pass('signes in')
+    t.pass('signs in')
     t.is(signInResult.username, 'chicken@docs.com')
 
     var storeAccount = store.getObject('account')
@@ -62,7 +62,7 @@ test('sign in', function (t) {
   })
 
   .then(function (signOutResult) {
-    t.pass('signes out')
+    t.pass('signs out')
 
     t.is(signOutResult.username, 'chicken@docs.com')
 
@@ -84,4 +84,35 @@ test('sign in', function (t) {
   })
 
   .catch(t.error)
+})
+
+test('prevent sign-in when already signed in', function (t) {
+  store.clear()
+  t.plan(1)
+
+  var account = new Account({
+    url: baseURL,
+    id: 'abc4567'
+  })
+
+  nock(baseURL)
+    .put('/session')
+    .reply(201, signInResponse)
+
+  account.signIn(options)
+
+  .then(function (signInResult) {
+    return account.signIn({
+      username: 'fox@docs.com',
+      password: 'secret'
+    })
+  })
+
+  .then(function () {
+    t.fail('Sign in must fail when already signed in')
+  })
+
+  .catch(function (error) {
+    t.is(error.message, 'You must sign out before signing in')
+  })
 })
