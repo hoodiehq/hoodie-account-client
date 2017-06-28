@@ -164,6 +164,48 @@ test('signIn with token', function (t) {
   .catch(t.error)
 })
 
+test('signIn with token should trigger signin', function (t) {
+  t.plan(1)
+
+  var state = {
+    hook: hookMock,
+    setup: Promise.resolve(),
+    url: 'http://example.com',
+    cacheKey: 'cacheKey123',
+    emitter: {
+      emit: simple.stub()
+    },
+    cache: {
+      set: simple.stub(),
+      get: simple.stub().resolveWith({})
+    }
+  }
+
+  simple.mock(signIn.internals, 'request').resolveWith({
+    body: 'response body'
+  })
+  simple.mock(signIn.internals, 'serialise').returnWith('serialised')
+  simple.mock(signIn.internals, 'deserialise').returnWith({
+    id: 'Session123',
+    account: {
+      id: 'deserialise id',
+      username: 'deserialise username'
+    }
+  })
+
+  signIn(state, {
+    token: 'token123'
+  })
+
+  .then(function (accountProperties) {
+    t.deepEqual(state.emitter.emit.lastCall.arg, 'signin')
+
+    simple.restore()
+  })
+
+  .catch(t.error)
+})
+
 test('signIn with request error', function (t) {
   t.plan(1)
 
