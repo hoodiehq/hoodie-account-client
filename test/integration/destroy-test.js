@@ -74,7 +74,7 @@ test('destroy account even when session is invalid', function (t) {
   t.plan(5)
 
   // mock the Date object to always return 1970-01-01T00:00:00.000Z
-  var clock = lolex.install(0, ['Date'])
+  var clock = lolex.install({now: 0, toFake: ['Date']})
   var account = new Account({
     url: baseURL,
     id: 'abc4567'

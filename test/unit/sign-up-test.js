@@ -41,7 +41,7 @@ test('signUp without username', function (t) {
 test('signUp with username & password', function (t) {
   t.plan(6)
 
-  var clock = lolex.install(0, ['Date'])
+  var clock = lolex.install({now: 0, toFake: ['Date']})
   var state = {
     setup: Promise.resolve(),
     url: 'http://example.com',
