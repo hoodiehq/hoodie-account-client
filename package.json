@@ -21,8 +21,7 @@
     "test:coverage": "istanbul cover tape test/{integration,unit}/*-test.js",
     "test:coverage:upload": "istanbul-coveralls",
     "test:node": "tape test/{integration,unit}/*-test.js",
-    "test:watch": "gaze 'clear && tape test/{integration,unit}/*-test.js | tap-min' index.js test/**/*.js lib/**/*.js",
-    "postpublish": "greenkeeper-postpublish"
+    "test:watch": "gaze 'clear && tape test/{integration,unit}/*-test.js | tap-min' index.js test/**/*.js lib/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -43,7 +42,6 @@
     "doxx": "2.1.1",
     "gaze-cli": "^0.2.0",
     "gh-pages-deploy": "^0.4.2",
-    "greenkeeper-postpublish": "^1.0.0",
     "humble-localstorage": "^1.4.2",
     "istanbul": "^0.4.5",
     "istanbul-coveralls": "^1.0.3",
