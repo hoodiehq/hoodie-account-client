@@ -13,7 +13,7 @@
     "predocs": "rimraf docs/build",
     "docs": "doxx --source ./ --target docs/build --template docs/template.jade --ignore coverage,bin,dist,utils,node_modules,test,utils,index.js",
     "presemantic-release": "npm run -s build",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "semantic-release": "semantic-release",
     "pretest": "standard",
     "test": "npm run -s test:node | tap-spec",
     "pretest:browser:cloud": "npm run -s build",
