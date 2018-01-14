@@ -1,20 +1,35 @@
 language: node_js
-node_js:
-- 4
-- 6
-- 8
-sudo: false
 cache:
   directories:
-  - node_modules
-notifications:
-  email: false
-before_script:
-- npm prune
-after_success:
-- npm run test:coverage && npm run test:coverage:upload
-- if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then npm run docs && npm run deploydocs; fi
-- npm run semantic-release
+  - ~/.npm
+
+# Trigger a push build on master and greenkeeper branches + PRs build on every branches
+# Avoid double build on PRs (See https://github.com/travis-ci/travis-ci/issues/1147)
 branches:
-  except:
-    - /^v\d+\.\d+\.\d+$/
+  only:
+    - master
+    - /^greenkeeper.*$/
+
+jobs:
+  include:
+    - node_js: 4
+    - node_js: 6
+    - node_js: 8
+    - node_js: 9
+      script:
+        - npm run test
+        - npm run test:coverage
+        - npm run test:coverage:upload
+    - stage: release
+      node_js: lts/*
+      script:
+        - npm run semantic-release
+    - node_js: lts/*
+      script: 
+        - npm run docs
+        - npm run deploydocs
+
+stages:
+  - test
+  - name: release
+    if: branch = master AND type IN (push)
