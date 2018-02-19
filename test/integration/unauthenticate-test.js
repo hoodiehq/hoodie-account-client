@@ -34,31 +34,31 @@ test('unauthenticate state within account.get()', function (t) {
 
   return account.get('session.invalid')
 
-  .then(function (hasInvalidSession) {
-    t.equal(hasInvalidSession, undefined, '.get("session.invalid") returns undefined')
+    .then(function (hasInvalidSession) {
+      t.equal(hasInvalidSession, undefined, '.get("session.invalid") returns undefined')
 
-    account.on('unauthenticate', unauthenticateHandler)
+      account.on('unauthenticate', unauthenticateHandler)
 
-    return account.get()
-  })
+      return account.get()
+    })
 
-  .then(function () {
-    t.fail('account.get should fail')
-  })
+    .then(function () {
+      t.fail('account.get should fail')
+    })
 
-  .catch(function (error) {
-    t.equal(error.name, 'UnauthorizedError', 'rejects with "UnauthenticatedError" error')
-    t.is(unauthenticateHandler.callCount, 1, '"unauthenticate" event triggered once')
+    .catch(function (error) {
+      t.equal(error.name, 'UnauthorizedError', 'rejects with "UnauthenticatedError" error')
+      t.is(unauthenticateHandler.callCount, 1, '"unauthenticate" event triggered once')
 
-    var localStorageAccount = store.getObject('account')
-    t.equal(localStorageAccount.session.invalid, true, 'account.session.invalid true in local storage')
+      var localStorageAccount = store.getObject('account')
+      t.equal(localStorageAccount.session.invalid, true, 'account.session.invalid true in local storage')
 
-    return account.get('session.invalid')
-  })
+      return account.get('session.invalid')
+    })
 
-  .then(function (hasInvalidSession) {
-    t.equal(hasInvalidSession, true, 'account has invalid session')
-  })
+    .then(function (hasInvalidSession) {
+      t.equal(hasInvalidSession, true, 'account has invalid session')
+    })
 })
 
 test('unauthenticate state within account.update()', function (t) {
@@ -82,31 +82,31 @@ test('unauthenticate state within account.update()', function (t) {
 
   return account.get('session.invalid')
 
-  .then(function (hasInvalidSession) {
-    t.equal(hasInvalidSession, undefined, '.get("session.invalid") returns undefined')
+    .then(function (hasInvalidSession) {
+      t.equal(hasInvalidSession, undefined, '.get("session.invalid") returns undefined')
 
-    account.on('unauthenticate', unauthenticateHandler)
+      account.on('unauthenticate', unauthenticateHandler)
 
-    return account.update({username: 'newsam'})
-  })
+      return account.update({username: 'newsam'})
+    })
 
-  .then(function () {
-    t.fail('account.update should fail')
-  })
+    .then(function () {
+      t.fail('account.update should fail')
+    })
 
-  .catch(function (error) {
-    t.equal(error.name, 'UnauthorizedError', 'rejects with "UnauthenticatedError" error')
-    t.is(unauthenticateHandler.callCount, 1, '"unauthenticate" event triggered once')
+    .catch(function (error) {
+      t.equal(error.name, 'UnauthorizedError', 'rejects with "UnauthenticatedError" error')
+      t.is(unauthenticateHandler.callCount, 1, '"unauthenticate" event triggered once')
 
-    var localStorageAccount = store.getObject('account')
-    t.equal(localStorageAccount.session.invalid, true, 'account.session.invalid true in local storage')
+      var localStorageAccount = store.getObject('account')
+      t.equal(localStorageAccount.session.invalid, true, 'account.session.invalid true in local storage')
 
-    return account.get('session.invalid')
-  })
+      return account.get('session.invalid')
+    })
 
-  .then(function (hasInvalidSession) {
-    t.equal(hasInvalidSession, true, 'account has invalid session')
-  })
+    .then(function (hasInvalidSession) {
+      t.equal(hasInvalidSession, true, 'account has invalid session')
+    })
 })
 
 test('unauthenticate state within account.profile.update()', function (t) {
@@ -133,31 +133,31 @@ test('unauthenticate state within account.profile.update()', function (t) {
 
   return account.get('session.invalid')
 
-  .then(function (hasInvalidSession) {
-    t.equal(hasInvalidSession, undefined, '.get("session.invalid") returns undefined')
+    .then(function (hasInvalidSession) {
+      t.equal(hasInvalidSession, undefined, '.get("session.invalid") returns undefined')
 
-    account.on('unauthenticate', unauthenticateHandler)
+      account.on('unauthenticate', unauthenticateHandler)
 
-    return account.profile.update({username: 'newsam'})
-  })
+      return account.profile.update({username: 'newsam'})
+    })
 
-  .then(function () {
-    t.fail('account.profile.update should fail')
-  })
+    .then(function () {
+      t.fail('account.profile.update should fail')
+    })
 
-  .catch(function (error) {
-    t.equal(error.name, 'UnauthorizedError', 'rejects with "UnauthenticatedError" error')
-    t.is(unauthenticateHandler.callCount, 1, '"unauthenticate" event triggered once')
+    .catch(function (error) {
+      t.equal(error.name, 'UnauthorizedError', 'rejects with "UnauthenticatedError" error')
+      t.is(unauthenticateHandler.callCount, 1, '"unauthenticate" event triggered once')
 
-    var localStorageAccount = store.getObject('account')
-    t.equal(localStorageAccount.session.invalid, true, 'account.session.invalid true in local storage')
+      var localStorageAccount = store.getObject('account')
+      t.equal(localStorageAccount.session.invalid, true, 'account.session.invalid true in local storage')
 
-    return account.get('session.invalid')
-  })
+      return account.get('session.invalid')
+    })
 
-  .then(function (hasInvalidSession) {
-    t.equal(hasInvalidSession, true, 'account has invalid session')
-  })
+    .then(function (hasInvalidSession) {
+      t.equal(hasInvalidSession, true, 'account has invalid session')
+    })
 })
 
 test('unauthenticate state within account.profile.get()', function (t) {
@@ -180,29 +180,29 @@ test('unauthenticate state within account.profile.get()', function (t) {
 
   return account.get('session.invalid')
 
-  .then(function (hasInvalidSession) {
-    t.equal(hasInvalidSession, undefined, '.get("session.invalid") returns undefined')
+    .then(function (hasInvalidSession) {
+      t.equal(hasInvalidSession, undefined, '.get("session.invalid") returns undefined')
 
-    account.on('unauthenticate', unauthenticateHandler)
+      account.on('unauthenticate', unauthenticateHandler)
 
-    return account.profile.get()
-  })
+      return account.profile.get()
+    })
 
-  .then(function () {
-    t.fail('account.profile.get should fail')
-  })
+    .then(function () {
+      t.fail('account.profile.get should fail')
+    })
 
-  .catch(function (error) {
-    t.equal(error.name, 'UnauthorizedError', 'rejects with "UnauthenticatedError" error')
-    t.is(unauthenticateHandler.callCount, 1, '"unauthenticate" event triggered once')
+    .catch(function (error) {
+      t.equal(error.name, 'UnauthorizedError', 'rejects with "UnauthenticatedError" error')
+      t.is(unauthenticateHandler.callCount, 1, '"unauthenticate" event triggered once')
 
-    var localStorageAccount = store.getObject('account')
-    t.equal(localStorageAccount.session.invalid, true, 'account.session.invalid true in local storage')
+      var localStorageAccount = store.getObject('account')
+      t.equal(localStorageAccount.session.invalid, true, 'account.session.invalid true in local storage')
 
-    return account.get('session.invalid')
-  })
+      return account.get('session.invalid')
+    })
 
-  .then(function (hasInvalidSession) {
-    t.equal(hasInvalidSession, true, 'account has invalid session')
-  })
+    .then(function (hasInvalidSession) {
+      t.equal(hasInvalidSession, true, 'account has invalid session')
+    })
 })

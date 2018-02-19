@@ -25,10 +25,10 @@ test('new Account(options)', function (t) {
 
   account.get('id')
 
-  .then(function (id) {
-    t.ok(id)
-    t.end()
-  })
+    .then(function (id) {
+      t.ok(id)
+      t.end()
+    })
 })
 
 test('Account(options) w/o new', function (t) {
@@ -72,11 +72,11 @@ test('new Account() w/o url object', function (t) {
 
   account.get()
 
-  .then(function (accountProperties) {
-    t.same(accountProperties, {id: 'abc4567', username: 'john-doe', session: { id: 'sessionid123' }})
+    .then(function (accountProperties) {
+      t.same(accountProperties, {id: 'abc4567', username: 'john-doe', session: { id: 'sessionid123' }})
 
-    t.is(apiMock.pendingMocks()[0], undefined, 'all mocks satisfied')
-  })
+      t.is(apiMock.pendingMocks()[0], undefined, 'all mocks satisfied')
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })

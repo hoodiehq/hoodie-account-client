@@ -32,9 +32,9 @@ test('sign out', function (t) {
   account.on('signout', function () {
     account.get('session')
 
-    .then(function (session) {
-      t.notOk(session)
-    })
+      .then(function (session) {
+        t.notOk(session)
+      })
   })
   account.signOut().catch(t.error)
 })

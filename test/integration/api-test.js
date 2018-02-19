@@ -23,10 +23,10 @@ test('account.signIn() with invalid credentials', function (t) {
     password: 'wrong'
   })
 
-  .then(t.fail.bind(t, 'must reject'))
+    .then(t.fail.bind(t, 'must reject'))
 
-  .catch(function (error) {
-    t.is(error.name, 'UnauthorizedError', 'rejects with "UnauthorizedError" error')
-    t.is(error.message, 'Invalid Credentials', 'rejects with correct message')
-  })
+    .catch(function (error) {
+      t.is(error.name, 'UnauthorizedError', 'rejects with "UnauthorizedError" error')
+      t.is(error.message, 'Invalid Credentials', 'rejects with correct message')
+    })
 })

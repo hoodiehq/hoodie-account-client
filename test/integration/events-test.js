@@ -44,67 +44,67 @@ test('events', function (t) {
 
   account.signUp(options)
 
-  .then(function () {
-    t.deepEqual(signUpHandler.lastCall.arg, {
-      id: 'abc4567',
-      username: 'chicken@docs.com',
-      profile: {
-        email: 'chicken@docs.com',
-        fullName: 'Docs Chicken'
-      }
-    }, '"signup" event emitted with account object')
+    .then(function () {
+      t.deepEqual(signUpHandler.lastCall.arg, {
+        id: 'abc4567',
+        username: 'chicken@docs.com',
+        profile: {
+          email: 'chicken@docs.com',
+          fullName: 'Docs Chicken'
+        }
+      }, '"signup" event emitted with account object')
 
-    return account.signIn(options)
-  })
+      return account.signIn(options)
+    })
 
   // Check whether signing in again emits 'reauthenticate' instead of 'signin'
-  .then(function (accountProperties) {
-    return account.signIn(options)
-  })
+    .then(function (accountProperties) {
+      return account.signIn(options)
+    })
 
-  .then(function (accountProperties) {
-    var storeAccountData = store.getObject('account')
-    t.is(accountProperties.username, options.username, 'returns correct username')
-    t.is(storeAccountData.username, accountProperties.username, 'stored correct username in session')
-    t.is(storeAccountData.session.id, signInResponse.data.id, 'stored correct session id')
+    .then(function (accountProperties) {
+      var storeAccountData = store.getObject('account')
+      t.is(accountProperties.username, options.username, 'returns correct username')
+      t.is(storeAccountData.username, accountProperties.username, 'stored correct username in session')
+      t.is(storeAccountData.session.id, signInResponse.data.id, 'stored correct session id')
 
-    t.deepEqual(signInHandler.lastCall.arg, {
-      id: 'abc4567',
-      username: 'chicken@docs.com',
-      session: {
-        id: 'sessionid123'
-      }
-    }, '"signin" event emitted with account object')
+      t.deepEqual(signInHandler.lastCall.arg, {
+        id: 'abc4567',
+        username: 'chicken@docs.com',
+        session: {
+          id: 'sessionid123'
+        }
+      }, '"signin" event emitted with account object')
 
-    return account.update({username: updateResponse.data.attributes.username})
-  })
+      return account.update({username: updateResponse.data.attributes.username})
+    })
 
-  .then(function (accountProperties) {
-    var storeAccountData = store.getObject('account')
-    t.is(accountProperties.username, updateResponse.data.attributes.username, 'returns correct username')
-    t.is(storeAccountData.username, accountProperties.username, 'stored correct username in session')
-    t.is(storeAccountData.session.id, signInResponse.data.id, 'stored correct session id')
+    .then(function (accountProperties) {
+      var storeAccountData = store.getObject('account')
+      t.is(accountProperties.username, updateResponse.data.attributes.username, 'returns correct username')
+      t.is(storeAccountData.username, accountProperties.username, 'stored correct username in session')
+      t.is(storeAccountData.session.id, signInResponse.data.id, 'stored correct session id')
 
-    t.deepEqual(updateHandler.lastCall.arg, {
-      id: 'abc4567',
-      username: 'newchicken@docs.com'
-    }, '"update" event emitted with account object')
+      t.deepEqual(updateHandler.lastCall.arg, {
+        id: 'abc4567',
+        username: 'newchicken@docs.com'
+      }, '"update" event emitted with account object')
 
-    return account.signOut()
-  })
+      return account.signOut()
+    })
 
-  .then(function () {
-    t.deepEqual(signOutHandler.lastCall.arg, {
-      id: 'abc4567',
-      username: 'newchicken@docs.com'
-    }, '"signout" event emitted with account object')
+    .then(function () {
+      t.deepEqual(signOutHandler.lastCall.arg, {
+        id: 'abc4567',
+        username: 'newchicken@docs.com'
+      }, '"signout" event emitted with account object')
 
-    t.is(signUpHandler.callCount, 1, '"signup" event emitted once')
-    t.is(signInHandler.callCount, 1, '"signin" event emitted once')
-    t.is(signOutHandler.callCount, 1, '"signout" event emitted once')
-    t.is(reauthenticateHandler.callCount, 1, '"reauthenticate" event emitted once')
-    t.is(updateHandler.callCount, 1, '"update" event emitted once')
-  })
+      t.is(signUpHandler.callCount, 1, '"signup" event emitted once')
+      t.is(signInHandler.callCount, 1, '"signin" event emitted once')
+      t.is(signOutHandler.callCount, 1, '"signout" event emitted once')
+      t.is(reauthenticateHandler.callCount, 1, '"reauthenticate" event emitted once')
+      t.is(updateHandler.callCount, 1, '"update" event emitted once')
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })

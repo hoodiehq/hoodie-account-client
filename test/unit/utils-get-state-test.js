@@ -16,10 +16,10 @@ test('throws error on account.id conflict', function (t) {
 
   getState(options).setup
 
-  .then(t.fail.bind(null, 'should not resolve'))
+    .then(t.fail.bind(null, 'should not resolve'))
 
-  .catch(function (error) {
-    t.is(error.message, 'Error while initialising: account.id conflict')
-    t.end()
-  })
+    .catch(function (error) {
+      t.is(error.message, 'Error while initialising: account.id conflict')
+      t.end()
+    })
 })

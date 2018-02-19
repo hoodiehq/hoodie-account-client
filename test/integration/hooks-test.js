@@ -50,14 +50,14 @@ test('sign in with pre & post hooks', function (t) {
 
   account.signIn(options)
 
-  .then(function () {
-    callOrder.push(4)
+    .then(function () {
+      callOrder.push(4)
 
-    t.is(callOrder.length, 4, '4 checkpoints')
-    t.deepEqual(callOrder, callOrder.sort(), 'hooks get called in correct order')
-  })
+      t.is(callOrder.length, 4, '4 checkpoints')
+      t.deepEqual(callOrder, callOrder.sort(), 'hooks get called in correct order')
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('sign in with throw in pre hook', function (t) {
@@ -79,11 +79,11 @@ test('sign in with throw in pre hook', function (t) {
 
   account.signIn(options)
 
-  .then(t.error.bind(null, 'should reject'))
+    .then(t.error.bind(null, 'should reject'))
 
-  .catch(function (error) {
-    t.is(error.message, 'signin aborted', 'rejects with error from pre hook')
-  })
+    .catch(function (error) {
+      t.is(error.message, 'signin aborted', 'rejects with error from pre hook')
+    })
 })
 
 test('sign in with throw in post hook', function (t) {
@@ -109,11 +109,11 @@ test('sign in with throw in post hook', function (t) {
 
   account.signIn(options)
 
-  .then(t.error.bind(null, 'should reject'))
+    .then(t.error.bind(null, 'should reject'))
 
-  .catch(function (error) {
-    t.is(error.message, 'post:signin ooops', 'rejects with error from post hook')
-  })
+    .catch(function (error) {
+      t.is(error.message, 'post:signin ooops', 'rejects with error from post hook')
+    })
 })
 
 test('sign out with pre & post hooks', function (t) {
@@ -155,14 +155,14 @@ test('sign out with pre & post hooks', function (t) {
 
   account.signOut()
 
-  .then(function () {
-    callOrder.push(4)
+    .then(function () {
+      callOrder.push(4)
 
-    t.is(callOrder.length, 4, '4 checkpoints')
-    t.deepEqual(callOrder, callOrder.sort(), 'hooks get called in correct order')
-  })
+      t.is(callOrder.length, 4, '4 checkpoints')
+      t.deepEqual(callOrder, callOrder.sort(), 'hooks get called in correct order')
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('sign out with throw in pre hook', function (t) {
@@ -190,11 +190,11 @@ test('sign out with throw in pre hook', function (t) {
 
   account.signOut()
 
-  .then(t.error.bind(null, 'should reject'))
+    .then(t.error.bind(null, 'should reject'))
 
-  .catch(function (error) {
-    t.is(error.message, 'signout aborted', 'rejects with error from pre hook')
-  })
+    .catch(function (error) {
+      t.is(error.message, 'signout aborted', 'rejects with error from pre hook')
+    })
 })
 
 test('sign out with throw in post hook', function (t) {
@@ -226,9 +226,9 @@ test('sign out with throw in post hook', function (t) {
 
   account.signOut()
 
-  .then(t.error.bind(null, 'should reject'))
+    .then(t.error.bind(null, 'should reject'))
 
-  .catch(function (error) {
-    t.is(error.message, 'post:signout ooops', 'rejects with error from post hook')
-  })
+    .catch(function (error) {
+      t.is(error.message, 'post:signout ooops', 'rejects with error from post hook')
+    })
 })

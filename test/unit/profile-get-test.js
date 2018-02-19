@@ -15,12 +15,12 @@ test('profileGet() without session', function (t) {
   }
   profileGet(state)
 
-  .then(function (result) {
-    t.deepEqual(result, {})
-    t.end()
-  })
+    .then(function (result) {
+      t.deepEqual(result, {})
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('profileGet() with session', function (t) {
@@ -43,24 +43,24 @@ test('profileGet() with session', function (t) {
 
   profileGet(state)
 
-  .then(function (result) {
-    t.deepEqual(result, {
-      foo: 'bar'
-    })
-    t.deepEqual(state.cache.set.lastCall.args[0], {
-      profile: {
+    .then(function (result) {
+      t.deepEqual(result, {
         foo: 'bar'
-      },
-      session: {
-        id: 'session123'
-      }
+      })
+      t.deepEqual(state.cache.set.lastCall.args[0], {
+        profile: {
+          foo: 'bar'
+        },
+        session: {
+          id: 'session123'
+        }
+      })
+
+      simple.restore()
+      t.end()
     })
 
-    simple.restore()
-    t.end()
-  })
-
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('profileGet() and reauthenticate on invalid session', function (t) {
@@ -87,26 +87,26 @@ test('profileGet() and reauthenticate on invalid session', function (t) {
 
   profileGet(state)
 
-  .then(function (result) {
-    t.deepEqual(result, {
-      foo: 'bar'
-    })
-    t.deepEqual(state.cache.set.lastCall.arg, {
-      profile: {
+    .then(function (result) {
+      t.deepEqual(result, {
         foo: 'bar'
-      },
-      session: {
-        id: 'session123'
-      }
+      })
+      t.deepEqual(state.cache.set.lastCall.arg, {
+        profile: {
+          foo: 'bar'
+        },
+        session: {
+          id: 'session123'
+        }
+      })
+      t.is(state.emitter.emit.callCount, 1)
+      t.deepEqual(state.emitter.emit.lastCall.arg, 'reauthenticate')
+
+      simple.restore()
+      t.end()
     })
-    t.is(state.emitter.emit.callCount, 1)
-    t.deepEqual(state.emitter.emit.lastCall.arg, 'reauthenticate')
 
-    simple.restore()
-    t.end()
-  })
-
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('profileGet() with session and server error', function (t) {
@@ -126,14 +126,14 @@ test('profileGet() with session and server error', function (t) {
 
   profileGet(state)
 
-  .then(function () {
-    t.error('should reject')
-  })
+    .then(function () {
+      t.error('should reject')
+    })
 
-  .catch(function (error) {
-    t.is(error.message, 'oops')
-    t.end()
-  })
+    .catch(function (error) {
+      t.is(error.message, 'oops')
+      t.end()
+    })
 })
 
 test('profileGet() with session and 401 error', function (t) {
@@ -159,23 +159,23 @@ test('profileGet() with session and 401 error', function (t) {
 
   profileGet(state)
 
-  .then(function () {
-    t.error('should reject')
-  })
-
-  .catch(function (error) {
-    t.is(error.message, 'unauthenticated')
-    t.deepEqual(state.cache.set.lastCall.arg, {
-      session: {
-        id: 'session123',
-        invalid: true
-      }
+    .then(function () {
+      t.error('should reject')
     })
-    t.is(state.emitter.emit.callCount, 1)
 
-    t.deepEqual(state.emitter.emit.lastCall.args, ['unauthenticate'])
-    t.end()
-  })
+    .catch(function (error) {
+      t.is(error.message, 'unauthenticated')
+      t.deepEqual(state.cache.set.lastCall.arg, {
+        session: {
+          id: 'session123',
+          invalid: true
+        }
+      })
+      t.is(state.emitter.emit.callCount, 1)
+
+      t.deepEqual(state.emitter.emit.lastCall.args, ['unauthenticate'])
+      t.end()
+    })
 })
 
 test('profileGet({local: true}) with session', function (t) {
@@ -201,14 +201,14 @@ test('profileGet({local: true}) with session', function (t) {
 
   profileGet(state, {local: true})
 
-  .then(function (result) {
-    t.deepEqual(result, {
-      foo: 'bar'
+    .then(function (result) {
+      t.deepEqual(result, {
+        foo: 'bar'
+      })
+
+      simple.restore()
+      t.end()
     })
 
-    simple.restore()
-    t.end()
-  })
-
-  .catch(t.error)
+    .catch(t.error)
 })

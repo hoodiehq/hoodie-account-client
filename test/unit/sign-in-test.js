@@ -27,9 +27,9 @@ test('signIn without password', function (t) {
     username: 'username'
   })
 
-  .catch(function (error) {
-    t.is(typeof error, 'object', 'rejects with error object')
-  })
+    .catch(function (error) {
+      t.is(typeof error, 'object', 'rejects with error object')
+    })
 })
 
 test('signIn without username', function (t) {
@@ -42,9 +42,9 @@ test('signIn without username', function (t) {
     password: 'password'
   })
 
-  .catch(function (error) {
-    t.is(typeof error, 'object', 'rejects with error object')
-  })
+    .catch(function (error) {
+      t.is(typeof error, 'object', 'rejects with error object')
+    })
 })
 
 test('sgnIn with username & password', function (t) {
@@ -81,29 +81,29 @@ test('sgnIn with username & password', function (t) {
     password: 'secret'
   })
 
-  .then(function (accountProperties) {
-    t.deepEqual(signIn.internals.request.lastCall.arg, {
-      method: 'PUT',
-      url: 'http://example.com/session',
-      body: 'serialised'
+    .then(function (accountProperties) {
+      t.deepEqual(signIn.internals.request.lastCall.arg, {
+        method: 'PUT',
+        url: 'http://example.com/session',
+        body: 'serialised'
+      })
+      t.deepEqual(signIn.internals.deserialise.lastCall.arg, 'response body')
+      t.deepEqual(state.cache.set.lastCall.arg, {
+        session: {
+          id: 'Session123'
+        },
+        id: 'deserialise id',
+        username: 'deserialise username'
+      })
+
+      t.assert(accountProperties, 'resolves with account object')
+      t.equal(accountProperties.id, 'deserialise id', 'resolves with account.id')
+      t.equal(accountProperties.username, 'deserialise username', 'resolves with account.username')
+
+      simple.restore()
     })
-    t.deepEqual(signIn.internals.deserialise.lastCall.arg, 'response body')
-    t.deepEqual(state.cache.set.lastCall.arg, {
-      session: {
-        id: 'Session123'
-      },
-      id: 'deserialise id',
-      username: 'deserialise username'
-    })
 
-    t.assert(accountProperties, 'resolves with account object')
-    t.equal(accountProperties.id, 'deserialise id', 'resolves with account.id')
-    t.equal(accountProperties.username, 'deserialise username', 'resolves with account.username')
-
-    simple.restore()
-  })
-
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('signIn with token', function (t) {
@@ -139,29 +139,29 @@ test('signIn with token', function (t) {
     token: 'token123'
   })
 
-  .then(function (accountProperties) {
-    t.deepEqual(signIn.internals.request.lastCall.arg, {
-      method: 'PUT',
-      url: 'http://example.com/session',
-      body: 'serialised'
+    .then(function (accountProperties) {
+      t.deepEqual(signIn.internals.request.lastCall.arg, {
+        method: 'PUT',
+        url: 'http://example.com/session',
+        body: 'serialised'
+      })
+      t.deepEqual(signIn.internals.deserialise.lastCall.arg, 'response body')
+      t.deepEqual(state.cache.set.lastCall.arg, {
+        session: {
+          id: 'Session123'
+        },
+        id: 'deserialise id',
+        username: 'deserialise username'
+      })
+
+      t.assert(accountProperties, 'resolves with account object')
+      t.equal(accountProperties.id, 'deserialise id', 'resolves with account.id')
+      t.equal(accountProperties.username, 'deserialise username', 'resolves with account.username')
+
+      simple.restore()
     })
-    t.deepEqual(signIn.internals.deserialise.lastCall.arg, 'response body')
-    t.deepEqual(state.cache.set.lastCall.arg, {
-      session: {
-        id: 'Session123'
-      },
-      id: 'deserialise id',
-      username: 'deserialise username'
-    })
 
-    t.assert(accountProperties, 'resolves with account object')
-    t.equal(accountProperties.id, 'deserialise id', 'resolves with account.id')
-    t.equal(accountProperties.username, 'deserialise username', 'resolves with account.username')
-
-    simple.restore()
-  })
-
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('signIn with token should trigger signin', function (t) {
@@ -197,13 +197,13 @@ test('signIn with token should trigger signin', function (t) {
     token: 'token123'
   })
 
-  .then(function (accountProperties) {
-    t.deepEqual(state.emitter.emit.lastCall.arg, 'signin')
+    .then(function (accountProperties) {
+      t.deepEqual(state.emitter.emit.lastCall.arg, 'signin')
 
-    simple.restore()
-  })
+      simple.restore()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('signIn with request error', function (t) {
@@ -222,12 +222,12 @@ test('signIn with request error', function (t) {
     password: 'secret'
   })
 
-  .then(t.fail.bind(t, 'must reject'))
+    .then(t.fail.bind(t, 'must reject'))
 
-  .catch(function (error) {
-    t.is(typeof error, 'object', 'returns error object')
-    simple.restore()
-  })
+    .catch(function (error) {
+      t.is(typeof error, 'object', 'returns error object')
+      simple.restore()
+    })
 })
 
 // account.signIn() to emit `reauthenticate` event when unauthenticated
@@ -267,11 +267,11 @@ test('signIn with same username', function (t) {
     password: 'secret'
   })
 
-  .then(function (accountProperties) {
-    t.is(state.emitter.emit.callCount, 1, '1 Event emitted')
-    t.is(state.emitter.emit.calls[0].arg, 'reauthenticate', 'Correct event emitted')
-    simple.restore()
-  })
+    .then(function (accountProperties) {
+      t.is(state.emitter.emit.callCount, 1, '1 Event emitted')
+      t.is(state.emitter.emit.calls[0].arg, 'reauthenticate', 'Correct event emitted')
+      simple.restore()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })

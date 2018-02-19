@@ -20,12 +20,12 @@ test('fetch profile details', function (t) {
     url: baseURL + '/session/account/profile'
   })
 
-  .then(function (accountInfo) {
-    t.is(typeof accountInfo, 'object', 'returns account object')
-    t.deepEqual(accountInfo, expectedObject, 'contains correct info')
-  })
+    .then(function (accountInfo) {
+      t.is(typeof accountInfo, 'object', 'returns account object')
+      t.deepEqual(accountInfo, expectedObject, 'contains correct info')
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('fetch profile fullName', function (t) {
@@ -40,10 +40,10 @@ test('fetch profile fullName', function (t) {
     path: 'fullName'
   })
 
-  .then(function (fullName) {
-    t.is(typeof fullName, 'string', 'returns string')
-    t.is(fullName, fetchResponse.data.attributes.fullName, 'contains correct fullName')
-  })
+    .then(function (fullName) {
+      t.is(typeof fullName, 'string', 'returns string')
+      t.is(fullName, fetchResponse.data.attributes.fullName, 'contains correct fullName')
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })

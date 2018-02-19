@@ -31,22 +31,22 @@ test('destroy()', function (t) {
 
   destroy(state)
 
-  .then(function (result) {
-    t.deepEqual(destroy.internals.request.lastCall.arg, {
-      method: 'DELETE',
-      url: 'http://example.com/session/account',
-      headers: {
-        authorization: 'Session abc4567'
-      }
+    .then(function (result) {
+      t.deepEqual(destroy.internals.request.lastCall.arg, {
+        method: 'DELETE',
+        url: 'http://example.com/session/account',
+        headers: {
+          authorization: 'Session abc4567'
+        }
+      })
+      t.deepEqual(state.cache.unset.callCount, 1)
+
+      t.is(state.cache.unset.callCount, 1, 'unsets account')
+
+      simple.restore()
     })
-    t.deepEqual(state.cache.unset.callCount, 1)
 
-    t.is(state.cache.unset.callCount, 1, 'unsets account')
-
-    simple.restore()
-  })
-
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('destroy() with request error', function (t) {
@@ -63,9 +63,9 @@ test('destroy() with request error', function (t) {
     }
   })
 
-  .then(t.fail.bind(t, 'must reject'))
+    .then(t.fail.bind(t, 'must reject'))
 
-  .catch(function () {
-    t.pass('rejects with error')
-  })
+    .catch(function () {
+      t.pass('rejects with error')
+    })
 })

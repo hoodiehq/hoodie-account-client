@@ -44,36 +44,36 @@ test('updateProfile with change', function (t) {
     fullName: 'Docs Chicken'
   })
 
-  .then(function (profile) {
-    t.deepEqual(updateProfile.internals.request.lastCall.arg, {
-      method: 'PATCH',
-      url: 'http://example.com/session/account/profile',
-      headers: {
-        authorization: 'Session abc1234'
-      },
-      body: 'profileJsonData'
+    .then(function (profile) {
+      t.deepEqual(updateProfile.internals.request.lastCall.arg, {
+        method: 'PATCH',
+        url: 'http://example.com/session/account/profile',
+        headers: {
+          authorization: 'Session abc1234'
+        },
+        body: 'profileJsonData'
+      })
+      t.deepEqual(state.cache.set.lastCall.arg, {
+        session: {
+          id: 'abc1234'
+        },
+        profile: {
+          foo: 'bar',
+          fullName: 'Docs Chicken'
+        }
+      })
+
+      t.equal(profile.foo, 'bar', 'returns old property')
+      t.equal(profile.fullName, 'Docs Chicken', 'returns new property')
+
+      t.equal(state.emitter.emit.callCount, 1, '1 Event emitted')
+      t.equal(state.emitter.emit.lastCall.arg, 'update', 'Correct event emitted')
+      t.deepEqual(state.emitter.emit.lastCall.args[1].profile, { foo: 'bar', fullName: 'Docs Chicken' })
+
+      simple.restore()
     })
-    t.deepEqual(state.cache.set.lastCall.arg, {
-      session: {
-        id: 'abc1234'
-      },
-      profile: {
-        foo: 'bar',
-        fullName: 'Docs Chicken'
-      }
-    })
 
-    t.equal(profile.foo, 'bar', 'returns old property')
-    t.equal(profile.fullName, 'Docs Chicken', 'returns new property')
-
-    t.equal(state.emitter.emit.callCount, 1, '1 Event emitted')
-    t.equal(state.emitter.emit.lastCall.arg, 'update', 'Correct event emitted')
-    t.deepEqual(state.emitter.emit.lastCall.args[1].profile, { foo: 'bar', fullName: 'Docs Chicken' })
-
-    simple.restore()
-  })
-
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('server side error', function (t) {
@@ -99,6 +99,6 @@ test('server side error', function (t) {
     fullName: 'Docs Chicken'
   })
 
-  .then(t.fail.bind(t, 'must reject'))
-  .catch(t.pass.bind(t, 'rejects with error'))
+    .then(t.fail.bind(t, 'must reject'))
+    .catch(t.pass.bind(t, 'rejects with error'))
 })

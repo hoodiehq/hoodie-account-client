@@ -38,24 +38,24 @@ test('sign in and change username', function (t) {
 
   account.signIn(options)
 
-  .then(function (signInResult) {
-    t.pass('signs in')
-    t.is(signInResult.username, 'chicken@docs.com')
+    .then(function (signInResult) {
+      t.pass('signs in')
+      t.is(signInResult.username, 'chicken@docs.com')
 
-    return account.profile.update({
-      fullName: 'Docs Chicken',
-      favoriteClothing: 'Clothing'
+      return account.profile.update({
+        fullName: 'Docs Chicken',
+        favoriteClothing: 'Clothing'
+      })
     })
-  })
 
-  .then(function (profileProperties) {
-    t.is(profileProperties.fullName, 'Docs Chicken', 'profile.update() resolves with profile properties')
-    return account.profile.get({local: true})
-  })
+    .then(function (profileProperties) {
+      t.is(profileProperties.fullName, 'Docs Chicken', 'profile.update() resolves with profile properties')
+      return account.profile.get({local: true})
+    })
 
-  .then(function (profileProperties) {
-    t.is(profileProperties.fullName, 'Docs Chicken', 'profile.get() returns profile properties')
-  })
+    .then(function (profileProperties) {
+      t.is(profileProperties.fullName, 'Docs Chicken', 'profile.get() returns profile properties')
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })

@@ -46,28 +46,28 @@ test('successful account.request(options)', function (t) {
     email: 'pat@example.com'
   })
 
-  .then(function (accountProperties) {
-    t.deepEqual(request.internals.request.lastCall.arg, {
-      method: 'POST',
-      url: 'http://example.com/requests',
-      body: 'serialised'
+    .then(function (accountProperties) {
+      t.deepEqual(request.internals.request.lastCall.arg, {
+        method: 'POST',
+        url: 'http://example.com/requests',
+        body: 'serialised'
+      })
+      t.deepEqual(request.internals.deserialise.lastCall.arg, 'response body')
+      t.deepEqual(request.internals.serialise.lastCall.args[0], 'request')
+      t.deepEqual(request.internals.serialise.lastCall.args[1], {
+        type: 'passwordreset',
+        email: 'pat@example.com'
+      })
+
+      t.equal(accountProperties, 'deserialised', 'resolves deserialised request')
+      t.equal(state.emitter.emit.callCount, 1, '1 event emitted')
+      t.equal(state.emitter.emit.lastCall.args[0], 'passwordreset', 'passwordreset event emitted')
+      t.equal(state.emitter.emit.lastCall.args[1], 'deserialised', 'deserialised request passed')
+
+      simple.restore()
     })
-    t.deepEqual(request.internals.deserialise.lastCall.arg, 'response body')
-    t.deepEqual(request.internals.serialise.lastCall.args[0], 'request')
-    t.deepEqual(request.internals.serialise.lastCall.args[1], {
-      type: 'passwordreset',
-      email: 'pat@example.com'
-    })
 
-    t.equal(accountProperties, 'deserialised', 'resolves deserialised request')
-    t.equal(state.emitter.emit.callCount, 1, '1 event emitted')
-    t.equal(state.emitter.emit.lastCall.args[0], 'passwordreset', 'passwordreset event emitted')
-    t.equal(state.emitter.emit.lastCall.args[1], 'deserialised', 'deserialised request passed')
-
-    simple.restore()
-  })
-
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('request with request error', function (t) {
@@ -79,10 +79,10 @@ test('request with request error', function (t) {
     setup: Promise.resolve()
   })
 
-  .then(t.fail.bind(t, 'must reject'))
+    .then(t.fail.bind(t, 'must reject'))
 
-  .catch(function (error) {
-    t.is(typeof error, 'object', 'returns error object')
-    simple.restore()
-  })
+    .catch(function (error) {
+      t.is(typeof error, 'object', 'returns error object')
+      simple.restore()
+    })
 })

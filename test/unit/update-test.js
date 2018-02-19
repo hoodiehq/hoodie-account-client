@@ -47,28 +47,28 @@ test('update with change', function (t) {
     password: 'newsecret'
   })
 
-  .then(function (account) {
-    t.deepEqual(update.internals.request.calls[0].arg, {
-      method: 'PATCH',
-      url: 'http://example.com/session/account',
-      headers: {
-        authorization: 'Session abc1234'
-      },
-      body: 'jsonData'
-    })
-    t.deepEqual(state.cache.set.lastCall.arg, {
-      username: 'bakingpies',
-      session: {
-        id: 'abc1234'
-      }
+    .then(function (account) {
+      t.deepEqual(update.internals.request.calls[0].arg, {
+        method: 'PATCH',
+        url: 'http://example.com/session/account',
+        headers: {
+          authorization: 'Session abc1234'
+        },
+        body: 'jsonData'
+      })
+      t.deepEqual(state.cache.set.lastCall.arg, {
+        username: 'bakingpies',
+        session: {
+          id: 'abc1234'
+        }
+      })
+
+      t.is(state.emitter.emit.callCount, 1, '1 Event emitted')
+      t.is(state.emitter.emit.lastCall.arg, 'update', 'Correct event emitted')
+      simple.restore()
     })
 
-    t.is(state.emitter.emit.callCount, 1, '1 Event emitted')
-    t.is(state.emitter.emit.lastCall.arg, 'update', 'Correct event emitted')
-    simple.restore()
-  })
-
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('update with change causing new session', function (t) {
@@ -107,30 +107,30 @@ test('update with change causing new session', function (t) {
     username: 'treetrunks'
   })
 
-  .then(function (account) {
-    t.deepEqual(update.internals.request.calls[0].arg, {
-      method: 'PATCH',
-      url: 'http://example.com/session/account',
-      headers: {
-        authorization: 'Session abc1234'
-      },
-      body: 'jsonData'
+    .then(function (account) {
+      t.deepEqual(update.internals.request.calls[0].arg, {
+        method: 'PATCH',
+        url: 'http://example.com/session/account',
+        headers: {
+          authorization: 'Session abc1234'
+        },
+        body: 'jsonData'
+      })
+      t.deepEqual(state.cache.set.lastCall.arg, {
+        username: 'treetrunks',
+        session: {
+          id: 'newsession5678'
+        }
+      })
+
+      t.equal(account.username, 'treetrunks', 'returns new property')
+
+      t.is(state.emitter.emit.callCount, 1, '1 Event emitted')
+      t.is(state.emitter.emit.lastCall.arg, 'update', 'Correct event emitted')
+      simple.restore()
     })
-    t.deepEqual(state.cache.set.lastCall.arg, {
-      username: 'treetrunks',
-      session: {
-        id: 'newsession5678'
-      }
-    })
 
-    t.equal(account.username, 'treetrunks', 'returns new property')
-
-    t.is(state.emitter.emit.callCount, 1, '1 Event emitted')
-    t.is(state.emitter.emit.lastCall.arg, 'update', 'Correct event emitted')
-    simple.restore()
-  })
-
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('server side error', function (t) {
@@ -159,9 +159,9 @@ test('server side error', function (t) {
     username: 'treetrunks'
   })
 
-  .then(function (account) {
-    t.fail.bind(t, 'must reject')
-    simple.restore()
-  })
-  .catch(t.pass.bind(t, 'rejects with error'))
+    .then(function (account) {
+      t.fail.bind(t, 'must reject')
+      simple.restore()
+    })
+    .catch(t.pass.bind(t, 'rejects with error'))
 })

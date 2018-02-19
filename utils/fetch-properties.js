@@ -13,9 +13,9 @@ function fetchProperties (options) {
     }
   })
 
-  .then(function (response) {
-    var data = deserialise(response.body)
+    .then(function (response) {
+      var data = deserialise(response.body)
 
-    return getProperties(data, options.path)
-  })
+      return getProperties(data, options.path)
+    })
 }

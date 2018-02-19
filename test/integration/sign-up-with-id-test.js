@@ -36,34 +36,34 @@ test('sign up with id', function (t) {
 
   account.signUp(options)
 
-  .then(function () {
-    clock.uninstall()
-    t.pass('signs up')
+    .then(function () {
+      clock.uninstall()
+      t.pass('signs up')
 
-    mock.put('/session').reply(201, signInResponse)
+      mock.put('/session').reply(201, signInResponse)
 
-    return account.signIn(options)
-  })
+      return account.signIn(options)
+    })
 
-  .then(function () {
-    t.pass('signs in')
+    .then(function () {
+      t.pass('signs in')
 
-    mock.delete('/session').reply(204)
+      mock.delete('/session').reply(204)
 
-    return account.signOut()
-  })
+      return account.signOut()
+    })
 
-  .then(function () {
-    t.pass('signs out')
+    .then(function () {
+      t.pass('signs out')
 
-    mock
-      .put('/session/account', function (body) {
-        t.isNot(body.data.id, 'abc4567', 'sends new account id')
-        return true
-      })
-      .reply(201, signUpResponse)
-    return account.signUp(options)
-  })
+      mock
+        .put('/session/account', function (body) {
+          t.isNot(body.data.id, 'abc4567', 'sends new account id')
+          return true
+        })
+        .reply(201, signUpResponse)
+      return account.signUp(options)
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })

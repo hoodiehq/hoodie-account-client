@@ -11,13 +11,13 @@ test('validate no-op', function (t) {
 
   validate(state, {})
 
-  .then(function () {
-    t.pass('validate resolved successfully')
-  })
+    .then(function () {
+      t.pass('validate resolved successfully')
+    })
 
-  .catch(function (error) {
-    t.fail(error)
-  })
+    .catch(function (error) {
+      t.fail(error)
+    })
 })
 
 test('validate passes options into function', function (t) {
@@ -35,9 +35,9 @@ test('validate passes options into function', function (t) {
 
   validate(state, {})
 
-  .catch(function (error) {
-    t.fail(error)
-  })
+    .catch(function (error) {
+      t.fail(error)
+    })
 })
 
 test('validate rejects errors from function', function (t) {
@@ -51,13 +51,13 @@ test('validate rejects errors from function', function (t) {
 
   validate(state, {})
 
-  .then(function () {
-    t.fail('validate did not reject')
-  })
+    .then(function () {
+      t.fail('validate did not reject')
+    })
 
-  .catch(function () {
-    t.pass('validate rejected successfully')
-  })
+    .catch(function () {
+      t.pass('validate rejected successfully')
+    })
 })
 
 test('validate accepts Promises', function (t) {
@@ -73,11 +73,11 @@ test('validate accepts Promises', function (t) {
 
   validate(state, {})
 
-  .then(function () {
-    t.pass('resolves successfully')
-  })
+    .then(function () {
+      t.pass('resolves successfully')
+    })
 
-  .catch(function (error) {
-    t.fail(error)
-  })
+    .catch(function (error) {
+      t.fail(error)
+    })
 })

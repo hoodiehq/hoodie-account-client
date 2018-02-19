@@ -11,7 +11,7 @@ test('signUp without options', function (t) {
     setup: Promise.resolve()
   })
 
-  .catch(t.pass.bind(t, 'rejects'))
+    .catch(t.pass.bind(t, 'rejects'))
 })
 
 test('signUp without password', function (t) {
@@ -23,7 +23,7 @@ test('signUp without password', function (t) {
     username: 'pat'
   })
 
-  .catch(t.pass.bind(t, 'rejects'))
+    .catch(t.pass.bind(t, 'rejects'))
 })
 
 test('signUp without username', function (t) {
@@ -35,7 +35,7 @@ test('signUp without username', function (t) {
     password: 'secret'
   })
 
-  .catch(t.pass.bind(t, 'rejects'))
+    .catch(t.pass.bind(t, 'rejects'))
 })
 
 test('signUp with username & password', function (t) {
@@ -68,38 +68,38 @@ test('signUp with username & password', function (t) {
     password: 'secret'
   })
 
-  .then(function (result) {
-    t.deepEqual(state.validate.lastCall.arg, {
-      username: 'pat',
-      password: 'secret',
-      createdAt: '1970-01-01T00:00:00.000Z'
-    }, 'passes username & password to validate')
-    t.deepEqual(signUp.internals.serialise.lastCall.args, [
-      'account',
-      {
+    .then(function (result) {
+      t.deepEqual(state.validate.lastCall.arg, {
         username: 'pat',
         password: 'secret',
         createdAt: '1970-01-01T00:00:00.000Z'
-      },
-      undefined // account.id, from `new Account({id: ...})`
-    ], 'passes username & password to serialise')
-    t.deepEqual(signUp.internals.request.lastCall.arg, {
-      method: 'PUT',
-      url: 'http://example.com/session/account',
-      body: 'serialise return'
+      }, 'passes username & password to validate')
+      t.deepEqual(signUp.internals.serialise.lastCall.args, [
+        'account',
+        {
+          username: 'pat',
+          password: 'secret',
+          createdAt: '1970-01-01T00:00:00.000Z'
+        },
+        undefined // account.id, from `new Account({id: ...})`
+      ], 'passes username & password to serialise')
+      t.deepEqual(signUp.internals.request.lastCall.arg, {
+        method: 'PUT',
+        url: 'http://example.com/session/account',
+        body: 'serialise return'
+      })
+      t.deepEqual(signUp.internals.deserialise.lastCall.args, [
+        'response body',
+        { include: 'profile' }
+      ])
+
+      t.is(result.id, 'deserialise id', 'resolves with account id')
+      t.is(result.username, 'deserialise username', 'resolves with account username')
+
+      clock.uninstall()
+      simple.restore()
     })
-    t.deepEqual(signUp.internals.deserialise.lastCall.args, [
-      'response body',
-      { include: 'profile' }
-    ])
-
-    t.is(result.id, 'deserialise id', 'resolves with account id')
-    t.is(result.username, 'deserialise username', 'resolves with account username')
-
-    clock.uninstall()
-    simple.restore()
-  })
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('signUp with profile', function (t) {
@@ -116,9 +116,9 @@ test('signUp with profile', function (t) {
     profile: {}
   })
 
-  .then(t.fail.bind(t, 'must throw'))
+    .then(t.fail.bind(t, 'must throw'))
 
-  .catch(t.pass.bind(t, 'throws error'))
+    .catch(t.pass.bind(t, 'throws error'))
 })
 
 test('account.signUp with invalid options', function (t) {
@@ -139,11 +139,11 @@ test('account.signUp with invalid options', function (t) {
     password: 'secret'
   })
 
-  .then(t.fail.bind(t, 'must throw'))
+    .then(t.fail.bind(t, 'must throw'))
 
-  .catch(function (error) {
-    t.is(error.message, 'Not funky enough!', 'throws error')
-  })
+    .catch(function (error) {
+      t.is(error.message, 'Not funky enough!', 'throws error')
+    })
 })
 
 test('signUp with request error', function (t) {
@@ -164,9 +164,9 @@ test('signUp with request error', function (t) {
     password: 'secret'
   })
 
-  .then(t.fail.bind(t, 'must throw'))
+    .then(t.fail.bind(t, 'must throw'))
 
-  .catch(function (error) {
-    t.is(typeof error, 'object', 'returns error object')
-  })
+    .catch(function (error) {
+      t.is(typeof error, 'object', 'returns error object')
+    })
 })

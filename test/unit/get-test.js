@@ -18,14 +18,14 @@ test('get() without session', function (t) {
 
   get(state)
 
-  .then(function (result) {
-    t.deepEqual(result, {foo: 'bar'})
+    .then(function (result) {
+      t.deepEqual(result, {foo: 'bar'})
 
-    simple.restore()
-    t.end()
-  })
+      simple.restore()
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('get("foo") without session', function (t) {
@@ -42,14 +42,14 @@ test('get("foo") without session', function (t) {
 
   get(state, 'foo')
 
-  .then(function (result) {
-    t.is(result, 'bar', 'returns value for foo property')
+    .then(function (result) {
+      t.is(result, 'bar', 'returns value for foo property')
 
-    simple.restore()
-    t.end()
-  })
+      simple.restore()
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('get() with session', function (t) {
@@ -73,25 +73,25 @@ test('get() with session', function (t) {
 
   get(state)
 
-  .then(function (result) {
-    t.deepEqual(result, {
-      foo: 'bar',
-      session: {
-        id: 'session123'
-      }
-    })
-    t.deepEqual(state.cache.set.lastCall.args[0], {
-      foo: 'bar',
-      session: {
-        id: 'session123'
-      }
+    .then(function (result) {
+      t.deepEqual(result, {
+        foo: 'bar',
+        session: {
+          id: 'session123'
+        }
+      })
+      t.deepEqual(state.cache.set.lastCall.args[0], {
+        foo: 'bar',
+        session: {
+          id: 'session123'
+        }
+      })
+
+      simple.restore()
+      t.end()
     })
 
-    simple.restore()
-    t.end()
-  })
-
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('get("foo") with session', function (t) {
@@ -112,20 +112,20 @@ test('get("foo") with session', function (t) {
 
   get(state, 'foo')
 
-  .then(function (result) {
-    t.is(result, 'bar')
-    t.deepEqual(state.cache.set.lastCall.args[0], {
-      foo: 'bar',
-      session: {
-        id: 'session123'
-      }
+    .then(function (result) {
+      t.is(result, 'bar')
+      t.deepEqual(state.cache.set.lastCall.args[0], {
+        foo: 'bar',
+        session: {
+          id: 'session123'
+        }
+      })
+
+      simple.restore()
+      t.end()
     })
 
-    simple.restore()
-    t.end()
-  })
-
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('get("id") with session', function (t) {
@@ -149,14 +149,14 @@ test('get("id") with session', function (t) {
 
   get(state, 'id')
 
-  .then(function (result) {
-    t.is(result, 'account123')
+    .then(function (result) {
+      t.is(result, 'account123')
 
-    simple.restore()
-    t.end()
-  })
+      simple.restore()
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('get("session") with session', function (t) {
@@ -180,14 +180,14 @@ test('get("session") with session', function (t) {
 
   get(state, 'session')
 
-  .then(function (result) {
-    t.deepEqual(result, { id: 'session123' })
+    .then(function (result) {
+      t.deepEqual(result, { id: 'session123' })
 
-    simple.restore()
-    t.end()
-  })
+      simple.restore()
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('get("session.invalid") with session', function (t) {
@@ -212,14 +212,14 @@ test('get("session.invalid") with session', function (t) {
 
   get(state, 'session.invalid')
 
-  .then(function (result) {
-    t.is(result, true)
+    .then(function (result) {
+      t.is(result, true)
 
-    simple.restore()
-    t.end()
-  })
+      simple.restore()
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('get(["id", "session.id"]) with session', function (t) {
@@ -244,19 +244,19 @@ test('get(["id", "session.id"]) with session', function (t) {
 
   get(state, ['id', 'session.id'])
 
-  .then(function (result) {
-    t.deepEqual(result, {
-      id: 'account123',
-      session: {
-        id: 'session123'
-      }
+    .then(function (result) {
+      t.deepEqual(result, {
+        id: 'account123',
+        session: {
+          id: 'session123'
+        }
+      })
+
+      simple.restore()
+      t.end()
     })
 
-    simple.restore()
-    t.end()
-  })
-
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('get() and reauthenticate on invalid session', function (t) {
@@ -283,27 +283,27 @@ test('get() and reauthenticate on invalid session', function (t) {
 
   get(state)
 
-  .then(function (result) {
-    t.deepEqual(result, {
-      foo: 'bar',
-      session: {
-        id: 'session123'
-      }
-    })
-    t.deepEqual(state.cache.set.lastCall.arg, {
-      foo: 'bar',
-      session: {
-        id: 'session123'
-      }
-    })
-    t.is(state.emitter.emit.callCount, 1)
-    t.deepEqual(state.emitter.emit.lastCall.arg, 'reauthenticate')
+    .then(function (result) {
+      t.deepEqual(result, {
+        foo: 'bar',
+        session: {
+          id: 'session123'
+        }
+      })
+      t.deepEqual(state.cache.set.lastCall.arg, {
+        foo: 'bar',
+        session: {
+          id: 'session123'
+        }
+      })
+      t.is(state.emitter.emit.callCount, 1)
+      t.deepEqual(state.emitter.emit.lastCall.arg, 'reauthenticate')
 
-    simple.restore()
-    t.end()
-  })
+      simple.restore()
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('get() with session and server error', function (t) {
@@ -324,14 +324,14 @@ test('get() with session and server error', function (t) {
 
   get(state)
 
-  .then(function () {
-    t.error('should reject')
-  })
+    .then(function () {
+      t.error('should reject')
+    })
 
-  .catch(function (error) {
-    t.is(error.message, 'oops')
-    t.end()
-  })
+    .catch(function (error) {
+      t.is(error.message, 'oops')
+      t.end()
+    })
 })
 
 test('get() with session and 401 error', function (t) {
@@ -358,24 +358,24 @@ test('get() with session and 401 error', function (t) {
 
   get(state)
 
-  .then(function () {
-    t.error('should reject')
-  })
-
-  .catch(function (error) {
-    t.is(error.message, 'unauthenticated')
-    t.deepEqual(state.cache.set.lastCall.arg, {
-      session: {
-        id: 'session123',
-        invalid: true
-      },
-      foo: 'bar'
+    .then(function () {
+      t.error('should reject')
     })
-    t.is(state.emitter.emit.callCount, 1)
 
-    t.deepEqual(state.emitter.emit.lastCall.args, ['unauthenticate'])
-    t.end()
-  })
+    .catch(function (error) {
+      t.is(error.message, 'unauthenticated')
+      t.deepEqual(state.cache.set.lastCall.arg, {
+        session: {
+          id: 'session123',
+          invalid: true
+        },
+        foo: 'bar'
+      })
+      t.is(state.emitter.emit.callCount, 1)
+
+      t.deepEqual(state.emitter.emit.lastCall.args, ['unauthenticate'])
+      t.end()
+    })
 })
 
 test('get({local: true}) with session', function (t) {
@@ -399,19 +399,19 @@ test('get({local: true}) with session', function (t) {
 
   get(state, {local: true})
 
-  .then(function (result) {
-    t.deepEqual(result, {
-      session: {
-        id: 'session123'
-      },
-      id: 'account123'
+    .then(function (result) {
+      t.deepEqual(result, {
+        session: {
+          id: 'session123'
+        },
+        id: 'account123'
+      })
+
+      simple.restore()
+      t.end()
     })
 
-    simple.restore()
-    t.end()
-  })
-
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('get("foo", {local: true}) with session', function (t) {
@@ -436,12 +436,12 @@ test('get("foo", {local: true}) with session', function (t) {
 
   get(state, 'foo', {local: true})
 
-  .then(function (result) {
-    t.is(result, 'bar')
+    .then(function (result) {
+      t.is(result, 'bar')
 
-    simple.restore()
-    t.end()
-  })
+      simple.restore()
+      t.end()
+    })
 
-  .catch(t.error)
+    .catch(t.error)
 })

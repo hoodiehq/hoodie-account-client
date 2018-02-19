@@ -52,44 +52,44 @@ test('sign in and change username', function (t) {
 
   account.signIn(options)
 
-  .then(function (signInResult) {
-    t.pass('signs in')
-    t.is(signInResult.username, 'chicken@docs.com')
+    .then(function (signInResult) {
+      t.pass('signs in')
+      t.is(signInResult.username, 'chicken@docs.com')
 
-    return account.update({ username: 'newchicken@docs.com', password: 'newsecret' })
-  })
-
-  .then(function (updateResult) {
-    t.pass('update resultResult received')
-    t.is(updateResult.username, 'newchicken@docs.com', 'new account name in result')
-
-    return account.get(['username', 'session.id'], {local: true})
-
-    .then(function (properties) {
-      t.is(properties.username, 'newchicken@docs.com', 'account username set to new one')
-      t.is(store.getObject('account').session.id, properties.session.id, 'account session should be persisted')
-
-      return account.signOut()
+      return account.update({ username: 'newchicken@docs.com', password: 'newsecret' })
     })
-  })
 
-  .then(function () {
-    t.pass('signed out')
+    .then(function (updateResult) {
+      t.pass('update resultResult received')
+      t.is(updateResult.username, 'newchicken@docs.com', 'new account name in result')
 
-    return account.signIn({ username: 'newchicken@docs.com', password: 'newsecret' })
-  })
+      return account.get(['username', 'session.id'], {local: true})
 
-  .then(function (signInResult) {
-    t.pass('signed in again')
+        .then(function (properties) {
+          t.is(properties.username, 'newchicken@docs.com', 'account username set to new one')
+          t.is(store.getObject('account').session.id, properties.session.id, 'account session should be persisted')
 
-    t.is(signInResult.username, 'newchicken@docs.com', 'results with new username')
+          return account.signOut()
+        })
+    })
 
-    return account.get('username', {local: true})
-  })
+    .then(function () {
+      t.pass('signed out')
 
-  .then(function (username) {
-    t.is(username, 'newchicken@docs.com', 'account.username is set to new one')
-  })
+      return account.signIn({ username: 'newchicken@docs.com', password: 'newsecret' })
+    })
 
-  .catch(t.error)
+    .then(function (signInResult) {
+      t.pass('signed in again')
+
+      t.is(signInResult.username, 'newchicken@docs.com', 'results with new username')
+
+      return account.get('username', {local: true})
+    })
+
+    .then(function (username) {
+      t.is(username, 'newchicken@docs.com', 'account.username is set to new one')
+    })
+
+    .catch(t.error)
 })

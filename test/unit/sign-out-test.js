@@ -35,22 +35,22 @@ test('signOut()', function (t) {
 
   signOut(state)
 
-  .then(function (result) {
-    t.deepEqual(signOut.internals.request.lastCall.arg, {
-      method: 'DELETE',
-      url: 'http://example.com/session',
-      headers: {
-        authorization: 'Session abc4567'
-      }
+    .then(function (result) {
+      t.deepEqual(signOut.internals.request.lastCall.arg, {
+        method: 'DELETE',
+        url: 'http://example.com/session',
+        headers: {
+          authorization: 'Session abc4567'
+        }
+      })
+
+      t.equal(state.cache.set.callCount, 1)
+      t.isNot(state.cache.set.lastCall.arg.id, 'user567', 'resets account')
+
+      simple.restore()
     })
 
-    t.equal(state.cache.set.callCount, 1)
-    t.isNot(state.cache.set.lastCall.arg.id, 'user567', 'resets account')
-
-    simple.restore()
-  })
-
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('signOut() with request error', function (t) {
@@ -71,11 +71,11 @@ test('signOut() with request error', function (t) {
     }
   })
 
-  .then(t.fail.bind(t, 'must reject'))
+    .then(t.fail.bind(t, 'must reject'))
 
-  .catch(function () {
-    t.pass('rejects with error')
-  })
+    .catch(function () {
+      t.pass('rejects with error')
+    })
 })
 
 test('signOut() without being signed in', function (t) {
@@ -92,14 +92,14 @@ test('signOut() without being signed in', function (t) {
     }
   })
 
-  .then(t.fail.bind(t, 'must reject'))
+    .then(t.fail.bind(t, 'must reject'))
 
-  .catch(function (error) {
-    t.is(typeof error, 'object', 'rejects with error object')
-    t.equal(
-      error.message,
-      'UnauthenticatedError: Not signed in',
-      'error not an UnauthenticatedError'
-    )
-  })
+    .catch(function (error) {
+      t.is(typeof error, 'object', 'rejects with error object')
+      t.equal(
+        error.message,
+        'UnauthenticatedError: Not signed in',
+        'error not an UnauthenticatedError'
+      )
+    })
 })

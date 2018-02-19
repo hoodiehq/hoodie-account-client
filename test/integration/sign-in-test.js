@@ -32,58 +32,58 @@ test('sign in', function (t) {
 
   account.signIn(options)
 
-  .then(function (signInResult) {
-    t.pass('signs in')
-    t.is(signInResult.username, 'chicken@docs.com')
+    .then(function (signInResult) {
+      t.pass('signs in')
+      t.is(signInResult.username, 'chicken@docs.com')
 
-    var storeAccount = store.getObject('account')
+      var storeAccount = store.getObject('account')
 
-    t.deepEqual(storeAccount, {
-      id: 'abc4567',
-      username: 'chicken@docs.com',
-      session: {
-        id: 'sessionid123'
-      }
-    }, 'stores account with id with session')
-
-    account.get({local: true})
-
-    .then(function (cache) {
-      t.deepEqual(cache, {
+      t.deepEqual(storeAccount, {
         id: 'abc4567',
         username: 'chicken@docs.com',
         session: {
           id: 'sessionid123'
         }
-      }, 'session is cached')
+      }, 'stores account with id with session')
+
+      account.get({local: true})
+
+        .then(function (cache) {
+          t.deepEqual(cache, {
+            id: 'abc4567',
+            username: 'chicken@docs.com',
+            session: {
+              id: 'sessionid123'
+            }
+          }, 'session is cached')
+        })
+
+      return account.signOut()
     })
 
-    return account.signOut()
-  })
+    .then(function (signOutResult) {
+      t.pass('signs out')
 
-  .then(function (signOutResult) {
-    t.pass('signs out')
+      t.is(signOutResult.username, 'chicken@docs.com')
 
-    t.is(signOutResult.username, 'chicken@docs.com')
+      var storeAccount = store.getObject('account')
 
-    var storeAccount = store.getObject('account')
+      t.ok(storeAccount.id, 'sets new id in account store')
+      t.isNot(storeAccount.id, signOutResult.id, 'resets account in store')
 
-    t.ok(storeAccount.id, 'sets new id in account store')
-    t.isNot(storeAccount.id, signOutResult.id, 'resets account in store')
+      t.isNot(account.id, 'abc4567', 'new id is not same as old id')
 
-    t.isNot(account.id, 'abc4567', 'new id is not same as old id')
+      storeAccount = store.getObject('account')
+      t.ok(/^[a-z0-9]{7}$/.test(storeAccount.id), 'stores new id')
 
-    storeAccount = store.getObject('account')
-    t.ok(/^[a-z0-9]{7}$/.test(storeAccount.id), 'stores new id')
+      account.get('id')
 
-    account.get('id')
-
-    .then(function (id) {
-      t.is(id, storeAccount.id, '.get("id") resolves with new account id')
+        .then(function (id) {
+          t.is(id, storeAccount.id, '.get("id") resolves with new account id')
+        })
     })
-  })
 
-  .catch(t.error)
+    .catch(t.error)
 })
 
 test('prevent sign-in when already signed in', function (t) {
@@ -101,18 +101,18 @@ test('prevent sign-in when already signed in', function (t) {
 
   account.signIn(options)
 
-  .then(function (signInResult) {
-    return account.signIn({
-      username: 'fox@docs.com',
-      password: 'secret'
+    .then(function (signInResult) {
+      return account.signIn({
+        username: 'fox@docs.com',
+        password: 'secret'
+      })
     })
-  })
 
-  .then(function () {
-    t.fail('Sign in must fail when already signed in')
-  })
+    .then(function () {
+      t.fail('Sign in must fail when already signed in')
+    })
 
-  .catch(function (error) {
-    t.is(error.message, 'You must sign out before signing in')
-  })
+    .catch(function (error) {
+      t.is(error.message, 'You must sign out before signing in')
+    })
 })
