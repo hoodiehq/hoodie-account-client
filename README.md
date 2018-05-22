@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/hoodiehq/hoodie-account-client.svg?branch=master)](https://travis-ci.org/hoodiehq/hoodie-account-client)
 [![Coverage Status](https://coveralls.io/repos/hoodiehq/hoodie-account-client/badge.svg?branch=master)](https://coveralls.io/github/hoodiehq/hoodie-account-client?branch=master)
 [![Dependency Status](https://david-dm.org/hoodiehq/hoodie-account-client.svg)](https://david-dm.org/hoodiehq/hoodie-account-client)
-[![devDependency Status](https://david-dm.org/hoodiehq/hoodie-account-client/dev-status.svg)](https://david-dm.org/hoodiehq/hoodie-account-client#info=devDependencies)
+[![devDependency Status](https://david-dm.org/hoodiehq/hoodie-account-client/dev-status.svg)](https://david-dm.org/hoodiehq/hoodie-account-client#info=devDependencies) [![Greenkeeper badge](https://badges.greenkeeper.io/hoodiehq/hoodie-account-client.svg)](https://greenkeeper.io/)
 
 `hoodie-account-client` is a JavaScript client for the [Account JSON API](http://docs.accountjsonapi.apiary.io).
 It persists session information in localStorage (or your own store API) and
