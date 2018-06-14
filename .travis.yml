@@ -24,10 +24,6 @@ jobs:
       node_js: lts/*
       script:
         - npm run semantic-release
-    - node_js: lts/*
-      script: 
-        - npm run docs
-        - npm run deploydocs
 
 stages:
   - test
