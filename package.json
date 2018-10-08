@@ -39,7 +39,7 @@
     "humble-localstorage": "^1.4.2",
     "istanbul": "^0.4.5",
     "istanbul-coveralls": "^1.0.3",
-    "lolex": "^2.0.0",
+    "lolex": "^3.0.0",
     "mkdirp": "^0.5.1",
     "nock": "^10.0.0",
     "npm-run-all": "^4.0.0",
