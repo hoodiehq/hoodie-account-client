@@ -36,7 +36,7 @@
   "devDependencies": {
     "browserify": "^16.0.0",
     "gaze-cli": "^0.2.0",
-    "humble-localstorage": "^1.4.2",
+    "humble-localstorage": "^2.0.0",
     "istanbul": "^0.4.5",
     "istanbul-coveralls": "^1.0.3",
     "lolex": "^2.0.0",
