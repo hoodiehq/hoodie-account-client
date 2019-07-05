@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/hoodiehq/hoodie-account-client#readme",
   "devDependencies": {
-    "browserify": "^16.0.0",
+    "browserify": "16.2.3",
     "gaze-cli": "^0.2.0",
     "humble-localstorage": "^1.4.2",
     "istanbul": "^0.4.5",
