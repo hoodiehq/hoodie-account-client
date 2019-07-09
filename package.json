@@ -53,7 +53,7 @@
     "uglify-js": "^3.0.0"
   },
   "dependencies": {
-    "before-after-hook": "^1.0.1",
+    "before-after-hook": "^2.0.0",
     "async-get-set-store": "^1.0.2",
     "lie": "^3.0.1",
     "lodash": "^4.0.0",
